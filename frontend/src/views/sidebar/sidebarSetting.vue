@@ -146,24 +146,22 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed, createVNode, nextTick, onMounted, ref } from "vue";
+import { computed, nextTick, onMounted, ref } from "vue";
 import { useVpconfigStore } from "@/store/vpconfig";
 import { VpNav } from "@/utils/tree";
 import { IconPark } from "@icon-park/vue-next/es/all";
 import DyAddSidebar from "@/components/dyAddSidebar.vue";
 import { ParseTreeData } from "../../../wailsjs/go/services/ArticleTreeData";
-import { StringGlobalLang, StyleNoDrag } from "@/configs/cnts";
+import { StyleNoDrag } from "@/configs/cnts";
 import { PathJoin } from "../../../wailsjs/go/system/SystemService";
 import SelectSettingLang from "@/components/selectSettingLang.vue";
-import { ToastError, ToastSuccess } from "@/utils/Toast";
+import { ToastError } from "@/utils/Toast";
 import { dto } from "../../../wailsjs/go/models";
 import { useIndexStore } from "@/store";
-import DyAddKV from "@/components/dyAddKV.vue";
-import TreeNode = dto.TreeNode;
-import DyAddNav from "@/components/dyAddNav.vue";
 import { IsEmptyValue } from "@/utils/utils";
 import EmptyProject from "@/components/emptyProject.vue";
 import { lang } from "@/utils/language";
+import TreeNode = dto.TreeNode;
 
 const splitterModel = ref(36);
 const storeConfig = useVpconfigStore();
@@ -222,11 +220,11 @@ const recognitionSidebar = async () => {
     return;
   }
 
-  let zhLangDir = await PathJoin([
+  let baseDir = await PathJoin([
     storeConfig.srcDir,
     storeConfig.currSettingLang,
   ]);
-  let baseDir = zhLangDir;
+
   if (isUseManySidebars.value) {
     if (currSelectSidebarKey.value == "") {
       ToastError(lang("pageSidebar.selectSidebarTip"));
