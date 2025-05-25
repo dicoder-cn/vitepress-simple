@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div class="px-1 mb-2">
+    <!-- 标题 -->
+    <div class="px-1 mb-2" v-if="storeEditor.currArticle?.frontMatter?.title">
       <a-input
         v-model:value="storeEditor.currArticle.frontMatter['title']"
         :placeholder="lang('pageIndex.inputArticleTitle')"
@@ -9,16 +10,18 @@
       />
     </div>
 
-    <div class="px-1 my-2">
+    <!-- 描述 -->
+    <div class="px-1 my-2" v-if="storeEditor.currArticle?.frontMatter?.description">
       <a-textarea
         class="text-gray-500"
         v-model:value="storeEditor.currArticle.frontMatter['description']"
         :auto-size="{ minRows: 1 }"
         :placeholder="lang('pageIndex.inputPageSeoDescription')"
       ></a-textarea>
-    </div>
+    </div> 
+
     <!-- 标签输入框 -->
-    <div class="px-1 my-2">
+    <div class="px-1 my-2" v-if="storeEditor.currArticle?.frontMatter?.tags?.length > 0">
       <q-input
         v-model="tagInput"
         :label="lang('pageIndex.tags')"
@@ -47,8 +50,8 @@
     </div>
     
 
-
-    <div class="px-2 mb-2">
+    <!-- 大纲显示级别 -->
+    <div class="px-2 mb-2" v-if="storeEditor.currArticle?.frontMatter?.outline?.length >= 2">
       <a-input
         v-model:value="storeEditor.currArticle.frontMatter['outline'][1]"
         class="text-gray-500"
@@ -59,14 +62,15 @@
     </div>
   </div>
 
-  <div>
+  <div >
     <a-form
       :label-col="labelCol"
       :wrapper-col="wrapperCol"
       class="ml-5"
       label-align="left"
     >
-      <div>
+      <!-- 是否显示导航栏 -->
+      <div v-if="storeEditor.currArticle?.frontMatter?.navbar">
         <q-toggle
           :label="lang('pageIndex.showNav')"
           left-label
@@ -82,7 +86,8 @@
           color="blue"
         />
       </div>
-      <div>
+      <!-- 是否显示侧边栏 -->
+      <div v-if="storeEditor.currArticle?.frontMatter?.sideBar">
         <q-toggle
           :label="lang('pageIndex.showFooter')"
           left-label
@@ -91,7 +96,8 @@
         />
       </div>
 
-      <div>
+      <!-- 是否显示编辑链接 -->
+      <div v-if="storeEditor.currArticle?.frontMatter?.editLink">
         <q-toggle
           :label="lang('pageIndex.showEditLink')"
           left-label
@@ -99,7 +105,8 @@
           color="blue"
         />
       </div>
-      <div>
+      <!-- 是否显示更新时间 -->
+      <div v-if="storeEditor.currArticle?.frontMatter?.lastUpdated">
         <q-toggle
           :label="lang('pageIndex.showUpdateTime')"
           left-label
@@ -108,7 +115,8 @@
         />
       </div>
 
-      <a-form-item :label="lang('pageIndex.outlinePosition')">
+      <!-- 大纲位置 -->
+      <a-form-item :label="lang('pageIndex.outlinePosition')" v-if="storeEditor.currArticle?.frontMatter?.aside">
         <a-radio-group
           v-model:value="storeEditor.currArticle.frontMatter['aside']"
         >
@@ -120,7 +128,8 @@
   </div>
   <q-separator inset />
 
-  <div class="mt-3">
+  <!-- 自定义head -->
+  <div class="mt-3" v-if="storeEditor.currArticle?.frontMatter?.head?.length > 0">
     <dy-add-head
       v-model:meta="storeEditor.currArticle.frontMatter['head']"
       ref="refDyAddHead"
@@ -133,12 +142,12 @@
       value-name="content"
     ></dy-add-head>
   </div>
-  <div class="mt-3">
+  <div class="mt-3" v-if="storeEditor.currArticle?.frontMatter?.custom?.length > 0">
     <q-separator inset />
   </div>
 
   <!--  自定义formatter-->
-  <div class="mt-3">
+  <div class="mt-3" v-if="storeEditor.currArticle?.frontMatter?.custom?.length > 0">
     <a-tooltip :title="lang('pageIndex.customFormatterTip')">
       <dy-add-head
         v-model:obj="storeEditor.currArticle.frontMatter['custom']"

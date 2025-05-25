@@ -215,11 +215,10 @@ export const useEditorStore = defineStore("editor", {
       if (articleFrontMatter["title"] == ""){
         articleFrontMatter["title"]="test title";
       }
-      //大纲需要是一个数组
-      if (!Array.isArray(articleFrontMatter["outline"])) {
-        articleFrontMatter["outline"] = [1, 3];
-      }
+      
       console.log(articleFrontMatter, "articleFrontMatter -- console.log");
+
+     
       
     },
     //关闭文章
