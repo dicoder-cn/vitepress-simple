@@ -1,13 +1,15 @@
 // 定义一个简单的类 `Person`
-import { ConfigGet, ConfigSet } from "../../wailsjs/go/system/SystemService";
+import { AppConfig } from "@/store/appconfig";
+import { ConfigSet } from "../../wailsjs/go/system/SystemService";
 import { ConfigKeyHistoryProject } from "@/configs/appConfigKey";
+
 
 export class HistoryProject {
   public static currentList: string[] = [];
 
   // 初始化配置文件中的配置(启动时执行一次即可)
   public static async initList() {
-    const currListString = await ConfigGet(ConfigKeyHistoryProject);
+    const currListString = AppConfig.getString(ConfigKeyHistoryProject);
     try {
       this.currentList = JSON.parse(currListString);
     } catch (e) {

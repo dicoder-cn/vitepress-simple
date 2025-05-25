@@ -21,14 +21,12 @@ import { lang } from "@/utils/language";
 import { useEditorStore } from "../../store/editor";
 import 'md-editor-v3/lib/style.css';
 import { MdEditor } from 'md-editor-v3';
-import { ConfigGet } from "wailsjs/go/system/SystemService";
 import { ConfigKeySysStaticServerPort } from "@/configs/appConfigKey";
 import axios from "axios";
+import { AppConfig } from "@/store/appconfig";
 
 const storeEditor = useEditorStore();
 const storeIndex = useIndexStore();
-
-
 
 
 onMounted(() => {
@@ -37,10 +35,8 @@ onMounted(() => {
   });
 });
 
-
-
 const onUploadImg = async (files: any[], callback: (arg0: any[]) => void) => {
-  let port = await ConfigGet(ConfigKeySysStaticServerPort);
+  let port = AppConfig.getString(ConfigKeySysStaticServerPort);
   port = port == "" ? "9874" : port;
   const uploadUrl = `http://localhost:${port}/upload_image`;
   const res = await Promise.all(

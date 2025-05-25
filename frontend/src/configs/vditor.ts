@@ -2,14 +2,14 @@ import {
   ConfigKeySysStaticServerPort,
   ConfigKeyVditorCdn,
 } from "@/configs/appConfigKey";
-import { ConfigGet } from "../../wailsjs/go/system/SystemService";
+import { AppConfig } from "@/store/appconfig";
 import { VditorCdnZstatic } from "@/constant/enums/cdn";
 import { useVpconfigStore } from "@/store/vpconfig";
 
 export const getDefaultVtitorOptions = async (): Promise<IOptions> => {
-  let port = await ConfigGet(ConfigKeySysStaticServerPort);
+  let port = AppConfig.getString(ConfigKeySysStaticServerPort);
   port = port == "" ? "9874" : port;
-  let cdn = await ConfigGet(ConfigKeyVditorCdn);
+  let cdn = AppConfig.getString(ConfigKeyVditorCdn);
   if (cdn == "") cdn = VditorCdnZstatic;
   const storeVpConfig = useVpconfigStore();
   const uploadUrl = `http://localhost:${port}/upload_image`;

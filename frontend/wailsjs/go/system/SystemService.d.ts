@@ -3,11 +3,11 @@
 
 export function CheckNetConnect():Promise<string>;
 
-// export function ConfigGet(arg1:string):Promise<any>;
+export function ConfigGet(arg1:string):Promise<any>;
 
 export function ConfigGetAll():Promise<Record<string, any>>;
 
-// export function ConfigGetBool(arg1:string):Promise<boolean>;
+export function ConfigGetBool(arg1:string):Promise<boolean>;
 
 export function ConfigSet(arg1:string,arg2:string):Promise<void>;
 

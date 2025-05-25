@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
-import { ConfigGet } from "../../wailsjs/go/system/SystemService";
 import { ConfigKeyLayoutNavBgColor } from "@/configs/appConfigKey";
 import { IsEmptyValue } from "@/utils/utils";
+import { AppConfig } from "./appconfig";
 
 //这是关于布局控制的状态管理文件
 export interface layoutStore {
@@ -28,7 +28,7 @@ export const useLayoutStore = defineStore("layout", {
     },
     async loadUserSetting() {
       //左侧导航栏背景颜色
-      const leftNavBgColor = await ConfigGet(ConfigKeyLayoutNavBgColor);
+      const leftNavBgColor = AppConfig.getString(ConfigKeyLayoutNavBgColor);
       console.log(leftNavBgColor, "leftNavBgColor -- console.log");
       if (!IsEmptyValue(leftNavBgColor)) this.colorBgNav = leftNavBgColor;
     },

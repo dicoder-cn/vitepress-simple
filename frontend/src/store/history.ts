@@ -1,7 +1,8 @@
 import { defineStore } from "pinia";
-import { ConfigGet, ConfigSet } from "../../wailsjs/go/system/SystemService";
+
 import { ConfigKeyHistoryProject } from "@/configs/appConfigKey";
 import { ToastError } from "@/utils/Toast";
+import { AppConfig } from "./appconfig";
 //这是一个简单的推荐store案例，可以在这里定义你的状态
 //新建pinia时把historyProjects全局替换成你的store名字
 export interface historyProjectsStore {
@@ -38,7 +39,7 @@ export const useHistoryStore = defineStore("historyProjects", {
     //初始化列表
     async initList() {
       this.currentList = [];
-      const currListString = await ConfigGet(ConfigKeyHistoryProject);
+      const currListString = AppConfig.getString(ConfigKeyHistoryProject);
       try {
         this.currentList = JSON.parse(currListString);
       } catch (e: any) {
@@ -48,7 +49,7 @@ export const useHistoryStore = defineStore("historyProjects", {
       // console.log(this.currentList, "this.currentList -- console.log");
     },
     saveToConfig() {
-      ConfigSet(ConfigKeyHistoryProject, JSON.stringify(this.currentList));
+      AppConfig.set(ConfigKeyHistoryProject, JSON.stringify(this.currentList));
     },
   },
   getters: {},

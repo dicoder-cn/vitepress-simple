@@ -5,7 +5,7 @@ import {
 } from "../../wailsjs/go/vpsimpler/VpConfig";
 import { IsEmptyValue, parseJsObject } from "@/utils/utils";
 import {
-  ConfigGet,
+
   CopyPath,
   PathExists,
   PathJoin,
@@ -19,6 +19,8 @@ import {
 } from "@/configs/defaultLangConfig";
 import { StringGlobalLang, StringRootLang } from "@/configs/cnts";
 import { CreateDir } from "../../wailsjs/go/services/ArticleTreeData";
+import { AppConfig } from "./appconfig";
+
 
 //这是一个简单的推荐store案例，可以在这里定义你的状态
 //新建pinia时把vpconfig全局替换成你的store名字
@@ -31,6 +33,7 @@ export interface vpconfigStore {
   currLangConfig: Record<string, any>;
   currSettingLang: string; //当前正在设置的语言
   currLangConfigIsUseRootConfig: boolean; //当前语言配置是否指向根目录
+  configContent: string;
 }
 
 export const useVpconfigStore = defineStore("vpconfig", {
@@ -43,10 +46,12 @@ export const useVpconfigStore = defineStore("vpconfig", {
     currLangConfig: {}, //当前编辑的语言的主题配置
     currSettingLang: "",
     currLangConfigIsUseRootConfig: false, //当前语言配置是否指向根目录
+    configContent: "",
   }),
   actions: {
+  
     async formatPath() {
-      this.baseDir = await PathJoin([await ConfigGet(ConfigKeyProjectDir)]);
+      this.baseDir = await PathJoin([AppConfig.getString(ConfigKeyProjectDir)]);
     },
     //获取config.mts文件内容
     async readVpConfig() {

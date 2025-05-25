@@ -15,7 +15,7 @@
 // const model = defineModel();
 
 import { onMounted, ref, watch } from "vue";
-import { ConfigGet, ConfigSet } from "../../wailsjs/go/system/SystemService";
+import { AppConfig } from "@/store/appconfig";
 
 const color = ref();
 
@@ -25,15 +25,14 @@ interface Props {
 }
 
 const props = defineProps<Props>();
+
 onMounted(() => {
-  ConfigGet(props.configKey).then((res) => {
-    color.value = res;
-  });
+  color.value = AppConfig.getString(props.configKey);
 });
 
 //监听变化
 watch(color, (newVal) => {
-  ConfigSet(props.configKey, newVal);
+  AppConfig.set(props.configKey, newVal);
 });
 </script>
 

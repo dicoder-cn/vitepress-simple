@@ -32,7 +32,9 @@ import "@quasar/extras/material-icons/material-icons.css";
 // Import Quasar css
 import "quasar/src/css/index.sass";
 import { InstallCodemirro } from "codemirror-editor-vue3";
-
+import { AppConfig } from "./store/appconfig";
+//初始化软件配置
+await  AppConfig.initAppConfig();
 const app = createApp(App);
 
 app.use(createPinia());

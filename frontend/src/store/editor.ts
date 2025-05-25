@@ -5,10 +5,9 @@ import { replaceImageUrlToLocalStatic, replaceLocalStaticToImageUrl } from "@/ut
 import { ToastError, ToastInfo } from "@/utils/Toast";
 import { IsEmptyValue } from "@/utils/utils";
 import matter from "gray-matter";
-import { before } from "node:test";
 import { defineStore } from "pinia";
 import { ReadFileContent, WriteFileContent } from "wailsjs/go/services/ArticleTreeData";
-import { ConfigGet } from "wailsjs/go/system/SystemService";
+import { AppConfig } from "@/store/appconfig";
 // @ts-ignore
 import yaml from "js-yaml";
 import { watch } from 'vue';
@@ -289,7 +288,7 @@ export const useEditorStore = defineStore("editor", {
       }
       const articleItem = this.articleLists[articleIndex];
       
-      const saveType = await ConfigGet(ConfigKeyFrontMatterSaveType);
+      const saveType = AppConfig.getString(ConfigKeyFrontMatterSaveType);
       let fontMatterString = "";
       if (saveType == "yaml") { //默认
         fontMatterString = yaml.dump(articleItem.frontMatter);

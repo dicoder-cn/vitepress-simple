@@ -19,7 +19,8 @@
 import { nextTick, onMounted, ref, watch } from "vue";
 
 import { InfoCircleOutlined } from "@ant-design/icons-vue";
-import { ConfigGet, ConfigSet } from "../../wailsjs/go/system/SystemService";
+import { AppConfig } from "@/store/appconfig";
+import { ConfigSet } from "../../wailsjs/go/system/SystemService";
 
 const value = ref();
 
@@ -37,9 +38,7 @@ interface Props {
 }
 
 onMounted(() => {
-  ConfigGet(props.configKey).then((res) => {
-    value.value = res;
-  });
+  value.value = AppConfig.getString(props.configKey);
 });
 const props = defineProps<Props>();
 watch(value, (newVal) => {

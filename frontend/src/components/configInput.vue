@@ -30,7 +30,7 @@
 
 <script setup lang="ts">
 import { defineProps, onMounted, ref, watch } from "vue";
-import { ConfigGet, ConfigSet } from "../../wailsjs/go/system/SystemService";
+import { AppConfig } from "@/store/appconfig";
 import { StyleNoDrag } from "@/configs/cnts";
 
 const props = defineProps({
@@ -53,22 +53,19 @@ const props = defineProps({
 });
 
 onMounted(async () => {
-  CurrInputValue.value = await ConfigGet(props.configKey);
+  CurrInputValue.value = AppConfig.getString(props.configKey);
 });
 
 let CurrInputValue = ref("");
 watch(CurrInputValue, (nval: string, oval: string) => {
-  //Set(props.ConfigKey,nval,props.ConfigType)
-  ConfigSet(props.configKey, nval);
+  AppConfig.set(props.configKey, nval);
 });
 
 const SetModelValue = (val: string) => {
   LoadConfigValue();
 };
 const LoadConfigValue = () => {
-  ConfigGet(props.configKey).then((res) => {
-    CurrInputValue.value = res;
-  });
+  CurrInputValue.value = AppConfig.getString(props.configKey);
 };
 
 defineExpose({ SetModelValue, LoadConfigValue });

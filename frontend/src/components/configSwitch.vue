@@ -9,7 +9,7 @@
 </template>
 <script setup lang="ts">
 import { defineProps, onMounted, ref, watch } from "vue";
-import { ConfigGet, ConfigSet } from "../../wailsjs/go/system/SystemService";
+import { AppConfig } from "@/store/appconfig";
 import { InfoCircleOutlined } from "@ant-design/icons-vue";
 
 const props = defineProps({
@@ -32,12 +32,13 @@ const props = defineProps({
 });
 const emits = defineEmits(["onChange"]);
 let CurrSwitchValue = ref(false);
+
 onMounted(async () => {
-  let val = await ConfigGet(props.configKey);
+  let val = AppConfig.getString(props.configKey);
   CurrSwitchValue.value = val == "yes";
 });
 watch(CurrSwitchValue, (nval: boolean, oval: boolean) => {
-  ConfigSet(props.configKey, nval ? "yes" : "no");
+  AppConfig.set(props.configKey, nval ? "yes" : "no");
   emits("onChange", nval);
 });
 </script>

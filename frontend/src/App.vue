@@ -8,7 +8,7 @@
 import NavTemplate1 from "@/layout/nav/navTemplate1.vue";
 import NavTemplate2 from "@/layout/nav/navTemplate2.vue";
 import { onBeforeUnmount, onMounted, ref } from "vue";
-import { ConfigGet } from "../wailsjs/go/system/SystemService";
+
 import { ConfigKeyLang, ConfigKeyProjectDir } from "@/configs/appConfigKey";
 import { useIndexStore } from "@/store";
 import { useEditorStore } from "@/store/editor";
@@ -24,16 +24,15 @@ import { EventsOff, EventsOffAll, EventsOn } from "../wailsjs/runtime";
 import { useShellStore } from "@/store/shell";
 import { shell } from "../wailsjs/go/models";
 import NotifyShellData = shell.NotifyShellData;
-import { InitAppConfig } from "./configs/appConfig";
+import { AppConfig } from "@/store/appconfig";
 //在这里可以设置默认的模板
 const useTemplateIndex = ref(2);
 const storeIndex = useIndexStore();
 const storeEditor = useEditorStore();
 const { locale } = useI18n();
-// const vpConfig = useVpconfigStore();
+
 onMounted(async () => {
-  //初始化软件配置
-  InitAppConfig();
+
   
   // 初始化编辑器监听器
   useEditorStore().initWatcher();
@@ -50,15 +49,14 @@ onMounted(async () => {
   await storeIndex.getVersion(); //获取当前系统版本
   await storeIndex.getStaticDir();
   await storeIndex.getStaticPort();
-  ConfigGet(ConfigKeyLang).then((res) => {
-    locale.value = res == "" ? "en" : res;
-  }); //设置语言
+  const res = AppConfig.getString(ConfigKeyLang);
+  locale.value = res == "" ? "en" : res;
   let hasNewVersion = await HasNewVersion();
   if (hasNewVersion) {
     UpdateNewVersion();
   }
   //设定初始项目
-  let dir = await ConfigGet(ConfigKeyProjectDir);
+  let dir = AppConfig.getString(ConfigKeyProjectDir);
   if (dir !== "") {
     await storeIndex.changeProject(dir);
   }

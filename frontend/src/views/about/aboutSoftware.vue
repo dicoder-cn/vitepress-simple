@@ -1,11 +1,17 @@
 <script setup lang="ts">
-import { ConfigGet, OpenURL } from "../../../wailsjs/go/system/SystemService";
+import { OpenURL } from "../../../wailsjs/go/system/SystemService";
+
 import { useIndexStore } from "../../store";
 import { onMounted } from "vue";
 import { ConfigKeyLang } from "@/configs/appConfigKey";
+import { AppConfig } from "@/store/appconfig";
+
+
 
 let lang = "";
-onMounted(async () => [(lang = await ConfigGet(ConfigKeyLang))]);
+onMounted(async () => {
+  lang = AppConfig.getString(ConfigKeyLang);
+});
 </script>
 
 <template>
@@ -126,7 +132,7 @@ onMounted(async () => [(lang = await ConfigGet(ConfigKeyLang))]);
 
         <ul>
           <li>
-            本软件命名为“VitePressSimple”(简称VPSimple)，遵循开放源代码的原则，我们已将其源代码在
+            本软件命名为"VitePressSimple"(简称VPSimple)，遵循开放源代码的原则，我们已将其源代码在
             <span
               class="cursor-pointer"
               @click="OpenURL('https://gitee.com/zhangdi168/VitePressSimple')"
@@ -139,7 +145,7 @@ onMounted(async () => [(lang = await ConfigGet(ConfigKeyLang))]);
         </ul>
 
         <p>
-          “<strong>VitePressSimple</strong>”专注于提升VitePress项目的配置效率与用户体验，其核心特性如下：
+          "<strong>VitePressSimple</strong>"专注于提升VitePress项目的配置效率与用户体验，其核心特性如下：
         </p>
 
         <ul>
@@ -162,7 +168,7 @@ onMounted(async () => [(lang = await ConfigGet(ConfigKeyLang))]);
         </ul>
 
         <p>
-          我们诚挚欢迎广大用户试用“<strong>VitePressSimple</strong>”，并期待您的宝贵反馈与建议。您可以通过以下途径与我们互动：
+          我们诚挚欢迎广大用户试用"<strong>VitePressSimple</strong>"，并期待您的宝贵反馈与建议。您可以通过以下途径与我们互动：
         </p>
 
         <ul>

@@ -8,7 +8,6 @@ import {
 import { dto } from "../../wailsjs/go/models";
 import { getDirectoryPath } from "@/utils/file";
 import {
-  ConfigGet,
   ConfigSet,
   GetCurrVersion,
   GetSystemType,
@@ -33,6 +32,8 @@ import yaml from "js-yaml";
 import { replaceImageUrlToLocalStatic } from "@/utils/repalceStatic";
 import { StartStaticServer } from "../../wailsjs/go/services/StaticServer";
 import { useShellStore } from "@/store/shell"; // 浏览器环境（需确保构建工具已正确处理）
+import { AppConfig } from "./appconfig";
+
 
 //定义首页的数据类型
 export interface indexStore {
@@ -89,10 +90,10 @@ export const useIndexStore = defineStore("index", {
     },
     //获取静态端口
     async getStaticPort() {
-      this.staticServerPort = await ConfigGet(ConfigKeySysStaticServerPort);
+      this.staticServerPort = AppConfig.getString(ConfigKeySysStaticServerPort);
     },
     async getStaticDir() {
-      this.staticBaseDir = await ConfigGet(ConfigKeySysProjectStaticDirName);
+      this.staticBaseDir = AppConfig.getString(ConfigKeySysProjectStaticDirName);
     },
     async checkProjectDir(dir: string): Promise<string> {
       //判空
@@ -109,7 +110,7 @@ export const useIndexStore = defineStore("index", {
       const vitePressDir = await PathJoin([dir, ".vitepress"]);
       const isExistsVpDir = await PathExists(vitePressDir);
       if (!isExistsVpDir) {
-        return `切换失败，所选路径${dir}不存在“.vitepress”文件夹`;
+        return `切换失败，所选路径${dir}不存在"vitepress"文件夹`;
       }
       return "";
     },
@@ -121,7 +122,7 @@ export const useIndexStore = defineStore("index", {
         ToastError(checkString);
         return;
       }
-      ToastSuccess(`当前打开项目：“${dir}”`);
+      ToastSuccess(`当前打开项目："${dir}"`);
       this.IsEmptyProject = false; //设置为非空项目
       await useHistoryStore().add(dir); //加入到历史项目数据中
       //设置当前的项目路径
