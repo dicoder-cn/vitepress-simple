@@ -19,7 +19,7 @@
             <a-tooltip>
               <template #title>{{ article.path.split('/').pop() }}</template>
               <span class="truncate max-w-[120px]">
-                <span v-if="!article.isSave" class="text-red-500 mr-1">*</span>
+                <span v-if="!article.isSave" class="text-gray-500 ">*</span>
                 {{ (article.path.split('/').pop() || '').replace('.md', '') }}
               </span>
             </a-tooltip>

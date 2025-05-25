@@ -58,8 +58,24 @@ const onUploadImg = async (files: any[], callback: (arg0: any[]) => void) => {
       });
     })
   );
+  
+  //   {
+  //     "code": 0,
+  //     "msg": "",
+  //     "data": {
+  //         "errFiles": [],
+  //         "succMap": {
+  //             "07f8d818-1fcb-4602-b8eb-eebe8320adea.png": "http://localhost:9874/images/20250525/07f8d818-1fcb-4602-b8eb-eebe8320adea.png"
+  //         }
+  //     }
+  // }
+
   console.log("uploadImg res:",res);
-  // callback(res.map((item:ImageUploadResponse) => item.data.url));
+  const urls = res.map((item: any) => {
+    const succMap = item.data.data.succMap;
+    return Object.values(succMap)[0];
+  });
+  callback(urls);
 };
 </script>
 <style scoped>

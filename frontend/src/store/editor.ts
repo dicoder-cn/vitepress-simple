@@ -12,6 +12,8 @@ import { ConfigGet } from "wailsjs/go/system/SystemService";
 // @ts-ignore
 import yaml from "js-yaml";
 import { watch } from 'vue';
+import { Modal } from 'ant-design-vue';
+import { lang } from "@/utils/language";
 //这是一个简单的推荐store案例，可以在这里定义你的状态
 //新建pinia时把editor全局替换成你的store名字
 
@@ -113,13 +115,7 @@ export const useEditorStore = defineStore("editor", {
       }
     },
 
-    //更新文章内容时设置未保存状态
-    updateArticleContent(index: number, field: 'frontMatter' | 'mdContent' | 'vueContent', content: any) {
-      if (index >= 0 && index < this.articleLists.length) {
-        this.articleLists[index][field] = content;
-        this.updateArticleSaveStatus(index, false);
-      }
-    },
+
 
     //切换当前打开的文章
     changeCurrArticleIndex(index: number) {
@@ -226,31 +222,65 @@ export const useEditorStore = defineStore("editor", {
       
     },
     //关闭文章
-    closeArticle(path: string) {
+    async closeArticle(path: string) {
       if (!Array.isArray(this.articleLists)) {
         this.articleLists = [];
         return;
       }
       const articleIndex = this.articleLists.findIndex(item => item?.path === path);
-      if (articleIndex !== -1) {
-        this.articleLists.splice(articleIndex, 1);
-        
-        // 如果关闭的是当前文章，需要更新当前文章索引
-        if (this.currArticleIndex === articleIndex) {
-          // 如果还有其他文章，选择最后一篇
-          if (this.articleLists.length > 0) {
-            this.changeCurrArticleIndex(this.articleLists.length - 1);
-          } else {
-            // 如果没有文章了，重置状态
-            this.currArticleIndex = -1;
-            this.currArticle = {} as ArticleContent;
-          }
-        } else if (this.currArticleIndex > articleIndex) {
-          // 如果关闭的文章在当前文章之前，需要更新索引
-          this.currArticleIndex--;
-        }
+      if (articleIndex === -1) return;
+
+      const article = this.articleLists[articleIndex];
+      
+      // 如果文章未保存，显示确认弹窗
+      if (!article.isSave) {
+        return new Promise((resolve) => {
+          Modal.confirm({
+            title: lang("common.tips"),
+            content: lang("pageIndex.closeUnsavedTip"),
+            okText: lang("common.confirm"),
+            cancelText: lang("common.cancel"),
+            okButtonProps: {
+              type: 'primary',
+              danger: true
+            },
+            async onOk() {
+              // 用户确认关闭
+              const store = useEditorStore();
+              store.doCloseArticle(articleIndex);
+              resolve(true);
+            },
+            onCancel() {
+              resolve(false);
+            }
+          });
+        });
+      } else {
+        // 文章已保存，直接关闭
+        this.doCloseArticle(articleIndex);
       }
     },
+
+    // 执行实际的关闭操作
+    doCloseArticle(articleIndex: number) {
+      this.articleLists.splice(articleIndex, 1);
+      
+      // 如果关闭的是当前文章，需要更新当前文章索引
+      if (this.currArticleIndex === articleIndex) {
+        // 如果还有其他文章，选择最后一篇
+        if (this.articleLists.length > 0) {
+          this.changeCurrArticleIndex(this.articleLists.length - 1);
+        } else {
+          // 如果没有文章了，重置状态
+          this.currArticleIndex = -1;
+          this.currArticle = {} as ArticleContent;
+        }
+      } else if (this.currArticleIndex > articleIndex) {
+        // 如果关闭的文章在当前文章之前，需要更新索引
+        this.currArticleIndex--;
+      }
+    },
+
     //保存文章
     async saveArticle(articleIndex: number,showToast = true) {
       if (!Array.isArray(this.articleLists)) {
