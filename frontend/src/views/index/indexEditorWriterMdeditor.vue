@@ -1,6 +1,6 @@
 <template>
 
-  <MdEditor @onUploadImg="onUploadImg"  v-show="storeEditor.isOpenArticle" v-model="storeEditor.currArticle.mdContent" />
+  <MdEditor style="height: 93%;" @onUploadImg="onUploadImg"  v-show="storeEditor.isOpenArticle" v-model="storeEditor.currArticle.mdContent" />
   <empty-project></empty-project>
   <div
     v-if="
