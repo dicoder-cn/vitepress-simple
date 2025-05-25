@@ -11,6 +11,7 @@ import { onBeforeUnmount, onMounted, ref } from "vue";
 import { ConfigGet } from "../wailsjs/go/system/SystemService";
 import { ConfigKeyLang, ConfigKeyProjectDir } from "@/constant/keys/config";
 import { useIndexStore } from "@/store";
+import { useEditorStore } from "@/store/editor";
 import {
   HasNewVersion,
   UpdateNewVersion,
@@ -26,9 +27,13 @@ import NotifyShellData = shell.NotifyShellData;
 //在这里可以设置默认的模板
 const useTemplateIndex = ref(2);
 const storeIndex = useIndexStore();
+const storeEditor = useEditorStore();
 const { locale } = useI18n();
 // const vpConfig = useVpconfigStore();
 onMounted(async () => {
+  // 初始化编辑器监听器
+  useEditorStore().initWatcher();
+
   EventsOn("shell", (data: NotifyShellData) => {
     useShellStore().handlerShellNotify(data);
   });
@@ -71,7 +76,7 @@ function handleKeyDown(event: KeyboardEvent) {
   // 监听 Ctrl (或 Mac 的 Meta) + S 快捷键
   if (controlKey && event.key === "s") {
     console.log("快捷键被按下 -- console.log");
-    storeIndex.saveCurrArticle();
+    storeEditor.saveArticle(storeEditor.getCurrArticleIndex);
   }
 }
 </script>

@@ -11,6 +11,7 @@ import { ReadFileContent, WriteFileContent } from "wailsjs/go/services/ArticleTr
 import { ConfigGet } from "wailsjs/go/system/SystemService";
 // @ts-ignore
 import yaml from "js-yaml";
+import { watch } from 'vue';
 //这是一个简单的推荐store案例，可以在这里定义你的状态
 //新建pinia时把editor全局替换成你的store名字
 
@@ -41,6 +42,85 @@ export const useEditorStore = defineStore("editor", {
       articleLists: [] as ArticleContent[]
   }),
   actions: {
+    // 初始化监听器
+    initWatcher() {
+      let isInitializing = true; // 添加初始化标志
+
+      // 监听文章切换
+      watch(
+        () => this.currArticle.path,
+        () => {
+          isInitializing = true; // 切换文章时重置标志
+          setTimeout(() => {
+            isInitializing = false;
+          }, 100);
+        }
+      );
+
+      // 监听 mdContent
+      watch(
+        () => this.currArticle.mdContent,
+        (newVal, oldVal) => {
+          if (!isInitializing && this.currArticle.path && newVal !== oldVal) {
+            this.currArticle.isSave = false;
+            if (this.currArticleIndex >= 0) {
+              this.articleLists[this.currArticleIndex].isSave = false;
+            }
+          }
+        }
+      );
+
+      // 监听 frontMatter
+      watch(
+        () => this.currArticle.frontMatter,
+        (newVal, oldVal) => {
+          if (!isInitializing && this.currArticle.path && JSON.stringify(newVal) !== JSON.stringify(oldVal)) {
+            this.currArticle.isSave = false;
+            if (this.currArticleIndex >= 0) {
+              this.articleLists[this.currArticleIndex].isSave = false;
+            }
+          }
+        },
+        { deep: true }
+      );
+
+      // 监听 vueContent
+      watch(
+        () => this.currArticle.vueContent,
+        (newVal, oldVal) => {
+          if (!isInitializing && this.currArticle.path && newVal !== oldVal) {
+            this.currArticle.isSave = false;
+            if (this.currArticleIndex >= 0) {
+              this.articleLists[this.currArticleIndex].isSave = false;
+            }
+          }
+        }
+      );
+
+      // 延迟关闭初始化标志
+      setTimeout(() => {
+        isInitializing = false;
+      }, 100);
+    },
+
+    //更新文章保存状态
+    updateArticleSaveStatus(index: number, status: boolean) {
+      if (index >= 0 && index < this.articleLists.length) {
+        this.articleLists[index].isSave = status;
+        if (this.currArticleIndex === index) {
+          this.currArticle.isSave = status;
+        }
+      }
+    },
+
+    //更新文章内容时设置未保存状态
+    updateArticleContent(index: number, field: 'frontMatter' | 'mdContent' | 'vueContent', content: any) {
+      if (index >= 0 && index < this.articleLists.length) {
+        this.articleLists[index][field] = content;
+        this.updateArticleSaveStatus(index, false);
+      }
+    },
+
     //切换当前打开的文章
     changeCurrArticleIndex(index: number) {
       if (!Array.isArray(this.articleLists)) {
@@ -73,7 +153,7 @@ export const useEditorStore = defineStore("editor", {
         const newArticle: ArticleContent = {
           path, 
           mdContent: "", 
-          isSave: false,
+          isSave: true,
           frontMatter: undefined,
           scriptContent: "",
           styleContent: "",
@@ -87,7 +167,7 @@ export const useEditorStore = defineStore("editor", {
     },
     initCurrArticle(){
       this.currArticle = {
-        isSave: false,
+        isSave: true,
         frontMatter: {},
         scriptContent: '',
         styleContent: '',
@@ -179,29 +259,30 @@ export const useEditorStore = defineStore("editor", {
       }
       const articleItem = this.articleLists[articleIndex];
       
-            const saveType = await ConfigGet(ConfigKeyFrontMatterSaveType);
-            let fontMatterString = "";
-            if (saveType == "yaml") { //默认
-              fontMatterString = yaml.dump(articleItem.frontMatter);
-            } else {
-              fontMatterString = JSON.stringify(
-               articleItem.frontMatter,
-                null,
-                4,
-              );
-            }
-            let fullContent = `---\n${fontMatterString}\n---\n${articleItem.mdContent}\n${articleItem.vueContent}`;
-           
-            //替换域名为本地路径
-            fullContent = replaceImageUrlToLocalStatic(fullContent);
-            
-            //获取动态新增的数据
-            WriteFileContent(articleItem.path, fullContent).then(() => {
-              if (showToast) ToastInfo("已保存");
-            });
-
-
-
+      const saveType = await ConfigGet(ConfigKeyFrontMatterSaveType);
+      let fontMatterString = "";
+      if (saveType == "yaml") { //默认
+        fontMatterString = yaml.dump(articleItem.frontMatter);
+      } else {
+        fontMatterString = JSON.stringify(
+          articleItem.frontMatter,
+          null,
+          4,
+        );
+      }
+      let fullContent = `---\n${fontMatterString}\n---\n${articleItem.mdContent}\n${articleItem.vueContent}`;
+      
+      //替换域名为本地路径
+      fullContent = replaceImageUrlToLocalStatic(fullContent);
+      
+      //获取动态新增的数据
+      WriteFileContent(articleItem.path, fullContent).then(() => {
+        if (showToast) ToastInfo("已保存");
+        if (this.currArticleIndex === articleIndex) {
+          this.currArticle.isSave = true;
+        }
+        this.articleLists[articleIndex].isSave = true;
+      });
     },
     
     //保存所有文章
