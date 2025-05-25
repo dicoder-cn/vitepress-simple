@@ -2,7 +2,7 @@
 import { ConfigGet, OpenURL } from "../../../wailsjs/go/system/SystemService";
 import { useIndexStore } from "../../store";
 import { onMounted } from "vue";
-import { ConfigKeyLang } from "@/constant/keys/config";
+import { ConfigKeyLang } from "@/configs/appConfigKey";
 
 let lang = "";
 onMounted(async () => [(lang = await ConfigGet(ConfigKeyLang))]);

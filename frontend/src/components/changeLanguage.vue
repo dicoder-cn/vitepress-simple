@@ -19,7 +19,7 @@
 import { useI18n } from "vue-i18n";
 import { lang } from "../utils/language";
 import { ConfigSet } from "../../wailsjs/go/system/SystemService";
-import { ConfigKeyLang } from "@/constant/keys/config";
+import { ConfigKeyLang } from "@/configs/appConfigKey";
 
 const { t, availableLocales: languages, locale } = useI18n();
 

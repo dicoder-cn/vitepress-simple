@@ -22,7 +22,7 @@ import { useEditorStore } from "../../store/editor";
 import 'md-editor-v3/lib/style.css';
 import { MdEditor } from 'md-editor-v3';
 import { ConfigGet } from "wailsjs/go/system/SystemService";
-import { ConfigKeySysStaticServerPort } from "@/constant/keys/config";
+import { ConfigKeySysStaticServerPort } from "@/configs/appConfigKey";
 import axios from "axios";
 
 const storeEditor = useEditorStore();

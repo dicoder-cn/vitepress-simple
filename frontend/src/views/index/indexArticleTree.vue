@@ -176,7 +176,7 @@ import {
 } from "../../../wailsjs/go/system/SystemService";
 import { IsEmptyValue } from "@/utils/utils";
 import MenuItem from "@/components/menuItem.vue"; 
-import { ConfigKeyChangeAutoSave } from "@/constant/keys/config";
+import { ConfigKeyChangeAutoSave } from "@/configs/appConfigKey";
 import { replaceLocalStaticToImageUrl } from "@/utils/repalceStatic";
 import { lang } from "@/utils/language";
 import { useEditorStore } from "@/store/editor";

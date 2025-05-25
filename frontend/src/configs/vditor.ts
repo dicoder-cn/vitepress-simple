@@ -1,7 +1,7 @@
 import {
   ConfigKeySysStaticServerPort,
   ConfigKeyVditorCdn,
-} from "@/constant/keys/config";
+} from "@/configs/appConfigKey";
 import { ConfigGet } from "../../wailsjs/go/system/SystemService";
 import { VditorCdnZstatic } from "@/constant/enums/cdn";
 import { useVpconfigStore } from "@/store/vpconfig";

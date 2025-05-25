@@ -10,7 +10,7 @@ import {
   PathExists,
   PathJoin,
 } from "../../wailsjs/go/system/SystemService";
-import { ConfigKeyProjectDir } from "@/constant/keys/config";
+import { ConfigKeyProjectDir } from "@/configs/appConfigKey";
 import { ToastCheck, ToastInfo } from "@/utils/Toast";
 import { defaultShareConfigValue } from "@/configs/defaultShareConfig";
 import {
@@ -52,7 +52,6 @@ export const useVpconfigStore = defineStore("vpconfig", {
     async readVpConfig() {
       //获取项目根目录(绝对路径)
       await this.formatPath();
-
       if (IsEmptyValue(this.baseDir)) {
         return;
       }

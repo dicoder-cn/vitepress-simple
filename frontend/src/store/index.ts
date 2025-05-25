@@ -20,7 +20,7 @@ import {
   ConfigKeyProjectDir,
   ConfigKeySysProjectStaticDirName,
   ConfigKeySysStaticServerPort,
-} from "@/constant/keys/config";
+} from "@/configs/appConfigKey";
 import { useVpconfigStore } from "@/store/vpconfig";
 import { getFileNameFromPath, IsEmptyValue } from "@/utils/utils";
 import { VitePressHome } from "@/types/home";
@@ -37,16 +37,12 @@ import { useShellStore } from "@/store/shell"; // 浏览器环境（需确保构
 //定义首页的数据类型
 export interface indexStore {
   articleTreeData: dto.TreeNode[] | null;
-  vditor: Vditor | null;
+  // vditor: Vditor | null;
   expandKeys: string[];
   selectKeys: string[];
-  // currArticlePath: string; //当前文章路径
   currCopyPath: string;
   searchValue: string; //搜索值
   currHomeConfig?: VitePressHome; //当前主页配置
-  // currScriptContent: string; //当前js代码
-  // currStyleContent: string; //当前css代码
-  // currVueCode: string; //当前vue代码 css+js
   currProjectDir: string; //当前项目的根目录
   currDocDir: string; //文档所在目录
   IsEmptyProject: boolean; //是否为空项目
@@ -54,14 +50,13 @@ export interface indexStore {
   version: string; //系统类型
   staticServerPort: string;
   staticBaseDir: string;
-  // currArticleFrontMatter: Record<string, any>; //当前文章front matter
   
 }
 
 export const useIndexStore = defineStore("index", {
   state: (): indexStore => ({
     articleTreeData: null,
-    vditor: null,
+    // vditor: null,
     currProjectDir: "",
     currDocDir: "",
     expandKeys: [],
@@ -70,12 +65,6 @@ export const useIndexStore = defineStore("index", {
     version: "",
     IsEmptyProject: true, //是否为空项目
     searchValue: "", //搜索值
-    // currArticlePath: "", //当前文章路径
-    // currScriptContent: "", //当前js代码
-    // currStyleContent: "", //当前css代码
-    // currVueCode: "", //当前vue代码 js+css
-    // currArticleFrontMatter: {}, //当前文章front matter
-    
     staticBaseDir: "vpstatic",
     staticServerPort: "9874",
     currCopyPath: "", //当前剪切路径
@@ -142,10 +131,7 @@ export const useIndexStore = defineStore("index", {
       await this.loadTreeData();
       useShellStore().loadVpSimpleConfig();
     },
-    //设置编辑器的实例
-    async setVditorInstance(vditor_: Vditor | null) {
-      this.vditor = vditor_;
-    },
+
     moveTo(path: string, target: string) {
       moveTo(path, getDirectoryPath(target)).then(() => {
         this.loadTreeData();
@@ -167,7 +153,7 @@ export const useIndexStore = defineStore("index", {
     SelectKeys: (state) => state.selectKeys,
     CurrCutPath: (state) => state.currCopyPath,
 
-    Vditor: (state) => state.vditor,
+
     CurrProjectDir: (state) => state.currProjectDir,
     // IsEmptyProject: (state) => isEmptyArray(state.articleTreeData),
     IsEmptyTreeData: (state) => isEmptyArray(state.articleTreeData),

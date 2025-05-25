@@ -1,5 +1,5 @@
 import { defaultFrontMatter } from "@/configs/defaultFrontMatter";
-import { ConfigKeyFrontMatterSaveType } from "@/constant/keys/config";
+import { ConfigKeyFrontMatterSaveType } from "@/configs/appConfigKey";
 import { parseTagContent, regexScript, regexStyle } from "@/utils/parse";
 import { replaceImageUrlToLocalStatic, replaceLocalStaticToImageUrl } from "@/utils/repalceStatic";
 import { ToastError, ToastInfo } from "@/utils/Toast";

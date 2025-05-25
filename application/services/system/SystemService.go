@@ -69,6 +69,19 @@ func (s *SystemService) ConfigSet(k, v string) {
 	cfg.Set(k, v)
 }
 
+// ConfigSetDefault  配置初始值写入
+func (s *SystemService) ConfigSetDefault(mapData map[string]any) {
+	for k, v := range mapData {
+		cfg.SetDefault(k, v)
+	}
+	//cfg.SetDefault(k, v)
+}
+
+// ConfigGetAll  配置初始值写入
+func (s *SystemService) ConfigGetAll() map[string]any {
+	return cfg.GetAll()
+}
+
 // GetSystemUserHomeDir 获取当前系统用户家目录
 func (s *SystemService) GetSystemUserHomeDir() string {
 	return utils.GetUserHomeDir()

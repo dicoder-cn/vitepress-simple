@@ -5,7 +5,9 @@
 // @Date: 2023/11/22 12:21
 package cfg
 
-import "path/filepath"
+import (
+	"path/filepath"
+)
 
 var instance *Config
 
@@ -62,6 +64,11 @@ func Get(k string) any {
 		return nil
 	}
 	return val
+}
+
+func GetAll() map[string]any {
+	// 使用 viper.AllSettings 获取所有配置
+	return instance.GetAll()
 }
 
 func GetString(k string) string {

@@ -8,6 +8,7 @@ import (
 )
 
 func InitDefaultConfig() {
+	return //由前端进行初始化
 	cfg.SetDefault(keys.ConfigKeyProjectDir, "")
 	cfg.SetDefault(keys.ConfigKeyIsStartup, "no")
 	cfg.SetDefault(keys.ConfigKeySysUpdateSource, "github")

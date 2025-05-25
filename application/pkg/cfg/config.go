@@ -95,6 +95,11 @@ func (c *Config) Get(key string, defaultValue ...interface{}) (interface{}, erro
 	return c.v.Get(key), nil
 }
 
+// GetAll 获取所有配置
+func (c *Config) GetAll() map[string]interface{} {
+	return c.v.AllSettings()
+}
+
 // GetString 函数从配置中获取指定键的值。
 // 如果键不存在，则返回defaultValue（如果提供了），否则返回错误。
 func (c *Config) GetString(key string, defaultValue ...string) (string, error) {

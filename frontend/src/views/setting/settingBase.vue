@@ -73,7 +73,7 @@ import {
   ConfigKeyIsStartup,
   ConfigKeySysUpdateSource,
   ConfigKeyVditorCdn,
-} from "@/constant/keys/config";
+} from "@/configs/appConfigKey";
 import { useLayoutStore } from "@/store/layout";
 import {
   GetSystemUserHomeDir,

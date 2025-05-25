@@ -1,6 +1,6 @@
 // 定义一个简单的类 `Person`
 import { ConfigGet, ConfigSet } from "../../wailsjs/go/system/SystemService";
-import { ConfigKeyHistoryProject } from "@/constant/keys/config";
+import { ConfigKeyHistoryProject } from "@/configs/appConfigKey";
 
 export class HistoryProject {
   public static currentList: string[] = [];

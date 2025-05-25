@@ -10,12 +10,20 @@ export function ConfigGet(arg1) {
   return window['go']['system']['SystemService']['ConfigGet'](arg1);
 }
 
+export function ConfigGetAll() {
+  return window['go']['system']['SystemService']['ConfigGetAll']();
+}
+
 export function ConfigGetBool(arg1) {
   return window['go']['system']['SystemService']['ConfigGetBool'](arg1);
 }
 
 export function ConfigSet(arg1, arg2) {
   return window['go']['system']['SystemService']['ConfigSet'](arg1, arg2);
+}
+
+export function ConfigSetDefault(arg1) {
+  return window['go']['system']['SystemService']['ConfigSetDefault'](arg1);
 }
 
 export function CopyPath(arg1, arg2, arg3) {

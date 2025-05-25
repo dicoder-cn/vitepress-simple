@@ -9,7 +9,7 @@ import NavTemplate1 from "@/layout/nav/navTemplate1.vue";
 import NavTemplate2 from "@/layout/nav/navTemplate2.vue";
 import { onBeforeUnmount, onMounted, ref } from "vue";
 import { ConfigGet } from "../wailsjs/go/system/SystemService";
-import { ConfigKeyLang, ConfigKeyProjectDir } from "@/constant/keys/config";
+import { ConfigKeyLang, ConfigKeyProjectDir } from "@/configs/appConfigKey";
 import { useIndexStore } from "@/store";
 import { useEditorStore } from "@/store/editor";
 import {
@@ -24,6 +24,7 @@ import { EventsOff, EventsOffAll, EventsOn } from "../wailsjs/runtime";
 import { useShellStore } from "@/store/shell";
 import { shell } from "../wailsjs/go/models";
 import NotifyShellData = shell.NotifyShellData;
+import { InitAppConfig } from "./configs/appConfig";
 //在这里可以设置默认的模板
 const useTemplateIndex = ref(2);
 const storeIndex = useIndexStore();
@@ -31,12 +32,17 @@ const storeEditor = useEditorStore();
 const { locale } = useI18n();
 // const vpConfig = useVpconfigStore();
 onMounted(async () => {
+  //初始化软件配置
+  InitAppConfig();
+  
   // 初始化编辑器监听器
   useEditorStore().initWatcher();
 
   EventsOn("shell", (data: NotifyShellData) => {
     useShellStore().handlerShellNotify(data);
   });
+
+
 
   // await HistoryProject.initList(); //初始化历史数据
   // await vpConfig.initConfig();

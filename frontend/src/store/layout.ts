@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ConfigGet } from "../../wailsjs/go/system/SystemService";
-import { ConfigKeyLayoutNavBgColor } from "@/constant/keys/config";
+import { ConfigKeyLayoutNavBgColor } from "@/configs/appConfigKey";
 import { IsEmptyValue } from "@/utils/utils";
 
 //这是关于布局控制的状态管理文件
