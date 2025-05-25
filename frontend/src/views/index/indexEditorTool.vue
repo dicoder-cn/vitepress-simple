@@ -16,7 +16,10 @@
             }"
             @click="storeEditor.changeCurrArticleIndex(index)"
           >
-            <span class="truncate max-w-[120px]">{{ (article.path.split('/').pop() || '').replace('.md', '') }}</span>
+            <a-tooltip>
+              <template #title>{{ article.path.split('/').pop() }}</template>
+              <span class="truncate max-w-[120px]">{{ (article.path.split('/').pop() || '').replace('.md', '') }}</span>
+            </a-tooltip>
             <div class="absolute right-0 top-0 bottom-0 w-8 flex items-center justify-center">
               <icon-park
                 class="opacity-0 group-hover:opacity-100 hover:text-gray-700 transition-all duration-200"
