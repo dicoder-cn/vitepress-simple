@@ -36,13 +36,9 @@
       </div>
     </div>
 
-    <!-- 中间显示当前项目路径 -->
-    <div class="text-gray-400 flex-shrink-0 mx-4">
-      {{ lang("pageIndex.currentProject") }}{{ storeConfig.baseDir }}
-    </div>
 
-    <!-- 右侧工具栏 -->
-    <div class="flex items-center justify-end space-x-2">
+        <!-- 右侧工具栏 -->
+    <div class="flex items-center justify-end space-x-2 mr-2">
       <!--    终端-->
       <index-editor-tool-shell></index-editor-tool-shell>
       
@@ -87,6 +83,13 @@
         />
       </a-tooltip>
     </div>
+
+    <!-- 中间显示当前项目路径 -->
+    <div class="text-gray-400 flex-shrink-0 mx-4">
+      {{ lang("pageIndex.currentProject") }}{{ storeConfig.baseDir }}
+    </div>
+
+
   </div>
 </template>
 
