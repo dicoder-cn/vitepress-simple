@@ -6,8 +6,8 @@ export function CopyTemplateFile(arg1, arg2) {
   return window['go']['vpsimpler']['VpManager']['CopyTemplateFile'](arg1, arg2);
 }
 
-export function CreateProject(arg1, arg2, arg3) {
-  return window['go']['vpsimpler']['VpManager']['CreateProject'](arg1, arg2, arg3);
+export function CreateProject(arg1) {
+  return window['go']['vpsimpler']['VpManager']['CreateProject'](arg1);
 }
 
 export function GetNodeVersion() {

@@ -20,7 +20,7 @@ func NewVpManager(fs_ embed.FS) *VpManager {
 	return &VpManager{fs: fs_}
 }
 
-func (s *VpManager) CreateProject(title, description, dir string) string {
+func (s *VpManager) CreateProject(dir string) string {
 	//1.检查node环境
 	//if !NodejsIsInstall() {
 	//	return "环境监测不通过：nodejs is not install"
@@ -53,10 +53,10 @@ func (s *VpManager) CreateProject(title, description, dir string) string {
 	}
 
 	//7.获取默认的配置文件内容替换标题描述
-	defaultConfigContent := vpConfig.ReplaceDefaultConfigContent(title, description)
+	//defaultConfigContent := vpConfig.ReplaceDefaultConfigContent(title, description)
 
 	//8.保存配置文件
-	vpConfig.SaveConfig(defaultConfigContent)
+	//vpConfig.SaveConfig(defaultConfigContent)
 
 	return ""
 }

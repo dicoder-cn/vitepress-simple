@@ -150,7 +150,9 @@ import { lang } from "@/utils/language";
 
 const storeConfig = useVpconfigStore();
 const storeIndex = useIndexStore();
-onBeforeMount(() => {});
+onMounted(() => {
+  console.log(storeConfig.configData, "storeConfig.configData -- console.log");
+});
 const saveBaseConfig = () => {
   storeConfig.saveConfig();
 };

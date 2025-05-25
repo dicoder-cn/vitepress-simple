@@ -3,7 +3,7 @@
 
 export function CopyTemplateFile(arg1:string,arg2:string):Promise<void>;
 
-export function CreateProject(arg1:string,arg2:string,arg3:string):Promise<string>;
+export function CreateProject(arg1:string):Promise<string>;
 
 export function GetNodeVersion():Promise<string>;
 

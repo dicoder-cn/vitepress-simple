@@ -21,7 +21,7 @@
     </div> 
 
     <!-- 标签输入框 -->
-    <div class="px-1 my-2" v-if="storeEditor.currArticle?.frontMatter?.tags?.length > 0">
+    <div class="px-1 my-2" >
       <q-input
         v-model="tagInput"
         :label="lang('pageIndex.tags')"
@@ -35,14 +35,17 @@
           <q-icon name="close" v-if="tagInput" class="cursor-pointer" @click="tagInput = ''" />
         </template>
       </q-input>
-      <div class="flex flex-wrap gap-2 mt-2">
+      <div class="flex flex-wrap items-center gap-0.5 mt-2">
+        <div v-if="storeEditor.currArticle?.frontMatter?.tags?.length > 0" class="text-gray-500 ml-1 mr-1">Tags:</div>
         <q-chip
           v-for="(tag, index) in storeEditor.currArticle.frontMatter['tags']"
           :key="index"
           removable
+          square
+          dense
           @remove="removeTag(index)"
-          color="primary"
-          text-color="white"
+          color="gray"
+          text-color="dark"
         >
           {{ tag }}
         </q-chip>
@@ -70,7 +73,7 @@
       label-align="left"
     >
       <!-- 是否显示导航栏 -->
-      <div v-if="storeEditor.currArticle?.frontMatter?.navbar">
+      <div >
         <q-toggle
           :label="lang('pageIndex.showNav')"
           left-label
@@ -78,7 +81,8 @@
           color="blue"
         />
       </div>
-      <div>
+       <!-- 是否显示侧边栏 -->
+      <div >
         <q-toggle
           :label="lang('pageIndex.showSidebar')"
           left-label
@@ -86,8 +90,9 @@
           color="blue"
         />
       </div>
-      <!-- 是否显示侧边栏 -->
-      <div v-if="storeEditor.currArticle?.frontMatter?.sideBar">
+     
+      <!-- 是否显示页脚 -->
+      <div >
         <q-toggle
           :label="lang('pageIndex.showFooter')"
           left-label
@@ -97,7 +102,7 @@
       </div>
 
       <!-- 是否显示编辑链接 -->
-      <div v-if="storeEditor.currArticle?.frontMatter?.editLink">
+      <div >
         <q-toggle
           :label="lang('pageIndex.showEditLink')"
           left-label
@@ -106,7 +111,7 @@
         />
       </div>
       <!-- 是否显示更新时间 -->
-      <div v-if="storeEditor.currArticle?.frontMatter?.lastUpdated">
+      <div >
         <q-toggle
           :label="lang('pageIndex.showUpdateTime')"
           left-label
@@ -126,7 +131,8 @@
       </a-form-item>
     </a-form>
   </div>
-  <q-separator inset />
+
+  <!-- <q-separator inset /> -->
 
   <!-- 自定义head -->
   <div class="mt-3" v-if="storeEditor.currArticle?.frontMatter?.head?.length > 0">
@@ -142,12 +148,12 @@
       value-name="content"
     ></dy-add-head>
   </div>
-  <div class="mt-3" v-if="storeEditor.currArticle?.frontMatter?.custom?.length > 0">
+  <div class="mt-3" >
     <q-separator inset />
   </div>
 
   <!--  自定义formatter-->
-  <div class="mt-3" v-if="storeEditor.currArticle?.frontMatter?.custom?.length > 0">
+  <div class="mt-3" >
     <a-tooltip :title="lang('pageIndex.customFormatterTip')">
       <dy-add-head
         v-model:obj="storeEditor.currArticle.frontMatter['custom']"
@@ -188,7 +194,9 @@ if (!storeEditor.currArticle.frontMatter['tags']) {
 
 const handleTagInput = () => {
   if (!tagInput.value.trim()) return;
-  
+  if (!storeEditor.currArticle.frontMatter['tags']) {
+    storeEditor.currArticle.frontMatter['tags'] = [];
+  }
   const newTags = tagInput.value.split(',')
     .map(tag => tag.trim())
     .filter(tag => tag && !storeEditor.currArticle.frontMatter['tags'].includes(tag));

@@ -3,6 +3,10 @@ import { ToastError } from "@/utils/Toast";
 export function parseJsObject(content: string): any {
   // 现在尝试解析为JSON
   content = content.trim();
+  //删除首尾的 “”
+  content = content.replace(/^"|"$/g, "");
+
+
   try {
     return JSON.parse(content);
   } catch (error) {

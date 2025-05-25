@@ -35,7 +35,7 @@ export interface vpconfigStore {
 
 export const useVpconfigStore = defineStore("vpconfig", {
   state: (): vpconfigStore => ({
-    srcDir: "./", //doc目录（相对路径），取自配置文件
+    srcDir: "./docs", //doc目录（相对路径），取自配置文件
     baseDir: "", //根目录（绝对路径，已经过join）
     fullSrcDir: "", //doc目录（绝对路径,已经过join）
     isInstall: false,
@@ -56,17 +56,21 @@ export const useVpconfigStore = defineStore("vpconfig", {
       if (IsEmptyValue(this.baseDir)) {
         return;
       }
-      await this.backupConfigFile(); //如果是首次则备份文件夹，放在 this.baseDir后面
+      // await this.backupConfigFile(); //如果是首次则备份文件夹，放在 this.baseDir后面
       const content = await GetVpConfigData(); //获取config.mts文件内容
       let configData: any = {};
       if (content == "") {
         ToastInfo("读取配置文件内容为空");
       } else {
+      
         configData = parseJsObject(content); //解析config.mts文件内容
+        console.log(configData, "configData -- console.log");
       }
       this.configData = configData ?? {};
+   
       this.setDefaultValue(); //检测key不存在则使用默认值
       this.srcDir = configData["srcDir"];
+    
       this.fullSrcDir = await PathJoin([this.baseDir, this.srcDir]);
       //判断如果原目录不存在则自动创建
       if (!(await PathExists(this.fullSrcDir))) {

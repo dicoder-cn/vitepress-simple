@@ -116,6 +116,7 @@ import { useHistoryStore } from "@/store/history";
 import { CreateDir } from "../../../wailsjs/go/services/ArticleTreeData";
 import { useIndexStore } from "@/store";
 import { lang } from "@/utils/language";
+import { useVpconfigStore } from "@/store/vpconfig";
 
 const formData = ref<ProjectCreate>({
   title: "VPSimpleProject",
@@ -129,17 +130,21 @@ interface inputModelProps {
   placeholder?: string;
 }
 
+const storeVpconfig = useVpconfigStore();
+
 const Create = async () => {
   await CreateDir(formData.value.dir);
   CreateProject(
-    formData.value.title,
-    formData.value.description,
-    formData.value.dir,
-  ).then((res) => {
+    formData.value.dir
+  ).then(async (res) => {
     if (res != "") {
       ToastError(res);
     } else {
-      ToastInfo("创建完成");
+      // await storeVpconfig.readVpConfig();
+      // //设置项目信息
+      storeVpconfig.configData["description"] =formData.value.description;
+      storeVpconfig.configData["title"] =formData.value.title;
+      await storeVpconfig.saveConfig();
       modalVisible.value = false;
       useHistoryStore().add(formData.value.dir); //添加到历史记录
       useIndexStore().changeProject(formData.value.dir);
