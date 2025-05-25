@@ -166,7 +166,13 @@ const storeIndex = useIndexStore();
 
 const tagInput = ref('');
 
-// 确保tags数组已初始化
+// 确保所有必要的对象和数组都被初始化
+if (!storeEditor.currArticle) {
+  storeEditor.initCurrArticle();
+}
+if (!storeEditor.currArticle.frontMatter) {
+  storeEditor.currArticle.frontMatter = {};
+}
 if (!storeEditor.currArticle.frontMatter['tags']) {
   storeEditor.currArticle.frontMatter['tags'] = [];
 }

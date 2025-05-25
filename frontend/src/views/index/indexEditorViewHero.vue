@@ -4,17 +4,17 @@
       <div class="ml-1">{{ lang("pageIndex.pageType") }}</div>
 
       <q-radio
-        v-model="storeIndex.currArticleFrontMatter['layout']"
+        v-model="storeEditor.currArticle.frontMatter['layout']"
         val="doc"
         :label="lang('pageIndex.pageTypeDoc')"
       />
       <q-radio
-        v-model="storeIndex.currArticleFrontMatter['layout']"
+        v-model="storeEditor.currArticle.frontMatter['layout']"
         val="home"
         :label="lang('pageIndex.pageTypeHome')"
       />
       <q-radio
-        v-model="storeIndex.currArticleFrontMatter['layout']"
+        v-model="storeEditor.currArticle.frontMatter['layout']"
         disable
         val="page"
         :label="lang('pageIndex.pageTypeCustom')"
@@ -23,11 +23,11 @@
 
     <div
       class="mt-2"
-      v-if="storeIndex.currArticleFrontMatter['layout'] == 'home'"
+      v-if="storeEditor.currArticle.frontMatter['layout'] == 'home'"
     >
       <div class="px-1 mb-2">
         <a-input
-          v-model:value="storeIndex.currArticleFrontMatter['hero']['name']"
+          v-model:value="storeEditor.currArticle.frontMatter['hero']['name']"
           :placeholder="lang('pageIndex.hero.name')"
           prefix=""
           :suffix="lang('pageIndex.hero.name')"
@@ -35,7 +35,7 @@
       </div>
       <div class="px-1 mb-2">
         <a-input
-          v-model:value="storeIndex.currArticleFrontMatter['hero']['text']"
+          v-model:value="storeEditor.currArticle.frontMatter['hero']['text']"
           :placeholder="lang('pageIndex.hero.text')"
           prefix=""
           :suffix="lang('pageIndex.hero.text')"
@@ -43,7 +43,7 @@
       </div>
       <div class="px-1 mb-2">
         <a-input
-          v-model:value="storeIndex.currArticleFrontMatter['hero']['tagline']"
+          v-model:value="storeEditor.currArticle.frontMatter['hero']['tagline']"
           :placeholder="lang('pageIndex.hero.taglineExtra')"
           prefix=""
           :suffix="lang('pageIndex.hero.tagline')"
@@ -54,7 +54,7 @@
           <a-input
             disabled
             v-model:value="
-              storeIndex.currArticleFrontMatter['hero']['image']['src']
+              storeEditor.currArticle.frontMatter['hero']['image']['src']
             "
             :placeholder="lang('pageIndex.hero.image.src')"
             class="w-full"
@@ -73,7 +73,7 @@
       <hr class="my-3" />
       <div>
         <dy-add-k-v
-          v-model:objs="storeIndex.currArticleFrontMatter['hero']['actions']"
+          v-model:objs="storeEditor.currArticle.frontMatter['hero']['actions']"
           :add-btn-text="lang('pageIndex.hero.actions.addBtnText')"
           :value-placeholder="lang('pageIndex.hero.actions.valuePlaceholder')"
           add-btn-class="bg-orange-200"
@@ -85,7 +85,7 @@
       <hr class="my-3" />
       <div>
         <dy-add-k-v
-          v-model:objs="storeIndex.currArticleFrontMatter['features']"
+          v-model:objs="storeEditor.currArticle.frontMatter['features']"
           :add-btn-text="lang('pageIndex.hero.features.addBtnText')"
           :value-placeholder="lang('pageIndex.hero.features.valuePlaceholder')"
           add-btn-class="bg-orange-200"
@@ -114,25 +114,27 @@ import { useVpconfigStore } from "@/store/vpconfig";
 import { defaultFrontMatter } from "@/configs/defaultFrontMatter";
 import { IsEmptyValue } from "@/utils/utils";
 import { lang } from "../../utils/language";
+import { useEditorStore } from "@/store/editor";
 
 const storeIndex = useIndexStore();
+const storeEditor = useEditorStore();
 const storeVpConfig = useVpconfigStore();
 onBeforeMount(() => {
   //初始化hero的默认值
-  if (IsEmptyValue(storeIndex.currArticleFrontMatter["hero"])) {
-    storeIndex.currArticleFrontMatter["hero"] = defaultFrontMatter.hero;
+  if (IsEmptyValue(storeEditor.currArticle.frontMatter["hero"])) {
+    storeEditor.currArticle.frontMatter["hero"] = defaultFrontMatter.hero;
     return;
   }
   for (const key in defaultFrontMatter.hero) {
-    if (IsEmptyValue(storeIndex.currArticleFrontMatter["hero"][key])) {
-      storeIndex.currArticleFrontMatter["hero"][key] =
+    if (IsEmptyValue(storeEditor.currArticle.frontMatter["hero"][key])) {
+      storeEditor.currArticle.frontMatter["hero"][key] =
         defaultFrontMatter.hero[key];
     }
   }
-  if (IsEmptyValue(storeIndex.currArticleFrontMatter["hero"]["image"]["src"]))
-    storeIndex.currArticleFrontMatter["hero"]["image"]["src"] = "";
-  if (IsEmptyValue(storeIndex.currArticleFrontMatter["hero"]["image"]["alt"]))
-    storeIndex.currArticleFrontMatter["hero"]["image"]["alt"] = "";
+  if (IsEmptyValue(storeEditor.currArticle.frontMatter["hero"]["image"]["src"]))
+    storeEditor.currArticle.frontMatter["hero"]["image"]["src"] = "";
+  if (IsEmptyValue(storeEditor.currArticle.frontMatter["hero"]["image"]["alt"]))
+    storeEditor.currArticle.frontMatter["hero"]["image"]["alt"] = "";
 });
 const selectLogo = async () => {
   let oriImagePath = await SelectFile("选择主页图片", "");
@@ -144,7 +146,7 @@ const selectLogo = async () => {
     return;
   }
   //当前文章的文件名
-  let currFileName = await GetPathFileName(storeIndex.currArticlePath);
+  let currFileName = await GetPathFileName(storeEditor.currArticle.path);
   currFileName = currFileName.replaceAll(".md", "");
   //组装新路径
   let publicDir = await PathJoin([storeVpConfig.fullSrcDir, "public"]);
@@ -156,7 +158,7 @@ const selectLogo = async () => {
   ]);
   let copyResult = await CopyPath(oriImagePath, newImagePath, false);
   ToastCheck(copyResult);
-  storeIndex.currArticleFrontMatter["hero"]["image"]["src"] =
+  storeEditor.currArticle.frontMatter["hero"]["image"]["src"] =
     newImagePath.replaceAll(publicDir, "");
 };
 

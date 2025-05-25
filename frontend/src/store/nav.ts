@@ -16,7 +16,7 @@ export const useNavStore = defineStore("nav", {
       this.activeName = name;
       this.activePath = path;
       const indexStore = useIndexStore();
-      indexStore.clearCurrData();
+      // indexStore.clearCurrData();
     },
     isActiveNav(name: string) {
       return this.activeName === name;

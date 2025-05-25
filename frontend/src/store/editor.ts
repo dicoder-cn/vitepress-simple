@@ -29,7 +29,7 @@ export interface editorStore {
   currArticleIndex: number;
   // currArticleContent: string;
   currArticle: ArticleContent;
-  articleContents: ArticleContent[];
+  articleLists: ArticleContent[];
 }
 
 export const useEditorStore = defineStore("editor", {
@@ -38,35 +38,35 @@ export const useEditorStore = defineStore("editor", {
       // currArticleContent: "",
       // currArticlePath: "",
       currArticle: {} as ArticleContent,
-      articleContents: [] as ArticleContent[]
+      articleLists: [] as ArticleContent[]
   }),
   actions: {
     //切换当前打开的文章
     changeCurrArticleIndex(index: number) {
-      if (!Array.isArray(this.articleContents)) {
-        this.articleContents = [];
+      if (!Array.isArray(this.articleLists)) {
+        this.articleLists = [];
         return;
       }
       // 确保索引有效
-      if (index < 0 || index >= this.articleContents.length) {
+      if (index < 0 || index >= this.articleLists.length) {
         return;
       }
       // 更新当前文章索引和内容
       this.currArticleIndex = index;
-      this.currArticle = this.articleContents[index];
+      this.currArticle = this.articleLists[index];
     },
     //打开文章
     openArticle(path: string) {
-      if (!Array.isArray(this.articleContents)) {
-        this.articleContents = [];
+      if (!Array.isArray(this.articleLists)) {
+        this.articleLists = [];
       }
       
-      let articleIndex = this.articleContents.findIndex(item => item?.path === path);
+      let articleIndex = this.articleLists.findIndex(item => item?.path === path);
       if (articleIndex !== -1) {//存在
         this.changeCurrArticleIndex(articleIndex);
       } else {
         //最大不能打开超过6个文章
-        if (this.articleContents.length >= 6) {
+        if (this.articleLists.length >= 6) {
           ToastError("最多只能打开6篇文章");
           return;
         } 
@@ -79,11 +79,22 @@ export const useEditorStore = defineStore("editor", {
           styleContent: "",
           vueContent: ""
         };
-        this.articleContents.push(newArticle);
-        articleIndex = this.articleContents.length - 1;
+        this.articleLists.push(newArticle);
+        articleIndex = this.articleLists.length - 1;
       }
       this.preHandlerOpenArticle(path,articleIndex);//预处理打开文章
       this.changeCurrArticleIndex(articleIndex);
+    },
+    initCurrArticle(){
+      this.currArticle = {
+        isSave: false,
+        frontMatter: {},
+        scriptContent: '',
+        styleContent: '',
+        vueContent: '',
+        path: '',
+        mdContent: ''
+      };
     },
     //打开文章前处理
     async preHandlerOpenArticle(path: string,articleIndex:number) {
@@ -95,25 +106,27 @@ export const useEditorStore = defineStore("editor", {
       let styleContent = matchStyleArray[0] ?? "";
       let vueContent = (scriptContent + "\n" + styleContent).trim();
       //matter字符串
-      this.initArticleFrontMatter(articleIndex);
-      this.articleContents[articleIndex].scriptContent = scriptContent;
-      this.articleContents[articleIndex].styleContent = styleContent;
-      this.articleContents[articleIndex].frontMatter = matterData.data;
-      this.articleContents[articleIndex].vueContent = vueContent;
+      this.articleLists[articleIndex].scriptContent = scriptContent;
+      this.articleLists[articleIndex].styleContent = styleContent;
+      this.articleLists[articleIndex].frontMatter = matterData.data;
+      this.articleLists[articleIndex].vueContent = vueContent;
       let mdContent = (matterData.content ?? "")
       .replace(scriptContent, "")
       .replace(styleContent, "");
       mdContent = mdContent ? mdContent : "# hello vitePress client"
+      //初始化文章的front matter
+      this.initArticleFrontMatter(articleIndex);
       //相对路径转换成 域名替换
       let replaceMdContent = replaceLocalStaticToImageUrl(mdContent);
-      this.articleContents[articleIndex].mdContent = replaceMdContent;
+      this.articleLists[articleIndex].mdContent = replaceMdContent;
       //设置当前上下文
       this.changeCurrArticleIndex(articleIndex);
+      console.log(this.currArticle, "currArticle -- console.log");
     },
     //设置当前文章front matter
     initArticleFrontMatter(articleIndex:number) {
       //当前文章的front matter
-      const articleFrontMatter = this.articleContents[articleIndex].frontMatter;
+      const articleFrontMatter = this.articleLists[articleIndex].frontMatter;
       
       //设置默认的front matter
       for (const key in defaultFrontMatter) {
@@ -134,19 +147,19 @@ export const useEditorStore = defineStore("editor", {
     },
     //关闭文章
     closeArticle(path: string) {
-      if (!Array.isArray(this.articleContents)) {
-        this.articleContents = [];
+      if (!Array.isArray(this.articleLists)) {
+        this.articleLists = [];
         return;
       }
-      const articleIndex = this.articleContents.findIndex(item => item?.path === path);
+      const articleIndex = this.articleLists.findIndex(item => item?.path === path);
       if (articleIndex !== -1) {
-        this.articleContents.splice(articleIndex, 1);
+        this.articleLists.splice(articleIndex, 1);
         
         // 如果关闭的是当前文章，需要更新当前文章索引
         if (this.currArticleIndex === articleIndex) {
           // 如果还有其他文章，选择最后一篇
-          if (this.articleContents.length > 0) {
-            this.changeCurrArticleIndex(this.articleContents.length - 1);
+          if (this.articleLists.length > 0) {
+            this.changeCurrArticleIndex(this.articleLists.length - 1);
           } else {
             // 如果没有文章了，重置状态
             this.currArticleIndex = -1;
@@ -160,11 +173,11 @@ export const useEditorStore = defineStore("editor", {
     },
     //保存文章
     async saveArticle(articleIndex: number,showToast = true) {
-      if (!Array.isArray(this.articleContents)) {
-        this.articleContents = [];
+      if (!Array.isArray(this.articleLists)) {
+        this.articleLists = [];
         return;
       }
-      const articleItem = this.articleContents[articleIndex];
+      const articleItem = this.articleLists[articleIndex];
       
             const saveType = await ConfigGet(ConfigKeyFrontMatterSaveType);
             let fontMatterString = "";
@@ -193,11 +206,11 @@ export const useEditorStore = defineStore("editor", {
     
     //保存所有文章
     saveAllArticle() {
-      if (!Array.isArray(this.articleContents)) {
-        this.articleContents = [];
+      if (!Array.isArray(this.articleLists)) {
+        this.articleLists = [];
         return;
       }
-      this.articleContents.forEach((item,index) => {
+      this.articleLists.forEach((item,index) => {
         if (item && !item.isSave) {
           this.saveArticle(index,false);
         }
@@ -206,9 +219,10 @@ export const useEditorStore = defineStore("editor", {
     
   },
   getters: {
+    isOpenArticle: (state): boolean => state.articleLists.length > 0 && state.currArticleIndex >= 0,
     getCurrArticleIndex: (state): number => state.currArticleIndex,
     getCurrArticle: (state): ArticleContent => state.currArticle,
     getArticleContents: (state): ArticleContent[] => 
-      Array.isArray(state.articleContents) ? state.articleContents : [],
+      Array.isArray(state.articleLists) ? state.articleLists : [],
   },
 });

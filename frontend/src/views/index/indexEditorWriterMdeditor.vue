@@ -1,11 +1,11 @@
 <template>
 
-  <MdEditor @onUploadImg="onUploadImg"  v-show="storeEditor.currArticle.path" v-model="storeEditor.currArticle.mdContent" />
+  <MdEditor @onUploadImg="onUploadImg"  v-show="storeEditor.isOpenArticle" v-model="storeEditor.currArticle.mdContent" />
   <empty-project></empty-project>
   <div
     v-if="
       !isEmptyArray(storeIndex.articleTreeData) &&
-      !storeEditor.currArticle.path
+      !storeEditor.isOpenArticle
     "
   >
     <a-empty :description="lang('pageIndex.noSelectedArticle')" />

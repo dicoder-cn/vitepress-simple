@@ -1,6 +1,6 @@
 <template>
   <div
-    v-show="storeEditor.currArticle.path != ''"
+    v-show="storeEditor.isOpenArticle"
     id="vditor"
     ref="vditor"
     class="mx-2"
@@ -11,7 +11,7 @@
   <div
     v-if="
       !isEmptyArray(storeIndex.articleTreeData) &&
-      !storeEditor.currArticle.path
+      !storeEditor.isOpenArticle
     "
   >
     <a-empty :description="lang('pageIndex.noSelectedArticle')" />

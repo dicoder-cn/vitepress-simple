@@ -2,7 +2,7 @@
   <!--  <div v-if="storeIndex.currArticlePath == ''">-->
   <!--    <a-empty description="未选择文章" />-->
   <!--  </div>-->
-  <div v-if="storeIndex.currArticlePath != ''" style="height: 100vh">
+  <div v-if="storeEditor.isOpenArticle" style="height: 100vh">
     <a-tabs v-model:activeKey="activeKey" class="my-0.5 pl-1" type="card">
       <!-- tab   seo相关配置-->
       <a-tab-pane key="1" :tab="lang('common.base')">
@@ -33,7 +33,8 @@ import { useLayoutStore } from "@/store/layout";
 import IndexEditorViewBase from "@/views/index/indexEditorViewBase.vue";
 import IndexEditorViewHero from "@/views/index/indexEditorViewHero.vue";
 import { lang } from "@/utils/language";
-
+import { useEditorStore } from "@/store/editor";
+const storeEditor = useEditorStore();
 const storeIndex = useIndexStore();
 const storeLayout = useLayoutStore();
 const activeKey = ref("1");
