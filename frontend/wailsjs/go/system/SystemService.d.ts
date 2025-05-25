@@ -11,6 +11,8 @@ export function ConfigSet(arg1:string,arg2:string):Promise<void>;
 
 export function CopyPath(arg1:string,arg2:string,arg3:boolean):Promise<string>;
 
+export function DeletePath(arg1:string):Promise<string>;
+
 export function GetCurrVersion():Promise<string>;
 
 export function GetPathDir(arg1:string):Promise<string>;
@@ -34,3 +36,5 @@ export function PathJoin(arg1:Array<string>):Promise<string>;
 export function SelectDir(arg1:string):Promise<string>;
 
 export function SelectFile(arg1:string,arg2:string):Promise<string>;
+
+export function WriteContentToFile(arg1:string,arg2:string):Promise<string>;

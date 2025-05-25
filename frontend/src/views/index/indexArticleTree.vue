@@ -175,12 +175,14 @@ import {
   PathJoin,
 } from "../../../wailsjs/go/system/SystemService";
 import { IsEmptyValue } from "@/utils/utils";
-import MenuItem from "@/components/menuItem.vue";
+import MenuItem from "@/components/menuItem.vue"; 
 import { ConfigKeyChangeAutoSave } from "@/constant/keys/config";
 import { replaceLocalStaticToImageUrl } from "@/utils/repalceStatic";
 import { lang } from "@/utils/language";
+import { useEditorStore } from "@/store/editor";
 
 const storeIndex = useIndexStore();
+const storeEditor = useEditorStore();
 const moreIconShownKeys = ref<string[]>([]);
 const storeVpConfig = useVpconfigStore();
 onMounted(async () => {
@@ -212,8 +214,8 @@ const deletePath = (key: string) => {
           ToastInfo(key + lang("common.deleteSuccess"));
           //更新当前文件
 
-          if (storeIndex.currArticlePath == key) {
-            storeIndex.currArticlePath = "";
+          if (storeEditor.currArticle.path == key) {
+            storeEditor.changeCurrArticleIndex(0);
           }
           storeIndex.loadTreeData();
         }
@@ -277,35 +279,14 @@ const handleClick = (key: string) => {
 };
 
 const openArticle = async (path: string) => {
-  let isAutoSave = await ConfigGetBool(ConfigKeyChangeAutoSave);
-  if (isAutoSave === true) {
-    await storeIndex.saveCurrArticle(false); //先保存
-  }
-  const content = await ReadFileContent(path);
-  // console.log(content, "content -- console.log");
-
-  let matterData = matter(content);
-  // console.log(matterData.data, "matterData.data -- console.log");
-  let matchScriptArray = parseTagContent(matterData.content ?? "", regexScript);
-  let matchStyleArray = parseTagContent(matterData.content ?? "", regexStyle);
-  let scriptContent = matchScriptArray[0] ?? "";
-  let styleContent = matchStyleArray[0] ?? "";
-  await storeIndex.setCurrScriptContent(scriptContent);
-  await storeIndex.setCurrStyleContent(styleContent);
-  storeIndex.setCurrArticlePath(path);
-  // //matter字符串
-
-  storeIndex.setCurrArticleFrontMatter(matterData.data);
-
-  let vditorContent = (matterData.content ?? "")
-    .replace(scriptContent, "")
-    .replace(styleContent, "");
-  let val = vditorContent ? vditorContent : "# hello vitePress client";
-  // console.log("val:" + val);
-  //相对路径转换成 域名替换
-  val = replaceLocalStaticToImageUrl(vditorContent);
-  storeIndex.Vditor?.setValue(val); //设置编辑器的值
+  // let isAutoSave = await ConfigGetBool(ConfigKeyChangeAutoSave);
+  // if (isAutoSave === true) {
+  //   await storeIndex.saveCurrArticle(false); //先保存
+  // }
+  storeEditor.openArticle(path);
 };
+
+
 const isDir = (key: string) => {
   return !key.includes(".md");
 };
@@ -365,7 +346,7 @@ const onSubmitInputModalRename = async (value: string) => {
   let newPath = await PathJoin([dir, value]);
   if (oldPath?.endsWith(".md")) newPath = newPath + ".md";
   // newPath = newPath.replace("//", "/");
-  storeIndex.currArticlePath = newPath;
+  storeEditor.currArticle.path = newPath;
   // console.log(currentRenamePath.value, "-----currentRenamePath value");
   // console.log(newPath, "-----newPath value");
   Rename(currentRenamePath.value ?? "", newPath).then(() => {

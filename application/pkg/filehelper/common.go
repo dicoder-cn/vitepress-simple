@@ -79,7 +79,6 @@ func CreateDir(dir string) string {
 			return err.Error()
 		}
 	}
-
 	return ""
 }
 

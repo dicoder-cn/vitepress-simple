@@ -40,13 +40,13 @@ export interface indexStore {
   vditor: Vditor | null;
   expandKeys: string[];
   selectKeys: string[];
-  currArticlePath: string; //当前文章路径
+  // currArticlePath: string; //当前文章路径
   currCopyPath: string;
   searchValue: string; //搜索值
   currHomeConfig?: VitePressHome; //当前主页配置
-  currScriptContent: string; //当前js代码
-  currStyleContent: string; //当前css代码
-  currVueCode: string; //当前vue代码 css+js
+  // currScriptContent: string; //当前js代码
+  // currStyleContent: string; //当前css代码
+  // currVueCode: string; //当前vue代码 css+js
   currProjectDir: string; //当前项目的根目录
   currDocDir: string; //文档所在目录
   IsEmptyProject: boolean; //是否为空项目
@@ -54,7 +54,8 @@ export interface indexStore {
   version: string; //系统类型
   staticServerPort: string;
   staticBaseDir: string;
-  currArticleFrontMatter: Record<string, any>; //当前文章front matter
+  // currArticleFrontMatter: Record<string, any>; //当前文章front matter
+  
 }
 
 export const useIndexStore = defineStore("index", {
@@ -69,11 +70,12 @@ export const useIndexStore = defineStore("index", {
     version: "",
     IsEmptyProject: true, //是否为空项目
     searchValue: "", //搜索值
-    currArticlePath: "", //当前文章路径
-    currScriptContent: "", //当前js代码
-    currStyleContent: "", //当前css代码
-    currVueCode: "", //当前vue代码 js+css
-    currArticleFrontMatter: {}, //当前文章front matter
+    // currArticlePath: "", //当前文章路径
+    // currScriptContent: "", //当前js代码
+    // currStyleContent: "", //当前css代码
+    // currVueCode: "", //当前vue代码 js+css
+    // currArticleFrontMatter: {}, //当前文章front matter
+    
     staticBaseDir: "vpstatic",
     staticServerPort: "9874",
     currCopyPath: "", //当前剪切路径
@@ -136,7 +138,7 @@ export const useIndexStore = defineStore("index", {
       //设置当前的项目路径
       await ConfigSet(ConfigKeyProjectDir, dir);
       await StartStaticServer(""); //启动静态服务器
-      this.clearCurrData();
+      // this.clearCurrData();
       await this.loadTreeData();
       useShellStore().loadVpSimpleConfig();
     },
@@ -149,81 +151,14 @@ export const useIndexStore = defineStore("index", {
         this.loadTreeData();
       });
     },
-    //设置当前script
-    async setCurrScriptContent(content: string) {
-      this.currScriptContent = content;
-      this.currVueCode = this.currScriptContent + "\n" + this.currStyleContent;
-      this.currVueCode = this.currVueCode.trim();
-    },
-    //设置当前style
-    async setCurrStyleContent(content: string) {
-      this.currStyleContent = content;
-      this.currVueCode = this.currScriptContent + "\n" + this.currStyleContent;
-      this.currVueCode = this.currVueCode.trim();
-    },
-    clearCurrData() {
-      this.currArticlePath = "";
-      this.currCopyPath = "";
-      this.currVueCode = "";
-      this.currArticleFrontMatter = {};
-    },
 
-    //保存文章
-    async saveCurrArticle(showToast = true) {
-      if (this.vditor && this.currArticlePath != "") {
-        // const storeLayout = useLayoutStore();
-        const content = this.vditor.getValue();
-        const saveType = await ConfigGet(ConfigKeyFrontMatterSaveType);
-        let fontMatterString = "";
-        if (saveType == "yaml") {
-          fontMatterString = yaml.dump(this.currArticleFrontMatter);
-        } else {
-          fontMatterString = JSON.stringify(
-            this.currArticleFrontMatter,
-            null,
-            4,
-          );
-        }
-
-        let fullContent = `---\n${fontMatterString}\n---\n${this.currVueCode}\n${content}`;
-        //替换域名为本地路径
-        fullContent = replaceImageUrlToLocalStatic(fullContent);
-        //获取动态新增的数据
-        WriteFileContent(this.currArticlePath, fullContent).then(() => {
-          if (showToast) ToastInfo("已保存");
-        });
-      }
-    },
-    //设置当前文章路径
-    setCurrArticlePath(path: string) {
-      this.currArticlePath = path;
-    },
+  
+ 
     setCurrCutPath(path: string) {
       this.currCopyPath = path;
     },
-    setCurrVueCode(code: string) {
-      this.currVueCode = code;
-    },
-    //设置当前文章front matter
-    setCurrArticleFrontMatter(frontMatter: any) {
-      for (const key in defaultFrontMatter) {
-        if (IsEmptyValue(frontMatter[key])) {
-          frontMatter[key] = defaultFrontMatter[key];
-        }
-      }
 
-      if (this.currArticleFrontMatter["title"] == "")
-        frontMatter["title"] = this.CurrArticleTitle;
-      //大纲需要是一个数组
-      // if (IsEmptyValue(frontMatter["outline"])) {
-      //   frontMatter["outline"] = [1, 3];
-      // }
-      if (!Array.isArray(frontMatter["outline"])) {
-        frontMatter["outline"] = [1, 3];
-      }
-      // console.log("outline", frontMatter);
-      this.currArticleFrontMatter = frontMatter;
-    },
+  
   },
   getters: {
     //大驼峰命名法
@@ -231,15 +166,13 @@ export const useIndexStore = defineStore("index", {
     ExpandKeys: (state) => state.expandKeys,
     SelectKeys: (state) => state.selectKeys,
     CurrCutPath: (state) => state.currCopyPath,
-    // getCurrVueCode: (state) => state.currVueCode,
-    CurrArticlePath: (state) => state.currArticlePath,
-    CurrArticleFrontMatter: (state) => state.currArticleFrontMatter,
+
     Vditor: (state) => state.vditor,
     CurrProjectDir: (state) => state.currProjectDir,
     // IsEmptyProject: (state) => isEmptyArray(state.articleTreeData),
     IsEmptyTreeData: (state) => isEmptyArray(state.articleTreeData),
-    CurrArticleTitle: (state) =>
-      getFileNameFromPath(state.currArticlePath).replaceAll(".md", ""),
-    GetArticleFrontMatter: (state) => state.currArticleFrontMatter,
+    // CurrArticleTitle: (state) =>
+    // getFileNameFromPath(state.currArticlePath).replaceAll(".md", ""),
+    // GetArticleFrontMatter: (state) => state.currArticleFrontMatter,
   },
 });

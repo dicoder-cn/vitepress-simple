@@ -22,6 +22,10 @@ export function CopyPath(arg1, arg2, arg3) {
   return window['go']['system']['SystemService']['CopyPath'](arg1, arg2, arg3);
 }
 
+export function DeletePath(arg1) {
+  return window['go']['system']['SystemService']['DeletePath'](arg1);
+}
+
 export function GetCurrVersion() {
   return window['go']['system']['SystemService']['GetCurrVersion']();
 }
@@ -68,4 +72,8 @@ export function SelectDir(arg1) {
 
 export function SelectFile(arg1, arg2) {
   return window['go']['system']['SystemService']['SelectFile'](arg1, arg2);
+}
+
+export function WriteContentToFile(arg1, arg2) {
+  return window['go']['system']['SystemService']['WriteContentToFile'](arg1, arg2);
 }

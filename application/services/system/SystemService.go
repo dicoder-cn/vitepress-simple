@@ -231,3 +231,37 @@ func (s *SystemService) PathJoin(elem []string) string {
 func (s *SystemService) GetCurrVersion() string {
 	return setting.Version
 }
+
+// DeletePath 删除文件或者目录
+func (s *SystemService) DeletePath(path string) string {
+	// 检查路径是否存在
+	if !filehelper.FileExists(path) {
+		return "路径不存在"
+	}
+	// 删除文件或目录
+	err := os.RemoveAll(path)
+	if err != nil {
+		return err.Error()
+	}
+	return ""
+}
+
+// WriteContentToFile  创建一个文件并写入内容
+func (s *SystemService) WriteContentToFile(path string, content string) string {
+	// 检查路径是否存在 如果不存在则创建
+	if !filehelper.FileExists(path) {
+		//先创建目录
+		filehelper.CreateDir(s.GetPathDir(path))
+		// 创建文件
+		createResult := filehelper.CreateFile(path)
+		if createResult != "" {
+			return createResult
+		}
+	}
+	// 写入内容 覆盖模式
+	err := filehelper.WriteContent(path, content)
+	if err != nil {
+		return err.Error()
+	}
+	return ""
+}

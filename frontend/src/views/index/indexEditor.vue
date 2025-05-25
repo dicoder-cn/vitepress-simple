@@ -4,6 +4,7 @@ import IndexEditorTool from "./indexEditorTool.vue";
 import IndexEditorWriter from "./indexEditorWriter.vue";
 import IndexEditorReader from "./indexEditorView.vue";
 import { useLayoutStore } from "@/store/layout";
+import IndexEditorWriterMdeditor from "./indexEditorWriterMdeditor.vue";
 
 const storeLayout = useLayoutStore();
 // const refSplitterEditor = ref();
@@ -29,10 +30,12 @@ const storeLayout = useLayoutStore();
     >
       <template v-slot:before>
         <!--编辑器写作区，确保内容区域高度自适应-->
-        <index-editor-writer></index-editor-writer>
+        <!-- <index-editor-writer></index-editor-writer> -->
+        <index-editor-writer-mdeditor></index-editor-writer-mdeditor>
       </template>
 
       <template v-slot:after>
+
         <!--编辑器预览区，确保内容区域高度自适应-->
         <index-editor-reader></index-editor-reader>
       </template>

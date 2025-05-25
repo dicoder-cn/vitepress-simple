@@ -19,10 +19,14 @@ export default defineConfig({
     alias: {
       "@": resolve(__dirname, "src"),
       "~": resolve(__dirname, "wails"),
+      "wailsjs": resolve(__dirname, "wailsjs"),
     },
   },
   build: {
     rollupOptions: {
+      external: [
+        /^wailsjs\/.*/
+      ],
       output: {
         entryFileNames: `assets/[name].js`,
         chunkFileNames: `assets/[name].js`,
