@@ -17,7 +17,7 @@
             @click="storeEditor.changeCurrArticleIndex(index)"
           >
             <a-tooltip>
-              <template #title>{{ article.path.split('/').pop() }}</template>
+              <template #title>{{ article.path.replace(storeConfig.baseDir, '') }}</template>
               <span class="truncate max-w-[120px]">
                 <span v-if="!article.isSave" class="text-gray-500 ">*</span>
                 {{ (article.path.split('/').pop() || '').replace('.md', '') }}

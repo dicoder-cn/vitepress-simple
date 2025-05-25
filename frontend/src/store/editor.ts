@@ -219,6 +219,7 @@ export const useEditorStore = defineStore("editor", {
       if (!Array.isArray(articleFrontMatter["outline"])) {
         articleFrontMatter["outline"] = [1, 3];
       }
+      console.log(articleFrontMatter, "articleFrontMatter -- console.log");
       
     },
     //关闭文章
