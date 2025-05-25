@@ -5,21 +5,26 @@
     :style="StyleNoDrag"
   >
     <!-- 左侧文章列表 -->
-    <div class="flex-1 flex items-center">
-      <div class="flex items-center space-x-2 overflow-x-auto" style="max-width: 60%;">
+    <div class="flex-1 flex items-center ">
+      <div class="flex items-center hide-scrollbar overflow-x-auto" style="max-width: 60%; padding-right: 1px;">
         <template v-for="(article, index) in storeEditor.getArticleContents" :key="article.path">
           <div 
-            class="flex items-center px-3 py-1 rounded cursor-pointer"
-            :class="{'bg-gray-200': index === storeEditor.getCurrArticleIndex}"
+            class="tab-item flex items-center px-3 py-1.5 mr-1 cursor-pointer transition-all duration-200 group relative"
+            :class="{
+              'bg-white  text-gray-800 border border-gray-200 -mb-px z-10 pr-8': index === storeEditor.getCurrArticleIndex,
+              'bg-gray-100/80 text-gray-600 border-r border-b border-gray-200 hover:bg-gray-50 pr-8': index !== storeEditor.getCurrArticleIndex
+            }"
             @click="storeEditor.changeCurrArticleIndex(index)"
           >
-            <span class="truncate max-w-[150px]">{{ article.path.split('/').pop() }}</span>
-            <icon-park
-              class="ml-2 hover:text-red-500"
-              @click.stop="storeEditor.closeArticle(article.path)"
-              :size="16"
-              type="close"
-            />
+            <span class="truncate max-w-[120px]">{{ (article.path.split('/').pop() || '').replace('.md', '') }}</span>
+            <div class="absolute right-0 top-0 bottom-0 w-8 flex items-center justify-center">
+              <icon-park
+                class="opacity-0 group-hover:opacity-100 hover:text-gray-700 transition-all duration-200"
+                @click.stop="storeEditor.closeArticle(article.path)"
+                :size="13"
+                type="close"
+              />
+            </div>
           </div>
         </template>
       </div>
@@ -106,5 +111,23 @@ const handleSave = () => {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.tab-item {
+  position: relative;
+  margin-right: -1px;
+}
+
+.tab-item:hover {
+  border-color: #e5e7eb;
+}
+
+.hide-scrollbar {
+  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari and Opera */
 }
 </style>
