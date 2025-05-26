@@ -1,5 +1,8 @@
 <template>
-  <div v-if="!isEmptyArray(storeIndex.articleTreeData)" class="mt-1">
+  <div
+    v-if="!isEmptyArray(storeIndex.articleTreeData)"
+    class="mt-1 hide-scrollbar-x"
+  >
     <a-tree
       v-model:expandedKeys="storeIndex.expandKeys"
       v-model:selected-keys="storeIndex.selectKeys"
@@ -160,7 +163,7 @@ import {
   ReadFileContent,
   Rename,
 } from "../../../wailsjs/go/services/ArticleTreeData";
-import {  removeMdExtension } from "@/utils/file";
+import { removeMdExtension } from "@/utils/file";
 import { ToastCheck, ToastError, ToastInfo, ToastSuccess } from "@/utils/Toast";
 import { Modal } from "ant-design-vue";
 import { isEmptyArray } from "@/utils/array";
@@ -172,11 +175,10 @@ import {
   PathExists,
   PathJoin,
 } from "../../../wailsjs/go/system/SystemService";
-import MenuItem from "@/components/menuItem.vue"; 
+import MenuItem from "@/components/menuItem.vue";
 
 import { lang } from "@/utils/language";
 import { useEditorStore } from "@/store/editor";
-
 
 const storeIndex = useIndexStore();
 const storeEditor = useEditorStore();
@@ -283,7 +285,6 @@ const openArticle = async (path: string) => {
   // }
   storeEditor.openArticle(path);
 };
-
 
 const isDir = (key: string) => {
   return !key.includes(".md");
