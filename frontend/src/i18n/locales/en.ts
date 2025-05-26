@@ -362,6 +362,11 @@ export const en = {
       checkUpdate: "Check for Updates",
       openDataDir: "Open Program Data Directory",
     },
+    settingEditor: {
+      title: "Editor Settings",
+      editorType: "Editor Type",
+      editorTypeTooltip: "Choose your preferred Markdown editor"
+    }
   },
 
   pageAbout: {

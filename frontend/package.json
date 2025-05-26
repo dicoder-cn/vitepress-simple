@@ -26,6 +26,7 @@
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
     "quasar": "^2.14.1",
+    "some-library": "^1.0.0",
     "vditor": "^3.10.1",
     "vue": "^3.4.21",
     "vue-i18n": "^9.8.0",

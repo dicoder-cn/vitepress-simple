@@ -98,9 +98,9 @@ export const zhHans = {
     //请确认或修改新路径
     confirmOrModifyNewPath: "请确认或修改新路径",
     //路径
-    path: "路径‘",
+    path: "路径' ",
     //已经复制
-    copied: "’已经复制",
+    copied: "'已经复制",
     //复制失败
     copyFailed: "复制失败",
     //没有复制路径
@@ -466,6 +466,11 @@ export const zhHans = {
       checkUpdate: "检查更新",
       openDataDir: "打开程序数据目录",
     },
+    settingEditor: {
+      title: "编辑器配置",
+      editorType: "编辑器类型",
+      editorTypeTooltip: "选择您偏好的 Markdown 编辑器",
+    },
   },
   pageAbout: {
     //关于
@@ -483,7 +488,7 @@ export const zhHans = {
     //作者微信
     authorWx: "作者微信",
     privacy1:
-      "欢迎您使用VitePressSimple（以下简称“VPSimple”或“本软件”）。我们深知个人隐私的重要性，并致力于保护您的个人信息安全。本隐私协议旨在清晰地阐述我们在您使用VPSimple过程中如何收集、使用、存储、共享和保护您的个人信息。请您在使用本软件前仔细阅读并理解本协议内容。您的持续使用将视为您同意接受本隐私协议的约束。",
+      "欢迎您使用VitePressSimple（以下简称'VPSimple'或'本软件'）。我们深知个人隐私的重要性，并致力于保护您的个人信息安全。本隐私协议旨在清晰地阐述我们在您使用VPSimple过程中如何收集、使用、存储、共享和保护您的个人信息。请您在使用本软件前仔细阅读并理解本协议内容。您的持续使用将视为您同意接受本隐私协议的约束。",
     privacy2: "必要的使用信息",
     privacy3:
       "：为了提供和优化VPSimple的服务，我们可能会收集您在使用软件过程中产生的基本使用数据，如设备类型、操作系统版本、软件版本等。此类信息是为确保软件正常运行、诊断问题、提供技术支持以及改进产品性能所必需的。",

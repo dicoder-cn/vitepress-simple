@@ -39,7 +39,7 @@ export const ConfigKeyLang = "sys.lang"
 
 // Shell 基础目录
 export const ConfigKeyShellBaseDir = "shell.base_dir"
-
+export const ConfigKeyEditorType = "editor.type"
 export  const ConfigArray = [
     "project_dir",
     "is_startup",

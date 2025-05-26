@@ -1,33 +1,35 @@
 <template>
-
-  <MdEditor style="height: 93%;" @onUploadImg="onUploadImg"  v-show="storeEditor.isOpenArticle" v-model="storeEditor.currArticle.mdContent" />
+  <MdEditor
+    style="height: 93%"
+    @onUploadImg="onUploadImg"
+    v-show="storeEditor.isOpenArticle"
+    v-model="storeEditor.currArticle.mdContent"
+  />
   <empty-project></empty-project>
   <div
     v-if="
-      !isEmptyArray(storeIndex.articleTreeData) &&
-      !storeEditor.isOpenArticle
+      !isEmptyArray(storeIndex.articleTreeData) && !storeEditor.isOpenArticle
     "
   >
     <a-empty :description="lang('pageIndex.noSelectedArticle')" />
   </div>
 </template>
 <script lang="ts" setup>
-import {  onMounted, nextTick } from "vue";
+import { onMounted, nextTick } from "vue";
 import { useIndexStore } from "../../store";
 import { getDefaultVtitorOptions } from "@/configs/vditor";
 import { isEmptyArray } from "@/utils/array";
 import EmptyProject from "@/components/emptyProject.vue";
 import { lang } from "@/utils/language";
 import { useEditorStore } from "../../store/editor";
-import 'md-editor-v3/lib/style.css';
-import { MdEditor } from 'md-editor-v3';
+import "md-editor-v3/lib/style.css";
+import { MdEditor } from "md-editor-v3";
 import { ConfigKeySysStaticServerPort } from "@/configs/appConfigKey";
 import axios from "axios";
 import { AppConfig } from "@/store/appconfig";
 
 const storeEditor = useEditorStore();
 const storeIndex = useIndexStore();
-
 
 onMounted(() => {
   nextTick(async () => {
@@ -43,18 +45,19 @@ const onUploadImg = async (files: any[], callback: (arg0: any[]) => void) => {
     files.map((file) => {
       return new Promise((rev, rej) => {
         const form = new FormData();
-        form.append('image', file);
-        axios .post(uploadUrl, form, {
+        form.append("image", file);
+        axios
+          .post(uploadUrl, form, {
             headers: {
-              'Content-Type': 'multipart/form-data',
+              "Content-Type": "multipart/form-data",
             },
           })
           .then((res) => rev(res))
           .catch((error) => rej(error));
       });
-    })
+    }),
   );
-  
+
   //   {
   //     "code": 0,
   //     "msg": "",
@@ -66,7 +69,7 @@ const onUploadImg = async (files: any[], callback: (arg0: any[]) => void) => {
   //     }
   // }
 
-  console.log("uploadImg res:",res);
+  console.log("uploadImg res:", res);
   const urls = res.map((item: any) => {
     const succMap = item.data.data.succMap;
     return Object.values(succMap)[0];

@@ -14,12 +14,20 @@
       >
         <setting-base></setting-base>
       </a-tab-pane>
+      <a-tab-pane
+        key="2"
+        :tab="lang('pageSetting.settingEditor.title')"
+        :style="StyleNoDrag"
+      >
+        <setting-editor></setting-editor>
+      </a-tab-pane>
     </a-tabs>
   </div>
 </template>
 <script lang="ts" setup>
 import { ref } from "vue";
 import SettingBase from "@/views/setting/settingBase.vue";
+import SettingEditor from "@/views/setting/settingEditor.vue";
 import { lang } from "@/utils/language";
 import { StyleNoDrag } from "@/configs/cnts";
 

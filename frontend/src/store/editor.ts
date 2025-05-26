@@ -1,17 +1,23 @@
 import { defaultFrontMatter } from "@/configs/defaultFrontMatter";
 import { ConfigKeyFrontMatterSaveType } from "@/configs/appConfigKey";
 import { parseTagContent, regexScript, regexStyle } from "@/utils/parse";
-import { replaceImageUrlToLocalStatic, replaceLocalStaticToImageUrl } from "@/utils/repalceStatic";
+import {
+  replaceImageUrlToLocalStatic,
+  replaceLocalStaticToImageUrl,
+} from "@/utils/repalceStatic";
 import { ToastError, ToastInfo } from "@/utils/Toast";
 import { IsEmptyValue } from "@/utils/utils";
 import matter from "gray-matter";
 import { defineStore } from "pinia";
-import { ReadFileContent, WriteFileContent } from "wailsjs/go/services/ArticleTreeData";
+import {
+  ReadFileContent,
+  WriteFileContent,
+} from "wailsjs/go/services/ArticleTreeData";
 import { AppConfig } from "@/store/appconfig";
 // @ts-ignore
 import yaml from "js-yaml";
-import { watch } from 'vue';
-import { Modal } from 'ant-design-vue';
+import { watch } from "vue";
+import { Modal } from "ant-design-vue";
 import { lang } from "@/utils/language";
 //这是一个简单的推荐store案例，可以在这里定义你的状态
 //新建pinia时把editor全局替换成你的store名字
@@ -20,33 +26,32 @@ import { lang } from "@/utils/language";
 interface ArticleContent {
   isSave: boolean;
   frontMatter: any;
-  scriptContent: string;//占位
-  styleContent: string;//占位
-  vueContent: string;//= scriptContent + styleContent
-  path: string;//文章路径
-  mdContent: string;//=frontMatter+mdContent
+  scriptContent: string; //占位
+  styleContent: string; //占位
+  vueContent: string; //= scriptContent + styleContent
+  path: string; //文章路径
+  mdContent: string; //=frontMatter+mdContent
 }
 
 export interface editorStore {
   currArticleIndex: number;
-  // currArticleContent: string;
   currArticle: ArticleContent;
   articleLists: ArticleContent[];
+  //vditor实例
+  // vditor: any | null;
 }
 
 export const useEditorStore = defineStore("editor", {
   state: (): editorStore => ({
-      currArticleIndex: -1,  // 初始化为 -1 表示没有选中任何文章
-      // currArticleContent: "",
-      // currArticlePath: "",
-      currArticle: {} as ArticleContent,
-      articleLists: [] as ArticleContent[]
+    currArticleIndex: -1, // 初始化为 -1 表示没有选中任何文章
+    currArticle: {} as ArticleContent,
+    articleLists: [] as ArticleContent[],
+    // vditor: null,
   }),
   actions: {
     // 初始化监听器
     initWatcher() {
       let isInitializing = true; // 添加初始化标志
-
       // 监听文章切换
       watch(
         () => this.currArticle.path,
@@ -55,7 +60,7 @@ export const useEditorStore = defineStore("editor", {
           setTimeout(() => {
             isInitializing = false;
           }, 100);
-        }
+        },
       );
 
       // 监听 mdContent
@@ -68,21 +73,25 @@ export const useEditorStore = defineStore("editor", {
               this.articleLists[this.currArticleIndex].isSave = false;
             }
           }
-        }
+        },
       );
 
       // 监听 frontMatter
       watch(
         () => this.currArticle.frontMatter,
         (newVal, oldVal) => {
-          if (!isInitializing && this.currArticle.path && JSON.stringify(newVal) !== JSON.stringify(oldVal)) {
+          if (
+            !isInitializing &&
+            this.currArticle.path &&
+            JSON.stringify(newVal) !== JSON.stringify(oldVal)
+          ) {
             this.currArticle.isSave = false;
             if (this.currArticleIndex >= 0) {
               this.articleLists[this.currArticleIndex].isSave = false;
             }
           }
         },
-        { deep: true }
+        { deep: true },
       );
 
       // 监听 vueContent
@@ -95,7 +104,7 @@ export const useEditorStore = defineStore("editor", {
               this.articleLists[this.currArticleIndex].isSave = false;
             }
           }
-        }
+        },
       );
 
       // 延迟关闭初始化标志
@@ -113,8 +122,6 @@ export const useEditorStore = defineStore("editor", {
         }
       }
     },
-
-
 
     //切换当前打开的文章
     changeCurrArticleIndex(index: number) {
@@ -135,90 +142,96 @@ export const useEditorStore = defineStore("editor", {
       if (!Array.isArray(this.articleLists)) {
         this.articleLists = [];
       }
-      
-      let articleIndex = this.articleLists.findIndex(item => item?.path === path);
-      if (articleIndex !== -1) {//存在
+
+      let articleIndex = this.articleLists.findIndex(
+        (item) => item?.path === path,
+      );
+      if (articleIndex !== -1) {
+        //存在
         this.changeCurrArticleIndex(articleIndex);
       } else {
         //最大不能打开超过6个文章
         if (this.articleLists.length >= 6) {
           ToastError("最多只能打开6篇文章");
           return;
-        } 
+        }
         const newArticle: ArticleContent = {
-          path, 
-          mdContent: "", 
+          path,
+          mdContent: "",
           isSave: true,
           frontMatter: undefined,
           scriptContent: "",
           styleContent: "",
-          vueContent: ""
+          vueContent: "",
         };
         this.articleLists.push(newArticle);
         articleIndex = this.articleLists.length - 1;
       }
-      this.preHandlerOpenArticle(path,articleIndex);//预处理打开文章
+      this.preHandlerOpenArticle(path, articleIndex); //预处理打开文章
       this.changeCurrArticleIndex(articleIndex);
     },
-    initCurrArticle(){
+    initCurrArticle() {
       this.currArticle = {
         isSave: true,
         frontMatter: {},
-        scriptContent: '',
-        styleContent: '',
-        vueContent: '',
-        path: '',
-        mdContent: ''
+        scriptContent: "",
+        styleContent: "",
+        vueContent: "",
+        path: "",
+        mdContent: "",
       };
     },
     //打开文章前处理
-    async preHandlerOpenArticle(path: string,articleIndex:number) {
+    async preHandlerOpenArticle(path: string, articleIndex: number) {
       const content = await ReadFileContent(path);
-      let matterData = matter(content);
-      let matchScriptArray = parseTagContent(matterData.content ?? "", regexScript);
-      let matchStyleArray = parseTagContent(matterData.content ?? "", regexStyle);
-      let scriptContent = matchScriptArray[0] ?? "";
-      let styleContent = matchStyleArray[0] ?? "";
-      let vueContent = (scriptContent + "\n" + styleContent).trim();
+      const matterData = matter(content);
+      const matchScriptArray = parseTagContent(
+        matterData.content ?? "",
+        regexScript,
+      );
+      const matchStyleArray = parseTagContent(
+        matterData.content ?? "",
+        regexStyle,
+      );
+      const scriptContent = matchScriptArray[0] ?? "";
+      const styleContent = matchStyleArray[0] ?? "";
+      const vueContent = (scriptContent + "\n" + styleContent).trim();
       //matter字符串
       this.articleLists[articleIndex].scriptContent = scriptContent;
       this.articleLists[articleIndex].styleContent = styleContent;
       this.articleLists[articleIndex].frontMatter = matterData.data;
       this.articleLists[articleIndex].vueContent = vueContent;
       let mdContent = (matterData.content ?? "")
-      .replace(scriptContent, "")
-      .replace(styleContent, "");
-      mdContent = mdContent ? mdContent : "# hello vitePress client"
+        .replace(scriptContent, "")
+        .replace(styleContent, "");
+      mdContent = mdContent ? mdContent : "# hello vitePress client";
       //初始化文章的front matter
       this.initArticleFrontMatter(articleIndex);
       //相对路径转换成 域名替换
-      let replaceMdContent = replaceLocalStaticToImageUrl(mdContent);
+      const replaceMdContent = replaceLocalStaticToImageUrl(mdContent);
       this.articleLists[articleIndex].mdContent = replaceMdContent;
       //设置当前上下文
       this.changeCurrArticleIndex(articleIndex);
       console.log(this.currArticle, "currArticle -- console.log");
     },
     //设置当前文章front matter
-    initArticleFrontMatter(articleIndex:number) {
+    initArticleFrontMatter(articleIndex: number) {
       //当前文章的front matter
       const articleFrontMatter = this.articleLists[articleIndex].frontMatter;
-      
+
       //设置默认的front matter
       for (const key in defaultFrontMatter) {
         if (IsEmptyValue(articleFrontMatter[key])) {
           articleFrontMatter[key] = defaultFrontMatter[key];
         }
       }
-    
-      //默认标题
-      if (articleFrontMatter["title"] == ""){
-        articleFrontMatter["title"]="test title";
-      }
-      
-      console.log(articleFrontMatter, "articleFrontMatter -- console.log");
 
-     
-      
+      //默认标题
+      if (articleFrontMatter["title"] == "") {
+        articleFrontMatter["title"] = "test title";
+      }
+
+      console.log(articleFrontMatter, "articleFrontMatter -- console.log");
     },
     //关闭文章
     async closeArticle(path: string) {
@@ -226,11 +239,13 @@ export const useEditorStore = defineStore("editor", {
         this.articleLists = [];
         return;
       }
-      const articleIndex = this.articleLists.findIndex(item => item?.path === path);
+      const articleIndex = this.articleLists.findIndex(
+        (item) => item?.path === path,
+      );
       if (articleIndex === -1) return;
 
       const article = this.articleLists[articleIndex];
-      
+
       // 如果文章未保存，显示确认弹窗
       if (!article.isSave) {
         return new Promise((resolve) => {
@@ -240,8 +255,8 @@ export const useEditorStore = defineStore("editor", {
             okText: lang("common.confirm"),
             cancelText: lang("common.cancel"),
             okButtonProps: {
-              type: 'primary',
-              danger: true
+              type: "primary",
+              danger: true,
             },
             async onOk() {
               // 用户确认关闭
@@ -251,7 +266,7 @@ export const useEditorStore = defineStore("editor", {
             },
             onCancel() {
               resolve(false);
-            }
+            },
           });
         });
       } else {
@@ -263,7 +278,7 @@ export const useEditorStore = defineStore("editor", {
     // 执行实际的关闭操作
     doCloseArticle(articleIndex: number) {
       this.articleLists.splice(articleIndex, 1);
-      
+
       // 如果关闭的是当前文章，需要更新当前文章索引
       if (this.currArticleIndex === articleIndex) {
         // 如果还有其他文章，选择最后一篇
@@ -281,29 +296,26 @@ export const useEditorStore = defineStore("editor", {
     },
 
     //保存文章
-    async saveArticle(articleIndex: number,showToast = true) {
+    async saveArticle(articleIndex: number, showToast = true) {
       if (!Array.isArray(this.articleLists)) {
         this.articleLists = [];
         return;
       }
       const articleItem = this.articleLists[articleIndex];
-      
+
       const saveType = AppConfig.getString(ConfigKeyFrontMatterSaveType);
       let fontMatterString = "";
-      if (saveType == "yaml") { //默认
+      if (saveType == "yaml") {
+        //默认
         fontMatterString = yaml.dump(articleItem.frontMatter);
       } else {
-        fontMatterString = JSON.stringify(
-          articleItem.frontMatter,
-          null,
-          4,
-        );
+        fontMatterString = JSON.stringify(articleItem.frontMatter, null, 4);
       }
       let fullContent = `---\n${fontMatterString}\n---\n${articleItem.mdContent}\n${articleItem.vueContent}`;
-      
+
       //替换域名为本地路径
       fullContent = replaceImageUrlToLocalStatic(fullContent);
-      
+
       //获取动态新增的数据
       WriteFileContent(articleItem.path, fullContent).then(() => {
         if (showToast) ToastInfo("已保存");
@@ -313,26 +325,26 @@ export const useEditorStore = defineStore("editor", {
         this.articleLists[articleIndex].isSave = true;
       });
     },
-    
+
     //保存所有文章
     saveAllArticle() {
       if (!Array.isArray(this.articleLists)) {
         this.articleLists = [];
         return;
       }
-      this.articleLists.forEach((item,index) => {
+      this.articleLists.forEach((item, index) => {
         if (item && !item.isSave) {
-          this.saveArticle(index,false);
+          this.saveArticle(index, false);
         }
       });
     },
-    
   },
   getters: {
-    isOpenArticle: (state): boolean => state.articleLists.length > 0 && state.currArticleIndex >= 0,
+    isOpenArticle: (state): boolean =>
+      state.articleLists.length > 0 && state.currArticleIndex >= 0,
     getCurrArticleIndex: (state): number => state.currArticleIndex,
     getCurrArticle: (state): ArticleContent => state.currArticle,
-    getArticleContents: (state): ArticleContent[] => 
+    getArticleContents: (state): ArticleContent[] =>
       Array.isArray(state.articleLists) ? state.articleLists : [],
   },
 });

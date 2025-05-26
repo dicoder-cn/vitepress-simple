@@ -32,16 +32,15 @@ const storeEditor = useEditorStore();
 const { locale } = useI18n();
 
 onMounted(async () => {
+  //初始化软件配置
+  await AppConfig.initAppConfig();
 
-  
   // 初始化编辑器监听器
   useEditorStore().initWatcher();
 
   EventsOn("shell", (data: NotifyShellData) => {
     useShellStore().handlerShellNotify(data);
   });
-
-
 
   // await HistoryProject.initList(); //初始化历史数据
   // await vpConfig.initConfig();
@@ -62,6 +61,8 @@ onMounted(async () => {
   }
   //监听快捷键
   window.addEventListener("keydown", handleKeyDown);
+  //初始化配置
+  AppConfig.updateState();
 });
 onBeforeUnmount(() => {
   // 不要忘记在组件卸载时移除事件监听器，防止内存泄漏

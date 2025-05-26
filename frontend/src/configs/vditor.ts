@@ -5,6 +5,7 @@ import {
 import { AppConfig } from "@/store/appconfig";
 import { VditorCdnZstatic } from "@/constant/enums/cdn";
 import { useVpconfigStore } from "@/store/vpconfig";
+import { useEditorStore } from "@/store/editor";
 
 export const getDefaultVtitorOptions = async (): Promise<IOptions> => {
   let port = AppConfig.getString(ConfigKeySysStaticServerPort);
@@ -16,6 +17,10 @@ export const getDefaultVtitorOptions = async (): Promise<IOptions> => {
   return {
     // cdn: "https://fastly.jsdelivr.net/npm/",
     //  cdn: "http://localhost:9874/cdn",
+    input: (value: string) => {
+      //内容更新
+      useEditorStore().currArticle.mdContent = value;
+    },
     height: "90vh",
     toolbarConfig: {
       pin: true,

@@ -1,7 +1,7 @@
 <template>
   <div class="flex items-center">
     <a-form-item :label="label">
-      <a-radio-group v-model:value="value">
+      <a-radio-group v-model:value="value" @change="handleChange">
         <a-radio
           v-for="item in props.items"
           :key="item.value"
@@ -16,7 +16,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { nextTick, onMounted, ref, watch } from "vue";
+import { onMounted, ref } from "vue";
 
 import { InfoCircleOutlined } from "@ant-design/icons-vue";
 import { AppConfig } from "@/store/appconfig";
@@ -37,13 +37,16 @@ interface Props {
   isFullWidth?: boolean;
 }
 
+const props = defineProps<Props>();
+
 onMounted(() => {
   value.value = AppConfig.getString(props.configKey);
 });
-const props = defineProps<Props>();
-watch(value, (newVal) => {
-  ConfigSet(props.configKey, newVal);
-});
+
+const handleChange = (e: any) => {
+  // console.log("handleChange", e.target.value);
+  AppConfig.set(props.configKey, e.target.value);
+};
 </script>
 
 <style scoped></style>
