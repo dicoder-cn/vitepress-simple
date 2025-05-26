@@ -17,7 +17,7 @@
         type="copy-one"
       />
       {{ lang("pageNav.copy") }}
-      <span class="text-red">{{ storeConfig.currSettingLang }}</span>
+      <span class="text-red">{{ storeConfig.currSettingLangKey }}</span>
       {{ lang("pageNav.clipboard") }}
     </a-button>
     <a-button
@@ -105,7 +105,7 @@ const copyNavData = ref();
 const copyNavLang = ref("");
 //复制导航
 const copyNav = () => {
-  copyNavLang.value = storeConfig.currSettingLang;
+  copyNavLang.value = storeConfig.currSettingLangKey;
   copyNavData.value = DeepClone(
     storeConfig.currLangConfig["themeConfig"]["nav"],
   );

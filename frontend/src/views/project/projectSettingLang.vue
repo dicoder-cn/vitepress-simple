@@ -203,10 +203,10 @@ const saveLangConfig = () => {
   storeConfig.configData["locales"] = resultData;
   if (storeConfig.IsUseI18n) {
     if (
-      storeConfig.currSettingLang == "" ||
-      storeConfig.currSettingLang == StringGlobalLang
+      storeConfig.currSettingLangKey == "" ||
+      storeConfig.currSettingLangKey == StringGlobalLang
     ) {
-      storeConfig.currSettingLang = inputLangArray.value[0]["lang"];
+      storeConfig.currSettingLangKey = inputLangArray.value[0]["lang"];
     }
   }
   storeConfig.saveConfig();

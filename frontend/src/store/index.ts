@@ -51,7 +51,6 @@ export interface indexStore {
   version: string; //系统类型
   staticServerPort: string;
   staticBaseDir: string;
-  
 }
 
 export const useIndexStore = defineStore("index", {

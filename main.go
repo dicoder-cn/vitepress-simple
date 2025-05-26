@@ -10,6 +10,7 @@ import (
 	"wailstemplate/application/services"
 	"wailstemplate/application/services/shell"
 	"wailstemplate/application/services/system"
+	"wailstemplate/application/vitepress/docparse"
 	"wailstemplate/application/vitepress/vpsimpler"
 	setting "wailstemplate/settings"
 
@@ -92,6 +93,7 @@ func main() {
 			shell.NewShellManager(),
 			services.NewUpdateService(), //在线更新
 			services.NewStaticServer(),
+			docparse.NewParseService(), //2025-0526新增目录、frontmatter解析
 		},
 		// Windows platform specific options
 		// Windows平台特定选项

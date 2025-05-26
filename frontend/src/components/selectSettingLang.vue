@@ -7,7 +7,7 @@
     当前操作的语言：
     <a-radio-group
       @change="langChange"
-      v-model:value="storeConfig.currSettingLang"
+      v-model:value="storeConfig.currSettingLangKey"
     >
       <a-radio-button v-show="!storeConfig.IsUseI18n" :value="StringGlobalLang">
         <q-tooltip
@@ -33,8 +33,8 @@ import { ToastInfo } from "@/utils/Toast";
 const storeConfig = useVpconfigStore();
 const emits = defineEmits(["changeLang"]);
 const langChange = () => {
-  storeConfig.changeCurrLangConfig(storeConfig.currSettingLang);
-  if (storeConfig.currSettingLang == StringGlobalLang) {
+  storeConfig.changeCurrLangConfig(storeConfig.currSettingLangKey);
+  if (storeConfig.currSettingLangKey == StringGlobalLang) {
     ToastInfo("已切换到global配置，global配置仅对单语言模式生效");
   }
   emits("changeLang");

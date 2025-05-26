@@ -20,7 +20,7 @@
         @confirm="changeSidebarConfirmModal()"
       >
         <q-tooltip class="text-2xl">
-          <span class="text-cyan-500"> {{ storeConfig.currSettingLang }}</span
+          <span class="text-cyan-500"> {{ storeConfig.currSettingLangKey }}</span
           >{{ lang("pageSidebar.current") }}
           <span class="text-cyan-500">{{
             isUseManySidebars
@@ -177,9 +177,7 @@ onMounted(() => {
 });
 
 const checkCurrIsUseManySidebars = () => {
-  isUseManySidebars.value = !Array.isArray(
-    storeConfig.currLangConfig["themeConfig"]["sidebar"],
-  );
+  return true;
 };
 const hasSubSidebarDir = computed(() => {
   return currSidebarSubDirList.value && currSidebarSubDirList.value.length > 0;
@@ -198,12 +196,12 @@ const setCurrTreeData = async () => {
     //多侧栏模式
     await getSubSidebarDirList(); //获取本地侧栏目录列表
     sidebarTree.value =
-      storeConfig.currLangConfig["themeConfig"]["sidebar"][
+      storeConfig.currLangConfig.themeConfig["sidebar"][
         currSelectSidebarKey.value
       ];
   } else {
     //单侧栏模式
-    sidebarTree.value = storeConfig.currLangConfig["themeConfig"]["sidebar"];
+    sidebarTree.value = storeConfig.currLangConfig.themeConfig["sidebar"];
   }
 
   if (IsEmptyValue(sidebarTree.value)) {
@@ -220,7 +218,7 @@ const recognitionSidebar = async () => {
 
   let baseDir = await PathJoin([
     storeConfig.srcDir,
-    storeConfig.currSettingLang,
+    storeConfig.currSettingLangKey,
   ]);
 
   if (isUseManySidebars.value) {
@@ -272,11 +270,11 @@ const langChange = () => {
 const changeSidebarConfirmModal = () => {
   if (isUseManySidebars.value) {
     console.log("当前为多侧栏，即将切换成单侧栏 -- console.log");
-    storeConfig.currLangConfig["themeConfig"]["sidebar"] = [];
+    // storeConfig.currLangConfig.themeConfig["sidebar"] = [];
     isUseManySidebars.value = false;
   } else {
     console.log("当前为单侧栏，即将切换成多侧栏 -- console.log");
-    storeConfig.currLangConfig["themeConfig"]["sidebar"] = {};
+    // storeConfig.currLangConfig.themeConfig["sidebar"] = {};
     isUseManySidebars.value = true;
   }
   setCurrTreeData();
@@ -300,7 +298,7 @@ const getSubSidebarDirList = async () => {
     .filter((item) => item && !item.title.endsWith(".md"))
     .map((item) => {
       if (storeConfig.IsUseI18n) {
-        return `/${storeConfig.currSettingLang}/${item.title}/`;
+        return `/${storeConfig.currSettingLangKey}/${item.title}/`;
       } else {
         return `/${item.title}/`;
       }
@@ -382,11 +380,11 @@ const saveSidebar = () => {
       ToastError("请选择操作的侧栏");
       return;
     }
-    storeConfig.currLangConfig["themeConfig"]["sidebar"][
+    storeConfig.currLangConfig.themeConfig["sidebar"][
       currSelectSidebarKey.value
     ] = formatData;
   } else {
-    storeConfig.currLangConfig["themeConfig"]["sidebar"] = formatData;
+    storeConfig.currLangConfig.themeConfig["sidebar"] = formatData;
   }
 
   storeConfig.saveConfig();
