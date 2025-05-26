@@ -14,13 +14,14 @@
       >
         <setting-base></setting-base>
       </a-tab-pane>
-      <a-tab-pane
+      <!-- 暂时不允许切换编辑器 切换成vditor不显示 有兴趣可以再研究研究 -->
+      <!-- <a-tab-pane
         key="2"
         :tab="lang('pageSetting.settingEditor.title')"
         :style="StyleNoDrag"
       >
         <setting-editor></setting-editor>
-      </a-tab-pane>
+      </a-tab-pane> -->
     </a-tabs>
   </div>
 </template>

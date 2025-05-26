@@ -27,18 +27,7 @@
     ></config-radio>
   </div>
 
-  <div class="ml-5 mt-5">
-    <config-radio
-      :config-key="ConfigKeyVditorCdn"
-      :label="lang('pageSetting.settingBase.editorCdn.label')"
-      :tooltip="lang('pageSetting.settingBase.editorCdn.tooltip')"
-      :items="[
-        { label: 'unpkg', value: VditorCdnUnpkg },
-        { label: 'zstatic', value: VditorCdnZstatic },
-        { label: 'jsdeliver', value: VditorCdnJsdelivr },
-      ]"
-    ></config-radio>
-  </div>
+
   <div class="ml-5 mt-5">
     <config-radio
       :config-key="ConfigKeySysUpdateSource"
@@ -72,7 +61,6 @@ import {
   ConfigKeyFrontMatterSaveType,
   ConfigKeyIsStartup,
   ConfigKeySysUpdateSource,
-  ConfigKeyVditorCdn,
 } from "@/configs/appConfigKey";
 import { useLayoutStore } from "@/store/layout";
 import {
@@ -84,11 +72,7 @@ import IconBtn from "@/components/iconBtn.vue";
 import ConfigRadio from "@/components/configRadio.vue";
 import ConfigSwitch from "@/components/configSwitch.vue";
 import { UpdateNewVersion } from "../../../wailsjs/go/services/UpdateService";
-import {
-  VditorCdnJsdelivr,
-  VditorCdnUnpkg,
-  VditorCdnZstatic,
-} from "@/constant/enums/cdn";
+
 import { lang } from "@/utils/language";
 import ChangeLanguage from "@/components/changeLanguage.vue";
 

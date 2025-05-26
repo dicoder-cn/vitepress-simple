@@ -8,36 +8,43 @@
   ></div>
 
   <empty-project></empty-project>
-  <div
-    v-if="
-      !isEmptyArray(storeIndex.articleTreeData) && !storeEditor.isOpenArticle
-    "
-  >
+  <div v-show="!storeEditor.isOpenArticle">
     <a-empty :description="lang('pageIndex.noSelectedArticle')" />
   </div>
 </template>
 <script lang="ts" setup>
-import { ref, onMounted, nextTick } from "vue";
+import { ref, onMounted, nextTick, watch } from "vue";
 import Vditor from "vditor";
 import "vditor/dist/index.css";
-import { useIndexStore } from "../../store";
 import { getDefaultVtitorOptions } from "@/configs/vditor";
-import { isEmptyArray } from "@/utils/array";
+
 import EmptyProject from "@/components/emptyProject.vue";
 import { lang } from "@/utils/language";
 import { useEditorStore } from "@/store/editor";
 
 const storeEditor = useEditorStore();
-const storeIndex = useIndexStore();
+
 
 const vditor = ref<Vditor>();
 
 onMounted(() => {
   nextTick(async () => {
     let opts = await getDefaultVtitorOptions();
+    opts.after = () => {
+      vditor.value?.setValue(storeEditor.currArticle.mdContent);
+    };
     vditor.value = new Vditor("vditor", opts);
   });
 });
+
+watch(
+  () => storeEditor.currArticle.mdContent,
+  (newVal) => {
+    if (vditor.value) {
+      vditor.value.setValue(newVal);
+    }
+  },
+);
 </script>
 <style scoped>
 a {
