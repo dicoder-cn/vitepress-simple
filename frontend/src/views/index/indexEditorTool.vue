@@ -5,25 +5,37 @@
     :style="StyleNoDrag"
   >
     <!-- 左侧文章列表 -->
-    <div class="flex-1 flex items-center ">
-      <div class="flex items-center hide-scrollbar overflow-x-auto" style="max-width: 60%; padding-right: 1px;">
-        <template v-for="(article, index) in storeEditor.getArticleContents" :key="article.path">
-          <div 
+    <div class="flex-1 flex items-center">
+      <div
+        class="flex items-center hide-scrollbar overflow-x-auto"
+        style="max-width: 60%; padding-right: 1px"
+      >
+        <template
+          v-for="(article, index) in storeEditor.getArticleContents"
+          :key="article.path"
+        >
+          <div
             class="tab-item flex items-center px-3 py-1.5 mr-1 cursor-pointer transition-all duration-200 group relative"
             :class="{
-              'bg-white  text-gray-800 border border-gray-200 -mb-px z-10 pr-8': index === storeEditor.getCurrArticleIndex,
-              'bg-gray-100/80 text-gray-600 border-r border-b border-gray-200 hover:bg-gray-50 pr-8': index !== storeEditor.getCurrArticleIndex
+              'bg-white  text-gray-800 border border-gray-200 -mb-px z-10 pr-8':
+                index === storeEditor.getCurrArticleIndex,
+              'bg-gray-100/80 text-gray-600 border-r border-b border-gray-200 hover:bg-gray-50 pr-8':
+                index !== storeEditor.getCurrArticleIndex,
             }"
             @click="storeEditor.changeCurrArticleIndex(index)"
           >
             <a-tooltip>
-              <template #title>{{ article.path.replace(storeConfig.baseDir, '') }}</template>
+              <template #title>{{
+                article.path.replace(storeConfig.baseDir, "")
+              }}</template>
               <span class="truncate max-w-[120px]">
-                <span v-if="!article.isSave" class="text-gray-500 ">*</span>
-                {{ (article.path.split('/').pop() || '').replace('.md', '') }}
+                <span v-if="!article.isSave" class="text-gray-500">*</span>
+                {{ (article.path.split("/").pop() || "").replace(".md", "") }}
               </span>
             </a-tooltip>
-            <div class="absolute right-0 top-0 bottom-0 w-8 flex items-center justify-center">
+            <div
+              class="absolute right-0 top-0 bottom-0 w-8 flex items-center justify-center"
+            >
               <icon-park
                 class="opacity-0 group-hover:opacity-100 hover:text-gray-700 transition-all duration-200"
                 @click.stop="storeEditor.closeArticle(article.path)"
@@ -36,19 +48,23 @@
       </div>
     </div>
 
-
-        <!-- 右侧工具栏 -->
+    <!-- 右侧工具栏 -->
     <div class="flex items-center justify-end space-x-2 mr-2">
       <!--    终端-->
       <index-editor-tool-shell></index-editor-tool-shell>
-      
+
+      <!-- 侧边栏设置 -->
+      <index-editor-tool-sidebar></index-editor-tool-sidebar>
+
       <!-- 隐藏或关闭右侧栏-->
       <a-tooltip class="cursor-pointer">
-        <template #title>{{
-          storeLayout.showEditorView
-            ? lang("common.hide")
-            : lang("common.show")
-        }}{{ lang("pageIndex.pageProperties") }}</template>
+        <template #title
+          >{{
+            storeLayout.showEditorView
+              ? lang("common.hide")
+              : lang("common.show")
+          }}{{ lang("pageIndex.pageProperties") }}</template
+        >
         <icon-park
           class="select-none"
           @click="storeLayout.setEditorViewShow(false)"
@@ -88,8 +104,6 @@
     <div class="text-gray-400 flex-shrink-0 mx-4">
       {{ lang("pageIndex.currentProject") }}{{ storeConfig.baseDir }}
     </div>
-
-
   </div>
 </template>
 
@@ -101,6 +115,7 @@ import { useVpconfigStore } from "@/store/vpconfig";
 import { useEditorStore } from "@/store/editor";
 import { lang } from "../../utils/language";
 import IndexEditorToolShell from "@/views/index/indexEditorToolShell.vue";
+import IndexEditorToolSidebar from "@/views/index/indexEditorToolSidebar.vue";
 import { StyleNoDrag } from "@/configs/cnts";
 
 const storeIndex = useIndexStore();
@@ -132,11 +147,11 @@ const handleSave = () => {
 }
 
 .hide-scrollbar {
-  scrollbar-width: none;  /* Firefox */
-  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
 }
 
 .hide-scrollbar::-webkit-scrollbar {
-  display: none;  /* Chrome, Safari and Opera */
+  display: none; /* Chrome, Safari and Opera */
 }
 </style>

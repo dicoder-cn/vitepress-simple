@@ -162,8 +162,6 @@ import { IsEmptyValue } from "@/utils/utils";
 import EmptyProject from "@/components/emptyProject.vue";
 import { lang } from "@/utils/language";
 import TreeNode = dto.TreeNode;
-
-const splitterModel = ref(36);
 const storeConfig = useVpconfigStore();
 const storeIndex = useIndexStore();
 const sidebarTree = ref<VpNav[]>([]); //当前指向的侧栏

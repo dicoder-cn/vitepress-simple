@@ -14,14 +14,12 @@ func TestCopy(t *testing.T) {
 
 func TestParseDir(t *testing.T) {
 	parser := docparse.NewParseService()
-	rootPath := "/Volumes/DK512/Home/dicoder/projects/test/VPSimpleProject/docs" // 替换为你的目标目录路径
-	matter, err := parser.ParseDocsFontMatter(rootPath)
+	rootPath := "/Users/ddd-mac/SyncData/Blog/docs" // 替换为你的目标目录路径
+
+	treeData, err := parser.ParseToTree(rootPath)
 	if err != nil {
+		fmt.Println(err.Error())
 		return
 	}
-
-	for path, fm := range matter {
-		fmt.Printf("File: %v\n", path)
-		fmt.Printf("Data: %v\n", fm)
-	}
+	fmt.Println(treeData)
 }
