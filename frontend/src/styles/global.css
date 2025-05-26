@@ -29,4 +29,12 @@
 
 .hide-scrollbar::-webkit-scrollbar {
   display: none;  /* Chrome, Safari and Opera */
+}
+
+/* 文本不可选中 */
+.no-select {
+  -webkit-user-select: none;  /* Safari */
+  -moz-user-select: none;     /* Firefox */
+  -ms-user-select: none;      /* IE10+/Edge */
+  user-select: none;          /* Standard */
 } 

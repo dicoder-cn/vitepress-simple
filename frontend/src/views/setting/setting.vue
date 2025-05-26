@@ -28,7 +28,6 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import SettingBase from "@/views/setting/settingBase.vue";
-import SettingEditor from "@/views/setting/settingEditor.vue";
 import { lang } from "@/utils/language";
 import { StyleNoDrag } from "@/configs/cnts";
 

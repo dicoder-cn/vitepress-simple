@@ -7,9 +7,6 @@ import { nodePolyfills } from "vite-plugin-node-polyfills";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  build: {
-    target: "es2022", // 改为支持 top-level await 的版本
-  },
   plugins: [
     vue({ template: { transformAssetUrls } }),
     vueJsx(),

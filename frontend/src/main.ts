@@ -33,16 +33,16 @@ import "@quasar/extras/material-icons/material-icons.css";
 // Import Quasar css
 import "quasar/src/css/index.sass";
 import { InstallCodemirro } from "codemirror-editor-vue3";
-import { AppConfig } from "./store/appconfig";
-
 const app = createApp(App);
 
 app.use(createPinia());
 app.use(router);
 app.use(i18n);
+
 app.use(Quasar, {
   plugins: {}, // import Quasar plugins and add here
 });
+
 //局部注册Antd
 app
   .use(Button)
