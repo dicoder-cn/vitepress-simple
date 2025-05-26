@@ -8,7 +8,7 @@ import IndexArticleTree from "./indexArticleTree.vue";
   <index-article-tool></index-article-tool>
 
   <!--  目录树-->
-  <index-article-tree></index-article-tree>
+  <index-article-tree class="text-no-select"></index-article-tree>
 </template>
 
 <style scoped></style>
