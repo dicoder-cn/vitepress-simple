@@ -41,16 +41,16 @@
     <!--    文档build-->
     <sim-input :is-full-width="true" v-model="cmdDocsBuild" :tooltip="lang('pageIndex.shell.tips.docsBuild')" :label="lang('pageIndex.shell.labels.docsBuild')"></sim-input>
     <!--    npm install-->
-    <sim-input :is-full-width="true" v-model="cmdNpmInstall" :tooltip="lang('pageIndex.shell.default') + defaultVpSimple.cmdNpmInstall" label="npm install"></sim-input>
+    <sim-input :is-full-width="true" v-model="cmdNpmInstall" :tooltip="lang('pageIndex.shell.default')" label="npm install"></sim-input>
     <!--    git pull-->
-    <sim-input :is-full-width="true" v-model="cmdGitPull" :tooltip="lang('pageIndex.shell.default') + defaultVpSimple.cmdGitPull" label="git pull"></sim-input>
+    <sim-input :is-full-width="true" v-model="cmdGitPull" :tooltip="lang('pageIndex.shell.default')" label="git pull"></sim-input>
     <!--    git add-->
-    <sim-input :is-full-width="true" v-model="cmdGitAdd" :tooltip="lang('pageIndex.shell.default') + defaultVpSimple.cmdGitAdd" label="git add"></sim-input>
-    <sim-input :is-full-width="true" v-model="cmdGitCommit" :tooltip="lang('pageIndex.shell.default') + defaultVpSimple.cmdGitCommit" label="git commit"></sim-input>
+    <sim-input :is-full-width="true" v-model="cmdGitAdd" :tooltip="lang('pageIndex.shell.default')" label="git add"></sim-input>
+    <sim-input :is-full-width="true" v-model="cmdGitCommit" :tooltip="lang('pageIndex.shell.default')" label="git commit"></sim-input>
     <!--    git push-->
-    <sim-input :is-full-width="true" v-model="cmdGitPush" :tooltip="lang('pageIndex.shell.default') + defaultVpSimple.cmdGitPush" label="git push"></sim-input>
+    <sim-input :is-full-width="true" v-model="cmdGitPush" :tooltip="lang('pageIndex.shell.default')" label="git push"></sim-input>
     <!--    git init-->
-    <sim-input :is-full-width="true" v-model="cmdGitInit" :tooltip="lang('pageIndex.shell.default') + defaultVpSimple.cmdGitInit" label="git init"></sim-input>
+    <sim-input :is-full-width="true" v-model="cmdGitInit" :tooltip="lang('pageIndex.shell.default')" label="git init"></sim-input>
   </a-modal>
 
   <!--  弹出层运行日志-->
