@@ -15,6 +15,7 @@ import { isEmptyArray } from "@/utils/array";
 import { StartStaticServer } from "../../wailsjs/go/services/StaticServer";
 import { useShellStore } from "@/store/shell"; // 浏览器环境（需确保构建工具已正确处理）
 import { AppConfig } from "./appconfig";
+import { StringRootLang } from "@/configs/cnts";
 
 //定义首页的数据类型
 export interface indexStore {
@@ -58,6 +59,7 @@ export const useIndexStore = defineStore("index", {
 
       if (await cfg.ExistsProjectDir()) {
         await cfg.readVpConfig(); //读取配置 以及组装路径
+        cfg.changeCurrLang(StringRootLang); //切换当前语言为默认语言
         this.articleTreeData = await ParseTreeData(cfg.srcDir);
       }
     },

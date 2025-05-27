@@ -6,7 +6,7 @@ export type VpConfig = Partial<UserConfig<DefaultTheme.Config>> & {
   vpsimple?: VPSimpleConfig;
 };
 
-export type VpConfigLang = Partial<LocaleSpecificConfig<DefaultTheme.Config> & { label: string; link?: string }>;
+export type VpConfigLang = LocaleSpecificConfig<DefaultTheme.Config> & { label: string; link?: string };
 export interface VPSimpleConfig {
   shellBaseDir: string;
   gitBaseDir: string; // git  仓库根目录

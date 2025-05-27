@@ -25,7 +25,7 @@ export const useVpconfigStore = defineStore("vpconfig", {
     fullSrcDir: "", //doc目录（绝对路径,已经过join）
     vpConfig: null, //所有语言的公共配置
     currLangConfigKey: "root", //root表示根目录，不使用多语言的时候使用root
-    currLangConfig: {} //当前正在设置的语言
+    currLangConfig: {} as VpConfigLang //当前正在设置的语言
   }),
   actions: {
     async formatPath() {
@@ -50,34 +50,40 @@ export const useVpconfigStore = defineStore("vpconfig", {
       }
       this.vpConfig = configData as any;
       this.srcDir = configData.srcDir ?? "";
-
       this.fullSrcDir = await PathJoin([this.baseDir, this.srcDir]);
       //判断如果原目录不存在则自动创建
       if (!(await PathExists(this.fullSrcDir))) {
         await CreateDir(this.fullSrcDir);
         ToastInfo(`检测到源目录不存在，已自动创建源目录:${this.fullSrcDir}`);
       }
-      this.changeCurrLang(StringRootLang);
     },
     //切换当前语言配置
-    changeCurrLang(key: string) {
+    changeCurrLang(key: string): VpConfigLang {
       this.currLangConfigKey = key;
+      this.currLangConfig = this.getLangConfig(key);
+      return this.currLangConfig;
+    },
+    getLangConfig(key: string): VpConfigLang {
       const langConfig = this.vpConfig?.locales?.[key];
       if (langConfig) {
-        this.currLangConfig = langConfig;
+        return langConfig;
       } else {
-        this.addLang(key, key);
+        return this.addLang(key, key);
       }
     },
     //新增一个语言
-    addLang(key: string, label: string) {
+    addLang(key: string, label: string): VpConfigLang {
       if (!this.vpConfig) {
         this.vpConfig = {};
       }
       if (!this.vpConfig.locales) {
         this.vpConfig.locales = {};
       }
-      this.vpConfig.locales[key] = { lang: key, label } as any;
+      const langConfig: VpConfigLang = { lang: key, label: label || key };
+      if (this.vpConfig.locales) {
+        this.vpConfig.locales[key] = langConfig;
+      }
+      return langConfig;
     },
     //删除一个语言
     removeLang(key: string) {

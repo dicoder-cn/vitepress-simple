@@ -28,13 +28,16 @@ export const useShellStore = defineStore("shell", {
   actions: {
     loadVpSimpleConfig() {
       const storeConfig = useVpconfigStore();
-      if (IsEmptyValue(storeConfig.vpConfig["vpsimple"]["shellBaseDir"])) {
-        storeConfig.vpConfig["vpsimple"]["shellBaseDir"] = storeConfig.baseDir;
+      if (storeConfig.vpConfig?.vpsimple) {
+        storeConfig.vpConfig.vpsimple.shellBaseDir = storeConfig.baseDir;
       }
-      if (IsEmptyValue(storeConfig.vpConfig["vpsimple"]["gitBaseDir"])) {
-        storeConfig.vpConfig["vpsimple"]["gitBaseDir"] = storeConfig.baseDir;
+      if (storeConfig.vpConfig?.vpsimple) {
+        storeConfig.vpConfig.vpsimple.gitBaseDir = storeConfig.baseDir;
       }
-      this.vpsimpleConfig = storeConfig.vpConfig["vpsimple"];
+      if (storeConfig.vpConfig?.vpsimple) {
+        this.vpsimpleConfig = storeConfig.vpConfig.vpsimple;
+      }
+     
     },
     async createShellAndRun(baseDir: string, cmd: string, isAlone: boolean) {
       const shellIndex = await CreateShell();
