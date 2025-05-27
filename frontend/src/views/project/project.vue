@@ -24,6 +24,13 @@
           <a-tab-pane key="1-2" :tab="lang('pageProject.settingLang.title')">
             <setting-lang></setting-lang>
           </a-tab-pane>
+  
+          <a-tab-pane key="1-4" :tab="lang('pageProject.settingSocial.title')">
+            <setting-social></setting-social>
+          </a-tab-pane>
+          <a-tab-pane key="1-5" :tab="lang('pageProject.settingSearch.title')">
+            <setting-search></setting-search>
+          </a-tab-pane>
           <a-tab-pane key="1-3" :tab="lang('pageProject.settingRewrite.title')">
             <dy-add-k-v
               :add-btn-text="lang('pageProject.settingRewrite.addRewriteRule')"
@@ -37,18 +44,13 @@
               }"
             ></dy-add-k-v>
             <hr class="my-2" />
+            <!-- 路由重写 -->
             <div class="flex justify-center">
               <a-button @click="savePageConfig" class="bg-blue-600 hover:bg-blue-500 text-white flex justify-center items-center">
                 <icon-park class="mr-1" strokeLinejoin="bevel" theme="outline" type="save" />
                 {{ lang("common.saveConfig") }}
               </a-button>
             </div>
-          </a-tab-pane>
-          <a-tab-pane key="1-4" :tab="lang('pageProject.settingSocial.title')">
-            <setting-social></setting-social>
-          </a-tab-pane>
-          <a-tab-pane key="1-5" :tab="lang('pageProject.settingSearch.title')">
-            <setting-search></setting-search>
           </a-tab-pane>
         </a-tabs>
       </div>
