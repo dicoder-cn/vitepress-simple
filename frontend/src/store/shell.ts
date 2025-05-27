@@ -3,16 +3,11 @@ import { defineStore } from "pinia";
 import { ToastCheck } from "@/utils/Toast";
 import AnsiToHtml from "ansi-to-html";
 import { IsEmptyValue } from "@/utils/utils";
-import { VPSimpleConfig } from "@/types/vpsimpleConfig";
-import { useVpconfigStore } from "@/store/vpconfig";
-
 import { CreateShell, RunCmd, RunCmdBySystem, StopShell } from "../../wailsjs/go/shell/ShellManager";
 import { shell } from "../../wailsjs/go/models";
 import NotifyShellData = shell.NotifyShellData;
-//这是一个简单的推荐store案例，可以在这里定义你的状态
-//新建pinia时把shell全局替换成你的store名字
+
 export interface shellStore {
-  vpsimpleConfig: VPSimpleConfig;
   // currShellIndex: number;
   messages: Record<number, string>;
   errors: Record<number, string>;
@@ -20,25 +15,11 @@ export interface shellStore {
 
 export const useShellStore = defineStore("shell", {
   state: (): shellStore => ({
-    // currShellIndex: 0,
-    vpsimpleConfig: {} as VPSimpleConfig,
     messages: {},
     errors: {}
   }),
   actions: {
-    loadVpSimpleConfig() {
-      const storeConfig = useVpconfigStore();
-      if (storeConfig.vpConfig?.vpsimple) {
-        storeConfig.vpConfig.vpsimple.shellBaseDir = storeConfig.baseDir;
-      }
-      if (storeConfig.vpConfig?.vpsimple) {
-        storeConfig.vpConfig.vpsimple.gitBaseDir = storeConfig.baseDir;
-      }
-      if (storeConfig.vpConfig?.vpsimple) {
-        this.vpsimpleConfig = storeConfig.vpConfig.vpsimple;
-      }
-     
-    },
+    loadVpSimpleConfig() {},
     async createShellAndRun(baseDir: string, cmd: string, isAlone: boolean) {
       const shellIndex = await CreateShell();
       if (!isAlone) {

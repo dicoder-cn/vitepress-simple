@@ -11,7 +11,16 @@ import {
   ConfigKeyVditorCdn,
   ConfigKeyLang,
   ConfigKeySysProgramIsOpen,
-  ConfigKeyEditorType
+  ConfigKeyEditorType,
+  ConfigKeyGitBaseDir,
+  ConfigKeyCmdDocsDev,
+  ConfigKeyCmdDocsBuild,
+  ConfigKeyCmdNpmInstall,
+  ConfigKeyCmdGitInit,
+  ConfigKeyCmdGitPull,
+  ConfigKeyCmdGitAdd,
+  ConfigKeyCmdGitCommit,
+  ConfigKeyCmdGitPush
 } from "@/configs/appConfigKey";
 
 export class editorType {
@@ -33,5 +42,14 @@ export const appConfigDefault: Record<string, any> = {
   [ConfigKeyVditorCdn]: "zstatic", //Vditor CDN
   [ConfigKeyLang]: "zh-Hans", //语言
   [ConfigKeySysProgramIsOpen]: "no", //程序是否打开
-  [ConfigKeyEditorType]: editorType.MdEditorV3 //默认编辑器
+  [ConfigKeyEditorType]: editorType.MdEditorV3, //默认编辑器
+  [ConfigKeyGitBaseDir]: "", //git运行目录
+  [ConfigKeyCmdDocsDev]: "npm run docs:dev", //启动文档开发服务
+  [ConfigKeyCmdDocsBuild]: "npm run docs:build", //打包文档
+  [ConfigKeyCmdNpmInstall]: "npm install", //启动文档服务
+  [ConfigKeyCmdGitInit]: "git init", //git init
+  [ConfigKeyCmdGitPull]: "git pull", //git pull
+  [ConfigKeyCmdGitAdd]: "git add .", //git add .
+  [ConfigKeyCmdGitCommit]: "git commit -m 'autoupdate'", //git commit
+  [ConfigKeyCmdGitPush]: "git push" //git push
 };

@@ -64,11 +64,31 @@ export const useVpconfigStore = defineStore("vpconfig", {
       return this.currLangConfig;
     },
     getLangConfig(key: string): VpConfigLang {
-      const langConfig = this.vpConfig?.locales?.[key];
+      if (!this.vpConfig) {
+        this.vpConfig = {};
+      }
+      if (!this.vpConfig.locales) {
+        this.vpConfig.locales = {};
+      }
+
+      const langConfig = this.vpConfig.locales[key];
       if (langConfig) {
+        // 确保返回的配置对象包含必要的结构
+        if (!langConfig.themeConfig) {
+          langConfig.themeConfig = {};
+          // 更新 vpConfig 中的值
+          this.vpConfig.locales[key] = langConfig;
+        }
         return langConfig;
       } else {
-        return this.addLang(key, key);
+        // 创建新的语言配置时也确保包含必要的结构
+        const newConfig = this.addLang(key, key);
+        if (!newConfig.themeConfig) {
+          newConfig.themeConfig = {};
+          // 更新 vpConfig 中的值
+          this.vpConfig.locales[key] = newConfig;
+        }
+        return newConfig;
       }
     },
     //新增一个语言
@@ -79,7 +99,11 @@ export const useVpconfigStore = defineStore("vpconfig", {
       if (!this.vpConfig.locales) {
         this.vpConfig.locales = {};
       }
-      const langConfig: VpConfigLang = { lang: key, label: label || key };
+      const langConfig: VpConfigLang = {
+        lang: key,
+        label: label || key,
+        themeConfig: {} // 初始化时添加 themeConfig
+      };
       if (this.vpConfig.locales) {
         this.vpConfig.locales[key] = langConfig;
       }
@@ -119,6 +143,8 @@ export const useVpconfigStore = defineStore("vpconfig", {
     },
     //保存配置
     async saveConfig() {
+      console.log("this.vpConfig", this.vpConfig);
+      console.log("this.currlang key", this.currLangConfigKey, this.currLangConfig);
       const res = await SaveConfig(JSON.stringify(this.vpConfig, null, 2));
       ToastCheck(res);
     }

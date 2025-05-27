@@ -34,23 +34,23 @@
     v-model:open="isShowShellEdit"
     :title="lang('pageIndex.shell.config')">
     <!--    运行的的起始位置-->
-    <sim-input :is-full-width="true" v-model="storeShell.vpsimpleConfig.shellBaseDir" :tooltip="lang('pageIndex.shell.tips.runPath')" :label="lang('pageIndex.shell.labels.runPath')"></sim-input>
-    <sim-input :is-full-width="true" v-model="storeShell.vpsimpleConfig.gitBaseDir" :tooltip="lang('pageIndex.shell.tips.gitPath')" :label="lang('pageIndex.shell.labels.gitPath')"></sim-input>
+    <sim-input :is-full-width="true" v-model="shellBaseDir" :tooltip="lang('pageIndex.shell.tips.runPath')" :label="lang('pageIndex.shell.labels.runPath')"></sim-input>
+    <sim-input :is-full-width="true" v-model="gitBaseDir" :tooltip="lang('pageIndex.shell.tips.gitPath')" :label="lang('pageIndex.shell.labels.gitPath')"></sim-input>
     <!--    文档dev-->
-    <sim-input :is-full-width="true" v-model="storeShell.vpsimpleConfig.cmdDocsDev" :tooltip="lang('pageIndex.shell.tips.docsDev')" :label="lang('pageIndex.shell.labels.docsDev')"></sim-input>
+    <sim-input :is-full-width="true" v-model="cmdDocsDev" :tooltip="lang('pageIndex.shell.tips.docsDev')" :label="lang('pageIndex.shell.labels.docsDev')"></sim-input>
     <!--    文档build-->
-    <sim-input :is-full-width="true" v-model="storeShell.vpsimpleConfig.cmdDocsBuild" :tooltip="lang('pageIndex.shell.tips.docsBuild')" :label="lang('pageIndex.shell.labels.docsBuild')"></sim-input>
+    <sim-input :is-full-width="true" v-model="cmdDocsBuild" :tooltip="lang('pageIndex.shell.tips.docsBuild')" :label="lang('pageIndex.shell.labels.docsBuild')"></sim-input>
     <!--    npm install-->
-    <sim-input :is-full-width="true" v-model="storeShell.vpsimpleConfig.cmdNpmInstall" :tooltip="lang('pageIndex.shell.default') + defaultVpSimple.cmdNpmInstall" label="npm install"></sim-input>
+    <sim-input :is-full-width="true" v-model="cmdNpmInstall" :tooltip="lang('pageIndex.shell.default') + defaultVpSimple.cmdNpmInstall" label="npm install"></sim-input>
     <!--    git pull-->
-    <sim-input :is-full-width="true" v-model="storeShell.vpsimpleConfig.cmdGitPull" :tooltip="lang('pageIndex.shell.default') + defaultVpSimple.cmdGitPull" label="git pull"></sim-input>
+    <sim-input :is-full-width="true" v-model="cmdGitPull" :tooltip="lang('pageIndex.shell.default') + defaultVpSimple.cmdGitPull" label="git pull"></sim-input>
     <!--    git add-->
-    <sim-input :is-full-width="true" v-model="storeShell.vpsimpleConfig.cmdGitAdd" :tooltip="lang('pageIndex.shell.default') + defaultVpSimple.cmdGitAdd" label="git add"></sim-input>
-    <sim-input :is-full-width="true" v-model="storeShell.vpsimpleConfig.cmdGitCommit" :tooltip="lang('pageIndex.shell.default') + defaultVpSimple.cmdGitCommit" label="git commit"></sim-input>
+    <sim-input :is-full-width="true" v-model="cmdGitAdd" :tooltip="lang('pageIndex.shell.default') + defaultVpSimple.cmdGitAdd" label="git add"></sim-input>
+    <sim-input :is-full-width="true" v-model="cmdGitCommit" :tooltip="lang('pageIndex.shell.default') + defaultVpSimple.cmdGitCommit" label="git commit"></sim-input>
     <!--    git push-->
-    <sim-input :is-full-width="true" v-model="storeShell.vpsimpleConfig.cmdGitPush" :tooltip="lang('pageIndex.shell.default') + defaultVpSimple.cmdGitPush" label="git push"></sim-input>
+    <sim-input :is-full-width="true" v-model="cmdGitPush" :tooltip="lang('pageIndex.shell.default') + defaultVpSimple.cmdGitPush" label="git push"></sim-input>
     <!--    git init-->
-    <sim-input :is-full-width="true" v-model="storeShell.vpsimpleConfig.cmdGitInit" :tooltip="lang('pageIndex.shell.default') + defaultVpSimple.cmdGitInit" label="git init"></sim-input>
+    <sim-input :is-full-width="true" v-model="cmdGitInit" :tooltip="lang('pageIndex.shell.default') + defaultVpSimple.cmdGitInit" label="git init"></sim-input>
   </a-modal>
 
   <!--  弹出层运行日志-->
@@ -63,21 +63,21 @@
     :title="lang('pageIndex.shell.runLog')">
     <!--    顶部终端列表tabs-->
     <a-radio-group v-model:value="currShellIndex" button-style="solid">
-      <a-radio-button v-for="(value, key) in storeShell.messages" :key="key" :value="Number(key)">shell{{ key }} </a-radio-button>
+      <a-radio-button v-for="(value, key) in messages" :key="key" :value="Number(key)">shell{{ key }} </a-radio-button>
     </a-radio-group>
 
     <!--    黑色背景的终端日志-->
-    <div v-show="Object.keys(storeShell.messages).length > 0" style="height: 45vh; overflow-y: auto" class="bg-black text-white mt-4 px-5 pt-5 pb-10">
-      <pre v-html="storeShell.messages[currShellIndex]"></pre>
+    <div v-show="Object.keys(messages).length > 0" style="height: 45vh; overflow-y: auto" class="bg-black text-white mt-4 px-5 pt-5 pb-10">
+      <pre v-html="messages[currShellIndex]"></pre>
     </div>
     <!--    底部按钮操作组-->
-    <div v-show="Object.keys(storeShell.messages).length > 0 && storeIndex.systemType != SystemWindows" class="flex mt-5 justify-end items-center">
+    <div v-show="Object.keys(messages).length > 0 && storeIndex.systemType != SystemWindows" class="flex mt-5 justify-end items-center">
       <!--          <a-button class="mx-2 bg-orange-200">移除当前终端</a-button>-->
-      <a-button @click="storeShell.stopCmd(currShellIndex)" class="mx-2 bg-red-200">中断 </a-button>
+      <a-button @click="shellService.stopCmd(currShellIndex)" class="mx-2 bg-red-200">中断 </a-button>
     </div>
 
     <!--    空终端-->
-    <div v-show="Object.keys(storeShell.messages).length == 0">
+    <div v-show="Object.keys(messages).length == 0">
       <a-empty :description="lang('pageIndex.shell.noRunTerminal')"></a-empty>
     </div>
   </a-modal>
@@ -93,23 +93,38 @@ import { IsEmptyValue } from "@/utils/utils";
 import { useIndexStore } from "@/store";
 import { defaultVpSimple } from "@/configs/defaultVpSimple";
 
-import { useShellStore } from "@/store/shell";
 import { ToastError } from "@/utils/Toast";
 import { SystemWindows } from "@/constant/enums/system";
 import { StyleNoDrag } from "@/configs/cnts";
 import { lang } from "../../utils/language";
+import { AppConfig } from "@/store/appconfig";
+import { ConfigKeyCmdNpmInstall, ConfigKeyCmdDocsDev, ConfigKeyCmdDocsBuild, ConfigKeyCmdGitInit, ConfigKeyCmdGitAdd, ConfigKeyCmdGitCommit, ConfigKeyCmdGitPush, ConfigKeyCmdGitPull, ConfigKeyShellBaseDir, ConfigKeyGitBaseDir } from "@/configs/appConfigKey";
+import { shellService } from "@/services/shell";
 
 const storeIndex = useIndexStore();
 const storeLayout = useLayoutStore();
-const storeConfig = ref(useVpconfigStore());
-const storeShell = useShellStore();
+
 const currShellIndex = ref(0);
 const isShowShellEdit = ref(false);
 const isShowShellLog = ref(false);
 
+// 创建本地状态
+const shellBaseDir = ref("");
+const gitBaseDir = ref("");
+const cmdDocsDev = ref("");
+const cmdDocsBuild = ref("");
+const cmdNpmInstall = ref("");
+const cmdGitInit = ref("");
+const cmdGitPull = ref("");
+const cmdGitAdd = ref("");
+const cmdGitCommit = ref("");
+const cmdGitPush = ref("");
+
+// 创建消息状态
+const messages = ref<Record<number, string>>({});
+
 interface CmdItem {
   menuLabel: string;
-
   cmd: string;
   isAlone: boolean;
   isSystemShell: boolean;
@@ -117,10 +132,20 @@ interface CmdItem {
 
 const cmdList = ref<CmdItem[]>([]);
 
-// const vpsimpleConfig = ref<VPSimpleConfig>({} as VPSimpleConfig);
 onMounted(async () => {
   await storeIndex.loadTreeData();
-  storeShell.loadVpSimpleConfig();
+  // 从 AppConfig 加载配置值
+  shellBaseDir.value = AppConfig.getString(ConfigKeyShellBaseDir);
+  gitBaseDir.value = AppConfig.getString(ConfigKeyGitBaseDir);
+  cmdDocsDev.value = AppConfig.getString(ConfigKeyCmdDocsDev);
+  cmdDocsBuild.value = AppConfig.getString(ConfigKeyCmdDocsBuild);
+  cmdNpmInstall.value = AppConfig.getString(ConfigKeyCmdNpmInstall);
+  cmdGitInit.value = AppConfig.getString(ConfigKeyCmdGitInit);
+  cmdGitPull.value = AppConfig.getString(ConfigKeyCmdGitPull);
+  cmdGitAdd.value = AppConfig.getString(ConfigKeyCmdGitAdd);
+  cmdGitCommit.value = AppConfig.getString(ConfigKeyCmdGitCommit);
+  cmdGitPush.value = AppConfig.getString(ConfigKeyCmdGitPush);
+  
   setCmdList();
 });
 
@@ -128,65 +153,60 @@ const setCmdList = () => {
   cmdList.value = [
     {
       menuLabel: "npm install",
-      cmd: storeShell.vpsimpleConfig.cmdNpmInstall,
+      cmd: AppConfig.getString(ConfigKeyCmdNpmInstall),
       isAlone: false,
       isSystemShell: false
     },
     {
       menuLabel: "npm run docs:dev",
-      cmd: storeShell.vpsimpleConfig.cmdDocsDev,
+      cmd: AppConfig.getString(ConfigKeyCmdDocsDev),
       isAlone: true,
       isSystemShell: false
     },
     {
       menuLabel: "npm run docs:build",
-      cmd: storeShell.vpsimpleConfig.cmdDocsBuild,
+      cmd: AppConfig.getString(ConfigKeyCmdDocsBuild),
       isAlone: false,
       isSystemShell: false
     },
-
     {
       menuLabel: "git init",
-      cmd: storeShell.vpsimpleConfig.cmdGitInit,
+      cmd: AppConfig.getString(ConfigKeyCmdGitInit),
       isAlone: false,
       isSystemShell: false
     },
     {
       menuLabel: "git add",
-      cmd: storeShell.vpsimpleConfig.cmdGitAdd,
+      cmd: AppConfig.getString(ConfigKeyCmdGitAdd),
       isAlone: false,
       isSystemShell: false
     },
     {
       menuLabel: "git commit",
-      cmd: storeShell.vpsimpleConfig.cmdGitCommit,
+      cmd: AppConfig.getString(ConfigKeyCmdGitCommit),
       isAlone: false,
       isSystemShell: false
     },
     {
       menuLabel: "git push",
-      cmd: storeShell.vpsimpleConfig.cmdGitPush,
+      cmd: AppConfig.getString(ConfigKeyCmdGitPush),
       isAlone: false,
       isSystemShell: false
     },
-
     {
       menuLabel: "git pull",
-      cmd: storeShell.vpsimpleConfig.cmdGitPull,
+      cmd: AppConfig.getString(ConfigKeyCmdGitPull),
       isAlone: false,
       isSystemShell: false
     }
   ];
 };
-// 创建并运行
-//cmd
-//isAlone 是否单独创建一个终端(如果是则不显示日志)
-//isSystemShell 是否使用系统自带的终端
+
 const createAndRunCmd = async (index: number) => {
   const cmd = cmdList.value[index].cmd;
   const isAlone = cmdList.value[index].isAlone;
   const isSystemShell = cmdList.value[index].isSystemShell;
-  if (IsEmptyValue(storeShell.vpsimpleConfig.shellBaseDir)) {
+  if (IsEmptyValue(AppConfig.getString(ConfigKeyShellBaseDir))) {
     ToastError(lang("pageIndex.shell.runPathEmpty"));
     return;
   }
@@ -194,12 +214,12 @@ const createAndRunCmd = async (index: number) => {
     ToastError(lang("pageIndex.shell.cmdEmpty"));
     return;
   }
-  const cmdDir = cmd.trim().startsWith("git") ? storeShell.vpsimpleConfig.gitBaseDir : storeShell.vpsimpleConfig.shellBaseDir;
+  const cmdDir = cmd.trim().startsWith("git") ? AppConfig.getString(ConfigKeyGitBaseDir) : AppConfig.getString(ConfigKeyShellBaseDir);
 
   if (isSystemShell) {
-    currShellIndex.value = await storeShell.createSystemShellAndRun(cmdDir, cmd);
+    currShellIndex.value = await shellService.createSystemShellAndRun(cmdDir, cmd);
   } else {
-    currShellIndex.value = await storeShell.createShellAndRun(cmdDir, cmd, isAlone);
+    currShellIndex.value = await shellService.createShellAndRun(cmdDir, cmd, isAlone);
   }
   if (isAlone && storeIndex.systemType == SystemWindows) {
     isShowShellLog.value = false;
@@ -209,11 +229,17 @@ const createAndRunCmd = async (index: number) => {
 };
 
 const saveConfig = () => {
-  if (storeConfig.value.vpConfig) {
-  storeConfig.value.vpConfig.vpsimple = storeShell.vpsimpleConfig;
-}
+  AppConfig.set(ConfigKeyShellBaseDir, shellBaseDir.value);
+  AppConfig.set(ConfigKeyGitBaseDir, gitBaseDir.value);
+  AppConfig.set(ConfigKeyCmdDocsDev, cmdDocsDev.value);
+  AppConfig.set(ConfigKeyCmdDocsBuild, cmdDocsBuild.value);
+  AppConfig.set(ConfigKeyCmdNpmInstall, cmdNpmInstall.value);
+  AppConfig.set(ConfigKeyCmdGitInit, cmdGitInit.value);
+  AppConfig.set(ConfigKeyCmdGitPull, cmdGitPull.value);
+  AppConfig.set(ConfigKeyCmdGitAdd, cmdGitAdd.value);
+  AppConfig.set(ConfigKeyCmdGitCommit, cmdGitCommit.value);
+  AppConfig.set(ConfigKeyCmdGitPush, cmdGitPush.value);
   
-  storeConfig.value.saveConfig();
   setCmdList();
   isShowShellEdit.value = false;
 };

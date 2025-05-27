@@ -40,6 +40,20 @@ export const ConfigKeyLang = "sys.lang";
 // Shell 基础目录
 export const ConfigKeyShellBaseDir = "shell.base_dir";
 export const ConfigKeyEditorType = "editor.type";
+
+// Git 仓库根目录
+export const ConfigKeyGitBaseDir = "git.base_dir";
+
+// 命令相关配置
+export const ConfigKeyCmdDocsDev = "cmd.docs_dev";
+export const ConfigKeyCmdDocsBuild = "cmd.docs_build";
+export const ConfigKeyCmdNpmInstall = "cmd.npm_install";
+export const ConfigKeyCmdGitInit = "cmd.git_init";
+export const ConfigKeyCmdGitPull = "cmd.git_pull";
+export const ConfigKeyCmdGitAdd = "cmd.git_add";
+export const ConfigKeyCmdGitCommit = "cmd.git_commit";
+export const ConfigKeyCmdGitPush = "cmd.git_push";
+
 export const ConfigArray = [
   "project_dir",
   "is_startup",
@@ -54,5 +68,15 @@ export const ConfigArray = [
   "sys.project_static_dir_name",
   "vditor.cdn",
   "sys.lang",
-  "shell.base_dir"
+  "shell.base_dir",
+  "editor.type",
+  "git.base_dir",
+  "cmd.docs_dev",
+  "cmd.docs_build",
+  "cmd.npm_install",
+  "cmd.git_init",
+  "cmd.git_pull",
+  "cmd.git_add",
+  "cmd.git_commit",
+  "cmd.git_push"
 ];
