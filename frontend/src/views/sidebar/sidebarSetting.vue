@@ -1,69 +1,34 @@
 <template>
   <empty-project></empty-project>
-  <div
-    v-if="!storeIndex.IsEmptyProject"
-    class="mx-6 mt-4 text-xl"
-    :style="StyleNoDrag"
-  >
+  <div v-if="!storeIndex.IsEmptyProject" class="mx-6 mt-4 text-xl" :style="StyleNoDrag">
     <!--        语言选择-->
     <div class="flex justify-start items-center min-h-11 pb-1 ml-2 pr-2 border">
-      <select-setting-lang
-        @change-lang="langChange"
-        class="mt-1"
-      ></select-setting-lang>
+      <select-setting-lang @change-lang="langChange" class="mt-1"></select-setting-lang>
       <a-popconfirm
         class="ml-3 pt-1"
         :title="lang('pageSidebar.switchThemesTip')"
         :ok-text="lang('pageSidebar.confirmSwitchButtonOk')"
         :cancel-text="lang('pageSidebar.confirmSwitchButtonCancel')"
         :ok-button-props="{ class: 'bg-blue-6 00 text-white' }"
-        @confirm="changeSidebarConfirmModal()"
-      >
+        @confirm="changeSidebarConfirmModal()">
         <q-tooltip class="text-2xl">
           <span class="text-cyan-500"> {{ storeConfig.currSettingLangKey }}</span
           >{{ lang("pageSidebar.current") }}
-          <span class="text-cyan-500">{{
-            isUseManySidebars
-              ? lang("pageSidebar.multiSidebar")
-              : lang("pageSidebar.singleSidebar")
-          }}</span>
+          <span class="text-cyan-500">{{ isUseManySidebars ? lang("pageSidebar.multiSidebar") : lang("pageSidebar.singleSidebar") }}</span>
           {{ lang("pageSidebar.mode") }}，
-          <span class="text-red-500"
-            >{{ lang("pageSidebar.switchThemesTip")
-            }}{{
-              isUseManySidebars
-                ? lang("pageSidebar.singleSidebar")
-                : lang("pageSidebar.multiSidebar")
-            }}</span
-          >
+          <span class="text-red-500">{{ lang("pageSidebar.switchThemesTip") }}{{ isUseManySidebars ? lang("pageSidebar.singleSidebar") : lang("pageSidebar.multiSidebar") }}</span>
         </q-tooltip>
         <a-button class="cursor-pointer bg-green-100">
-          <icon-park
-            strokeLinejoin="bevel"
-            theme="outline"
-            class="pr-1"
-            type="switch-themes"
-          />
+          <icon-park strokeLinejoin="bevel" theme="outline" class="pr-1" type="switch-themes" />
         </a-button>
       </a-popconfirm>
     </div>
     <!--    多侧边栏选择-->
-    <div
-      class="flex pl-3 justify-between ml-2 items-center min-h-11 pb-2 border"
-      v-if="isUseManySidebars"
-    >
+    <div class="flex pl-3 justify-between ml-2 items-center min-h-11 pb-2 border" v-if="isUseManySidebars">
       <div>
         {{ lang("pageSidebar.chooseEditedSidebar") }}
-        <a-radio-group
-          class="mt-2"
-          @change="subSidebarChange"
-          v-model:value="currSelectSidebarKey"
-        >
-          <a-radio-button
-            v-for="(item, index) in currSidebarSubDirList"
-            :key="index"
-            :value="item"
-          >
+        <a-radio-group class="mt-2" @change="subSidebarChange" v-model:value="currSelectSidebarKey">
+          <a-radio-button v-for="(item, index) in currSidebarSubDirList" :key="index" :value="item">
             <q-tooltip
               >{{ lang("pageSidebar.whenRouteInTip") }} ‘{{ item }}’
               {{ lang("pageSidebar.whenRouteInTip2") }}
@@ -83,16 +48,8 @@
     <!--        顶部操作按钮栏目-->
     <div class="mt-4 flex justify-start">
       <!--      添加顶级侧栏-->
-      <a-button
-        class="bg-blue-200 mx-2 flex justify-center items-center hover:bg-blue-100"
-        @click="addTopSidebar()"
-      >
-        <icon-park
-          class="mr-1"
-          strokeLinejoin="bevel"
-          theme="outline"
-          type="add-one"
-        />
+      <a-button class="bg-blue-200 mx-2 flex justify-center items-center hover:bg-blue-100" @click="addTopSidebar()">
+        <icon-park class="mr-1" strokeLinejoin="bevel" theme="outline" type="add-one" />
         {{ lang("pageSidebar.addTopSidebar") }}
       </a-button>
       <!--    自动识别侧栏-->
@@ -102,47 +59,22 @@
           :ok-text="lang('common.know')"
           :cancel-text="lang('common.cancel')"
           :ok-button-props="{ class: 'bg-blue-500 text-white' }"
-          @confirm="recognitionSidebar()"
-        >
-          <q-tooltip
-            >{{ lang("pageSidebar.autoRecognize") }}{{ storeConfig.SrcLangDir
-            }}{{ lang("pageSidebar.sidebarData") }}
-          </q-tooltip>
-          <a-button
-            class="bg-blue-500 hover:bg-blue-600 text-white flex justify-center items-center"
-            dense
-          >
-            <icon-park
-              class="mr-1"
-              strokeLinejoin="bevel"
-              theme="outline"
-              type="scanning"
-            />
+          @confirm="recognitionSidebar()">
+          <q-tooltip>{{ lang("pageSidebar.autoRecognize") }}{{ storeConfig.SrcLangDir }}{{ lang("pageSidebar.sidebarData") }} </q-tooltip>
+          <a-button class="bg-blue-500 hover:bg-blue-600 text-white flex justify-center items-center" dense>
+            <icon-park class="mr-1" strokeLinejoin="bevel" theme="outline" type="scanning" />
             {{ lang("pageSidebar.autoRecognizeSidebar") }}
           </a-button>
         </a-popconfirm>
       </div>
       <!--      保存到配置文件-->
-      <a-button
-        @click="saveSidebar()"
-        class="bg-blue-600 hover:bg-blue-500 text-white flex justify-center items-center"
-      >
-        <icon-park
-          class="mr-1"
-          strokeLinejoin="bevel"
-          theme="outline"
-          type="save"
-        />
+      <a-button @click="saveSidebar()" class="bg-blue-600 hover:bg-blue-500 text-white flex justify-center items-center">
+        <icon-park class="mr-1" strokeLinejoin="bevel" theme="outline" type="save" />
         {{ lang("pageSidebar.saveSidebar") }}
       </a-button>
     </div>
     <!--        动态添加侧栏-->
-    <dy-add-sidebar
-      class="ml-4"
-      ref="refSidebar"
-      :level="1"
-      v-model:sidebar-array="sidebarTree"
-    ></dy-add-sidebar>
+    <dy-add-sidebar class="ml-4" ref="refSidebar" :level="1" v-model:sidebar-array="sidebarTree"></dy-add-sidebar>
   </div>
 </template>
 <script setup lang="ts">
@@ -195,10 +127,7 @@ const setCurrTreeData = async () => {
   if (isUseManySidebars.value) {
     //多侧栏模式
     await getSubSidebarDirList(); //获取本地侧栏目录列表
-    sidebarTree.value =
-      storeConfig.currLangConfig.themeConfig["sidebar"][
-        currSelectSidebarKey.value
-      ];
+    sidebarTree.value = storeConfig.currLangConfig.themeConfig["sidebar"][currSelectSidebarKey.value];
   } else {
     //单侧栏模式
     sidebarTree.value = storeConfig.currLangConfig.themeConfig["sidebar"];
@@ -216,10 +145,7 @@ const recognitionSidebar = async () => {
     return;
   }
 
-  let baseDir = await PathJoin([
-    storeConfig.srcDir,
-    storeConfig.currSettingLangKey,
-  ]);
+  let baseDir = await PathJoin([storeConfig.srcDir, storeConfig.currSettingLangKey]);
 
   if (isUseManySidebars.value) {
     if (currSelectSidebarKey.value == "") {
@@ -232,21 +158,11 @@ const recognitionSidebar = async () => {
   let treeData = await ParseTreeData(baseDir); //[{key:"路径",title:""}]
   console.log(treeData, "treeData -- console.log");
   if (!treeData) {
-    ToastError(
-      `${lang("pageSidebar.recognitionWarning2")}${baseDir}${lang(
-        "pageSidebar.existFile",
-      )}`,
-    );
+    ToastError(`${lang("pageSidebar.recognitionWarning2")}${baseDir}${lang("pageSidebar.existFile")}`);
   } else {
     //开始转换数据,将属性转换成侧栏结构
-    let existingLinks: string[] = sidebarTree.value.flatMap((nav) =>
-      nav.items
-        ? [nav.link, ...nav.items.map((item) => item.link)]
-        : [nav.link],
-    );
-    existingLinks = existingLinks.filter(
-      (link) => link !== undefined && link.endsWith(".md"),
-    );
+    let existingLinks: string[] = sidebarTree.value.flatMap((nav) => (nav.items ? [nav.link, ...nav.items.map((item) => item.link)] : [nav.link]));
+    existingLinks = existingLinks.filter((link) => link !== undefined && link.endsWith(".md"));
 
     let list = convertTreeNodesToVpNavList(treeData, existingLinks);
     sidebarTree.value = list;
@@ -308,27 +224,21 @@ const getSubSidebarDirList = async () => {
     currSelectSidebarKey.value = currSidebarSubDirList.value[0];
   }
 };
-const convertTreeNodesToVpNavList = (
-  treeNodes: TreeNode[],
-  existingLinks: string[],
-): VpNav[] => {
+const convertTreeNodesToVpNavList = (treeNodes: TreeNode[], existingLinks: string[]): VpNav[] => {
   let vpNavList: VpNav[] = [];
   treeNodes.forEach((treeNode) => {
     let link = parseLink(treeNode.key);
     let text = parseText(treeNode.title);
     const vpNavItem: VpNav = {
       link: link,
-      text: text,
+      text: text
     };
 
     if (!existingLinks.includes(vpNavItem.link)) {
       existingLinks.push(vpNavItem.link);
       vpNavList.push(vpNavItem);
       if (treeNode.children) {
-        vpNavItem.items = convertTreeNodesToVpNavList(
-          treeNode.children,
-          existingLinks,
-        ).filter(Boolean);
+        vpNavItem.items = convertTreeNodesToVpNavList(treeNode.children, existingLinks).filter(Boolean);
       }
     }
   });
@@ -337,9 +247,7 @@ const convertTreeNodesToVpNavList = (
 
 //解析link
 const parseLink = (pathKey: string): string => {
-  let path = pathKey
-    .replaceAll(storeConfig.fullSrcDir, "")
-    .replaceAll("\\", "/");
+  let path = pathKey.replaceAll(storeConfig.fullSrcDir, "").replaceAll("\\", "/");
   return `${path}`.replaceAll(".md", "");
 };
 //解析Text
@@ -358,7 +266,7 @@ const formatNavData = (data: VpNav[]) => {
         text: subItem.text,
         link: subItem.items?.length ? undefined : subItem.link,
         // Recursive call to handle nested items
-        items: subItem.items?.length ? formatNavData(subItem.items) : undefined,
+        items: subItem.items?.length ? formatNavData(subItem.items) : undefined
       }));
     } else {
       // If 'items' doesn't exist or its length is 0
@@ -380,9 +288,7 @@ const saveSidebar = () => {
       ToastError("请选择操作的侧栏");
       return;
     }
-    storeConfig.currLangConfig.themeConfig["sidebar"][
-      currSelectSidebarKey.value
-    ] = formatData;
+    storeConfig.currLangConfig.themeConfig["sidebar"][currSelectSidebarKey.value] = formatData;
   } else {
     storeConfig.currLangConfig.themeConfig["sidebar"] = formatData;
   }

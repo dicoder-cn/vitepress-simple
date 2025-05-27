@@ -5,14 +5,14 @@
   </div>
 </template>
 <script setup lang="ts">
-  import { IconPark } from '@icon-park/vue-next/es/all'
+import { IconPark } from "@icon-park/vue-next/es/all";
 
-  interface Props {
-    title: string
-    icon: string
-  }
+interface Props {
+  title: string;
+  icon: string;
+}
 
-  const props = defineProps<Props>()
+const props = defineProps<Props>();
 </script>
 
 <style scoped></style>

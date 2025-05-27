@@ -14,16 +14,16 @@
   </div>
 </template>
 <script setup lang="ts">
-  const model = defineModel()
-  import { InfoCircleOutlined } from '@ant-design/icons-vue'
+const model = defineModel();
+import { InfoCircleOutlined } from "@ant-design/icons-vue";
 
-  interface Props {
-    tooltip: string
-    label: string
-    isFullWidth?: boolean
-  }
+interface Props {
+  tooltip: string;
+  label: string;
+  isFullWidth?: boolean;
+}
 
-  const props = defineProps<Props>()
+const props = defineProps<Props>();
 </script>
 
 <style scoped></style>

@@ -1,9 +1,9 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import vueJsx from '@vitejs/plugin-vue-jsx'
-import { quasar, transformAssetUrls } from '@quasar/vite-plugin'
-import { resolve } from 'path'
-import { nodePolyfills } from 'vite-plugin-node-polyfills'
+import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
+import vueJsx from "@vitejs/plugin-vue-jsx";
+import { quasar, transformAssetUrls } from "@quasar/vite-plugin";
+import { resolve } from "path";
+import { nodePolyfills } from "vite-plugin-node-polyfills";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -12,15 +12,15 @@ export default defineConfig({
     vueJsx(),
     nodePolyfills(),
     quasar({
-      sassVariables: 'src/quasar-variables.sass',
-    }),
+      sassVariables: "src/quasar-variables.sass"
+    })
   ],
   resolve: {
     alias: {
-      '@': resolve(__dirname, 'src'),
-      '~': resolve(__dirname, 'wails'),
-      wailsjs: resolve(__dirname, 'wailsjs'),
-    },
+      "@": resolve(__dirname, "src"),
+      "~": resolve(__dirname, "wails"),
+      wailsjs: resolve(__dirname, "wailsjs")
+    }
   },
   build: {
     rollupOptions: {
@@ -28,12 +28,12 @@ export default defineConfig({
       output: {
         entryFileNames: `assets/[name].js`,
         chunkFileNames: `assets/[name].js`,
-        assetFileNames: `assets/[name].[ext]`,
-      },
-    },
+        assetFileNames: `assets/[name].[ext]`
+      }
+    }
   },
   define: {
     // 启用生产环境构建下激活不匹配的详细警告
-    __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: 'true',
-  },
-})
+    __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: "true"
+  }
+});

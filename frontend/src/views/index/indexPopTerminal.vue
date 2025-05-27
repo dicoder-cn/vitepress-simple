@@ -1,6 +1,6 @@
 <script setup lang="ts">
-  import ConfigInput from '@/components/configInput.vue'
-  import { ConfigKeySysTerminalDir } from '@/configs/appConfigKey'
+import ConfigInput from "@/components/configInput.vue";
+import { ConfigKeySysTerminalDir } from "@/configs/appConfigKey";
 </script>
 
 <template>

@@ -1,37 +1,37 @@
-import { defineStore } from 'pinia'
-import { ConfigKeyLayoutNavBgColor } from '@/configs/appConfigKey'
-import { IsEmptyValue } from '@/utils/utils'
-import { AppConfig } from './appconfig'
+import { defineStore } from "pinia";
+import { ConfigKeyLayoutNavBgColor } from "@/configs/appConfigKey";
+import { IsEmptyValue } from "@/utils/utils";
+import { AppConfig } from "./appconfig";
 
 //这是关于布局控制的状态管理文件
 export interface layoutStore {
-  showEditorView: boolean //是否显示编辑器右侧的编辑区
-  editorToolIconSize: number //编辑器工具栏的图标大小
-  componentDyAddHeader: any
-  componentDyAddCustomFrontMatter: any
-  colorBgNav: string
+  showEditorView: boolean; //是否显示编辑器右侧的编辑区
+  editorToolIconSize: number; //编辑器工具栏的图标大小
+  componentDyAddHeader: any;
+  componentDyAddCustomFrontMatter: any;
+  colorBgNav: string;
 }
 
-export const useLayoutStore = defineStore('layout', {
+export const useLayoutStore = defineStore("layout", {
   state: (): layoutStore => ({
     showEditorView: true,
     editorToolIconSize: 24,
     componentDyAddHeader: null,
     componentDyAddCustomFrontMatter: null,
-    colorBgNav: '#ebebeb',
+    colorBgNav: "#ebebeb"
   }),
   actions: {
     //切换显示编辑区
     setEditorViewShow(isShow: boolean) {
-      console.log(isShow, 'isShow -- console.log')
-      this.showEditorView = isShow
+      console.log(isShow, "isShow -- console.log");
+      this.showEditorView = isShow;
     },
     async loadUserSetting() {
       //左侧导航栏背景颜色
-      const leftNavBgColor = AppConfig.getString(ConfigKeyLayoutNavBgColor)
-      console.log(leftNavBgColor, 'leftNavBgColor -- console.log')
-      if (!IsEmptyValue(leftNavBgColor)) this.colorBgNav = leftNavBgColor
-    },
+      const leftNavBgColor = AppConfig.getString(ConfigKeyLayoutNavBgColor);
+      console.log(leftNavBgColor, "leftNavBgColor -- console.log");
+      if (!IsEmptyValue(leftNavBgColor)) this.colorBgNav = leftNavBgColor;
+    }
   },
   getters: {
     IsShowEditorView: (state) => state.showEditorView,
@@ -40,12 +40,12 @@ export const useLayoutStore = defineStore('layout', {
     EditorLeftWriterWidth: (state) => {
       if (state.showEditorView) {
         //如果显示编辑区
-        return 70 //70%
+        return 70; //70%
       } else {
         //如果隐藏编辑区
-        return 100 //100%
+        return 100; //100%
       }
-    },
+    }
     // EditorToolIconSize: (state) => state.editorToolIconSize,
-  },
-})
+  }
+});

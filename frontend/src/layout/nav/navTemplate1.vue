@@ -1,13 +1,13 @@
 <script setup lang="ts">
-  import { useNavStore } from '@/store/nav'
-  import { NavList } from '@/configs/navs'
-  import { useRouter } from 'vue-router'
-  const navRouter = useNavStore()
-  const router = useRouter()
-  const routerClick = (path: string, name: string) => {
-    navRouter.setActiveNav(path, name)
-    router.push(path)
-  }
+import { useNavStore } from "@/store/nav";
+import { NavList } from "@/configs/navs";
+import { useRouter } from "vue-router";
+const navRouter = useNavStore();
+const router = useRouter();
+const routerClick = (path: string, name: string) => {
+  navRouter.setActiveNav(path, name);
+  router.push(path);
+};
 </script>
 
 <template>

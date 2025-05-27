@@ -1,7 +1,7 @@
-import { Hero } from '@/types/hero'
-import { Feature } from '@/types/features'
+import { Hero } from "@/types/hero";
+import { Feature } from "@/types/features";
 
 export interface VitePressHome {
-  hero: Hero
-  features: Feature
+  hero: Hero;
+  features: Feature;
 }

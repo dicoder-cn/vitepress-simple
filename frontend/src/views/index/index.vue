@@ -20,10 +20,10 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { ref } from 'vue'
-  import IndexEditor from './indexEditor.vue'
-  import IndexArticle from './indexArticle.vue'
-  import { StyleNoDrag } from '@/configs/cnts'
+import { ref } from "vue";
+import IndexEditor from "./indexEditor.vue";
+import IndexArticle from "./indexArticle.vue";
+import { StyleNoDrag } from "@/configs/cnts";
 
-  const splitterModel = ref(248)
+const splitterModel = ref(248);
 </script>

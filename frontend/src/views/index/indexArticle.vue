@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-  import IndexArticleTool from './indexArticleTool.vue'
-  import IndexArticleTree from './indexArticleTree.vue'
+import IndexArticleTool from "./indexArticleTool.vue";
+import IndexArticleTree from "./indexArticleTree.vue";
 </script>
 
 <template>

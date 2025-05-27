@@ -7,39 +7,39 @@
   </div>
 </template>
 <script setup lang="ts">
-  import { defineProps, onMounted, ref, watch } from 'vue'
-  import { AppConfig } from '@/store/appconfig'
-  import { InfoCircleOutlined } from '@ant-design/icons-vue'
+import { defineProps, onMounted, ref, watch } from "vue";
+import { AppConfig } from "@/store/appconfig";
+import { InfoCircleOutlined } from "@ant-design/icons-vue";
 
-  const props = defineProps({
-    configKey: {
-      type: String,
-      default: '',
-    },
-    label: {
-      type: String,
-      default: '请输入',
-    },
-    disEnable: {
-      type: Boolean,
-      default: false,
-    },
-    tooltip: {
-      type: String,
-      default: '',
-    },
-  })
-  const emits = defineEmits(['onChange'])
-  let CurrSwitchValue = ref(false)
+const props = defineProps({
+  configKey: {
+    type: String,
+    default: ""
+  },
+  label: {
+    type: String,
+    default: "请输入"
+  },
+  disEnable: {
+    type: Boolean,
+    default: false
+  },
+  tooltip: {
+    type: String,
+    default: ""
+  }
+});
+const emits = defineEmits(["onChange"]);
+let CurrSwitchValue = ref(false);
 
-  onMounted(async () => {
-    let val = AppConfig.getString(props.configKey)
-    CurrSwitchValue.value = val == 'yes'
-  })
-  watch(CurrSwitchValue, (nval: boolean, oval: boolean) => {
-    AppConfig.set(props.configKey, nval ? 'yes' : 'no')
-    emits('onChange', nval)
-  })
+onMounted(async () => {
+  let val = AppConfig.getString(props.configKey);
+  CurrSwitchValue.value = val == "yes";
+});
+watch(CurrSwitchValue, (nval: boolean, oval: boolean) => {
+  AppConfig.set(props.configKey, nval ? "yes" : "no");
+  emits("onChange", nval);
+});
 </script>
 
 <style scoped></style>

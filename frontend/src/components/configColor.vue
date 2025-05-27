@@ -12,28 +12,28 @@
   </div>
 </template>
 <script setup lang="ts">
-  // const model = defineModel();
+// const model = defineModel();
 
-  import { onMounted, ref, watch } from 'vue'
-  import { AppConfig } from '@/store/appconfig'
+import { onMounted, ref, watch } from "vue";
+import { AppConfig } from "@/store/appconfig";
 
-  const color = ref()
+const color = ref();
 
-  interface Props {
-    label: string
-    configKey: string
-  }
+interface Props {
+  label: string;
+  configKey: string;
+}
 
-  const props = defineProps<Props>()
+const props = defineProps<Props>();
 
-  onMounted(() => {
-    color.value = AppConfig.getString(props.configKey)
-  })
+onMounted(() => {
+  color.value = AppConfig.getString(props.configKey);
+});
 
-  //监听变化
-  watch(color, (newVal) => {
-    AppConfig.set(props.configKey, newVal)
-  })
+//监听变化
+watch(color, (newVal) => {
+  AppConfig.set(props.configKey, newVal);
+});
 </script>
 
 <style scoped></style>

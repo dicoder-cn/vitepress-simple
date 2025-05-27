@@ -1,50 +1,50 @@
-import { lang } from '@/utils/language'
+import { lang } from "@/utils/language";
 
 export interface navItem {
-  title: string
-  name: string
-  path: string
-  icon?: string
-  iconColor?: string
-  borderTop?: boolean
+  title: string;
+  name: string;
+  path: string;
+  icon?: string;
+  iconColor?: string;
+  borderTop?: boolean;
 }
 
 export const NavList = (): navItem[] => {
   // const color = "#8babed";
-  const color = '#676a67'
+  const color = "#676a67";
   return [
     {
-      title: lang('nav.home'),
-      name: 'index',
-      path: '/',
-      icon: 'home', //icon park
+      title: lang("nav.home"),
+      name: "index",
+      path: "/",
+      icon: "home", //icon park
       borderTop: false,
-      iconColor: color,
+      iconColor: color
     },
 
     {
-      title: lang('nav.config'),
-      name: 'projectSetting',
-      path: '/projectSetting',
-      icon: 'setting-config',
+      title: lang("nav.config"),
+      name: "projectSetting",
+      path: "/projectSetting",
+      icon: "setting-config",
       borderTop: false,
-      iconColor: color,
+      iconColor: color
     },
     {
-      title: lang('nav.nav'),
-      name: 'navSetting',
-      path: '/navSetting',
-      icon: 'navigation',
+      title: lang("nav.nav"),
+      name: "navSetting",
+      path: "/navSetting",
+      icon: "navigation",
       borderTop: false,
-      iconColor: color,
+      iconColor: color
     },
     {
-      title: lang('nav.sidebar'),
-      name: 'sidebarSetting',
-      path: '/sidebarSetting',
-      icon: 'mindmap-list',
+      title: lang("nav.sidebar"),
+      name: "sidebarSetting",
+      path: "/sidebarSetting",
+      icon: "mindmap-list",
       borderTop: false,
-      iconColor: color,
+      iconColor: color
     },
     // {
     //   title: lang("nav.preview"),
@@ -54,20 +54,20 @@ export const NavList = (): navItem[] => {
     //   borderTop: false,
     // },
     {
-      title: lang('nav.setting'),
-      name: 'setting',
-      path: '/setting',
-      icon: 'config',
+      title: lang("nav.setting"),
+      name: "setting",
+      path: "/setting",
+      icon: "config",
       borderTop: true,
-      iconColor: color,
+      iconColor: color
     },
     {
-      title: lang('nav.about'),
-      name: 'a',
-      path: '/about',
-      icon: 'more-three',
+      title: lang("nav.about"),
+      name: "a",
+      path: "/about",
+      icon: "more-three",
       borderTop: false,
-      iconColor: color,
-    },
-  ]
-}
+      iconColor: color
+    }
+  ];
+};

@@ -1,14 +1,6 @@
 <template>
   <div class="flex items-center">
-    <a-modal
-      v-model:visible="showSidebarModal"
-      :title="lang('pageSidebar.sidebarSettings')"
-      :width="800"
-      :footer="null"
-      :maskClosable="false"
-    >
-  
-    </a-modal>
+    <a-modal v-model:visible="showSidebarModal" :title="lang('pageSidebar.sidebarSettings')" :width="800" :footer="null" :maskClosable="false"> </a-modal>
   </div>
 </template>
 
@@ -21,14 +13,12 @@ import { docparse } from "wailsjs/go/models";
 const showSidebarModal = ref(false);
 const storeVpConfig = useVpconfigStore();
 const treeData = ref<docparse.DocsTreeNode>();
-const isManyLang=ref(false);
+const isManyLang = ref(false);
 onMounted(() => {
-  ParseToTree(storeVpConfig.SrcLangDir).then((res:docparse.DocsTreeNode) => {
+  ParseToTree(storeVpConfig.SrcLangDir).then((res: docparse.DocsTreeNode) => {
     treeData.value = res;
     isManyLang.value = storeVpConfig.IsUseI18n;
-    console.log("res",res);
+    console.log("res", res);
   });
 });
-
-
 </script>
