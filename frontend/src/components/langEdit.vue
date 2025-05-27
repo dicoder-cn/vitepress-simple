@@ -1,5 +1,5 @@
 <template>
-  <div class="lang-edit">
+  <div class="lang-edit full-width">
     <div class="row items-center justify-between q-mb-md">
       <h3 class="text-lg font-medium m-0">{{ lang("pageProject.settingBase.labels.languageManagement") }}</h3>
       <div class="q-gutter-sm">
@@ -17,10 +17,10 @@
         />
       </div>
     </div>
-    <q-list bordered separator>
-      <q-item v-for="key in sortedLangKeys" :key="key">
-        <q-item-section>
-          <div class="row q-col-gutter-sm items-center">
+    <q-list bordered separator class="full-width">
+      <q-item v-for="key in sortedLangKeys" :key="key" class="full-width">
+        <q-item-section class="full-width">
+          <div class="row q-col-gutter-sm items-center full-width">
             <div class="col-1">
               <q-input
                 v-model="vpConfig.locales[key].lang"
@@ -29,6 +29,7 @@
                 :readonly="key === StringRootLang"
                 :disable="key === StringRootLang"
                 required
+                class="full-width"
               />
             </div>
             <div class="col-2">
@@ -37,6 +38,7 @@
                 label="语言名称 *"
                 dense
                 required
+                class="full-width"
               />
             </div>
             <div class="col-1">
@@ -44,6 +46,7 @@
                 v-model="vpConfig.locales[key].link"
                 label="URL前缀"
                 dense
+                class="full-width"
               />
             </div>
             <div class="col-3">
@@ -51,6 +54,7 @@
                 v-model="vpConfig.locales[key].title"
                 label="站点标题"
                 dense
+                class="full-width"
               />
             </div>
             <div class="col-2">
@@ -58,17 +62,18 @@
                 v-model="vpConfig.locales[key].titleTemplate"
                 label="标题后缀"
                 dense
+                class="full-width"
               />
             </div>
-         
             <div class="col-2">
               <q-input
                 v-model="vpConfig.locales[key].description"
                 label="站点描述"
                 dense
+                class="full-width"
               />
             </div>
-            <div class="col-1">
+            <div class="col-1 flex justify-end">
               <a-popconfirm
                 v-if="key !== StringRootLang"
                 title="确定要删除该语言吗？"
@@ -145,7 +150,7 @@ const handleSaveConfig = async () => {
   const localesToUpdate: { oldKey: string, newKey: string, langConfig: VpConfigLang }[] = [];
   const updatedLocales: Record<string, VpConfigLang> = {};
 
-  for (const [key, lang] of Object.entries(vpConfig.value?.locales || {})) {
+  for (const [key, lang] of Object.entries(vpConfig.value?.locales || {}) as [string, VpConfigLang][]) {
     // 检查语言标识 (非根语言)
     if (key !== StringRootLang && !lang.lang) {
         missingFields.push(`${key} 的语言标识`)
@@ -217,5 +222,10 @@ const handleRemoveLang = (key: string) => {
 <style scoped>
 .lang-edit {
   padding: 20px;
+  width: 100%;
+}
+
+.full-width {
+  width: 100%;
 }
 </style>

@@ -1,4 +1,5 @@
 <template>
+   <hr class="my-2" />
   <div class="flex justify-start items-center ml-2" v-if="storeVpConfig.IsUseManyLang">
     <icon-park strokeLinejoin="bevel" theme="outline" type="translate" />
     当前操作的语言：
@@ -10,7 +11,7 @@
 <script setup lang="ts">
 import { useVpconfigStore } from "@/store/vpconfig";
 import { IconPark } from "@icon-park/vue-next/es/all";
-import { ToastInfo } from "@/utils/Toast";
+
 
 const storeVpConfig = useVpconfigStore();
 const emits = defineEmits(["changeLang"]);

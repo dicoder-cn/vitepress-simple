@@ -1,7 +1,4 @@
 <template>
-
-
-  <hr class="my-2" />
   <select-setting-lang></select-setting-lang>
   <div class="flex justify-start items-center my-2 mx-8">
     <!-- Logo 配置 -->
@@ -30,7 +27,7 @@
       </div>
     </div>
 
-    <!-- 大纲级别配置 -->
+    <!-- 大纲级别配置：设置文档大纲显示的层级深度 -->
     <sim-input
       :model-value="(() => {
         const outline = storeConfig.currLangConfig?.themeConfig?.outline;
@@ -51,7 +48,7 @@
       :placeholder="lang('pageProject.settingBase.placeholders.outlineLevel')"
       :label="lang('pageProject.settingBase.labels.outlineLevel')"></sim-input>
 
-    <!-- 外部链接图标配置 -->
+    <!-- 外部链接图标配置：是否在外部链接旁显示图标 -->
     <sim-switch
       :model-value="storeConfig.currLangConfig?.themeConfig?.externalLinkIcon"
       @update:model-value="(val: boolean) => {
@@ -62,6 +59,7 @@
       :tooltip="lang('pageProject.settingBase.tooltips.externalLinkIcon')"
       :label="lang('pageProject.settingBase.labels.externalLinkIcon')"></sim-switch>
 
+    <!-- 国际化路由配置：是否启用国际化路由 -->
     <sim-switch
       :model-value="storeConfig.currLangConfig?.themeConfig?.i18nRouting"
       @update:model-value="(val: boolean) => {
@@ -71,7 +69,7 @@
       }"
       :tooltip="lang('pageProject.settingLang.tooltips.i18nRouting')"
       :label="lang('pageProject.settingLang.labels.i18nRouting')"></sim-switch>
-    <sim-input
+    <!-- <sim-input
       :model-value="storeConfig.currLangConfig?.themeConfig?.siteTitle"
       @update:model-value="(val: string) => {
         if (storeConfig.currLangConfig?.themeConfig) {
@@ -80,7 +78,7 @@
       }"
       :tooltip="lang('pageProject.settingLang.tooltips.siteTitleInfo')"
       :placeholder="lang('pageProject.settingLang.placeholders.siteTitle')"
-      :label="lang('pageProject.settingLang.labels.siteTitle')"></sim-input>
+      :label="lang('pageProject.settingLang.labels.siteTitle')"></sim-input> -->
     <sim-input
       :model-value="storeConfig.currLangConfig?.themeConfig?.footer?.message"
       @update:model-value="(val: string) => {

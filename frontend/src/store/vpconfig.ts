@@ -147,6 +147,19 @@ export const useVpconfigStore = defineStore("vpconfig", {
       console.log("this.currlang key", this.currLangConfigKey, this.currLangConfig);
       const res = await SaveConfig(JSON.stringify(this.vpConfig, null, 2));
       ToastCheck(res);
+    },
+    // 修改配置更新函数，从 themeConfig 开始
+    updateThemeConfig(path: string[], value: any) {
+      if (!this.currLangConfig?.themeConfig) return;
+      
+      let current = this.currLangConfig.themeConfig as any;
+      for (let i = 0; i < path.length - 1; i++) {
+        if (!current[path[i]]) {
+          current[path[i]] = {};
+        }
+        current = current[path[i]];
+      }
+      current[path[path.length - 1]] = value;
     }
   },
   getters: {
@@ -173,6 +186,21 @@ export const useVpconfigStore = defineStore("vpconfig", {
     // 获取当前语言的配置
     CurrLangConfig: (state) => {
       return state.vpConfig?.locales?.[state.currLangConfigKey];
+    },
+    // 重写获取配置值的 getter，从 themeConfig 开始
+    getThemeConfigValue: (state) => {
+      const getValue = (path: string[], defaultValue: any = '') => {
+        if (!state.currLangConfig?.themeConfig) return defaultValue;
+        
+        let current = state.currLangConfig.themeConfig as any;
+        for (const key of path) {
+          if (!current || typeof current !== 'object') return defaultValue;
+          current = current[key];
+        }
+        return current ?? defaultValue;
+      };
+      
+      return getValue;
     }
   }
 });

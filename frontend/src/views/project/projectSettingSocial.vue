@@ -1,5 +1,7 @@
 <template>
   <div class="flex flex-wrap mx-8 mt-3">
+    <select-setting-lang></select-setting-lang>
+
     {{ lang("pageProject.settingSocial.tooltipsIcon") }}
     <div @click="CopyText(item)" class="cursor-pointer" v-for="item in soList">
       <a-tag color="cyan">{{ item }}</a-tag>
@@ -39,7 +41,7 @@ import { useVpconfigStore } from "@/store/vpconfig";
 import { IconPark } from "@icon-park/vue-next/es/all";
 import { onMounted, ref } from "vue";
 import { lang } from "../../utils/language";
-
+import SelectSettingLang from "@/components/selectSettingLang.vue";
 onMounted(() => {
   console.log(storeConfig.currLangConfig?.themeConfig?.socialLinks, " -- console.log");
 });
