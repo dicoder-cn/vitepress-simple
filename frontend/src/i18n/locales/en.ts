@@ -38,7 +38,8 @@ export const en = {
     description: "Description",
     open: "Open",
     saveConfig: "Save Configuration",
-    terminal: "terminal"
+    terminal: "terminal",
+    remove: "Remove"
   },
   pageIndex: {
     shell: EnShell,
@@ -293,7 +294,13 @@ export const en = {
       tooltipsIcon: "Supported icons (click to copy):",
       addSocialAccount: "Add Social Account",
       icon: "Icon Identifier",
-      link: "Redirect Link"
+      link: "Redirect Link",
+      error: {
+        emptyInput: "Icon and link cannot be empty"
+      },
+      success: {
+        save: "Saved successfully"
+      }
     },
     settingRewrite: {
       title: "Route Rewrite",

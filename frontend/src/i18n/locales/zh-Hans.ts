@@ -56,7 +56,9 @@ export const zhHans = {
     open: "打开",
     //保存配置
     saveConfig: "保存配置",
-    terminal: "终端命令"
+    terminal: "终端命令",
+    //删除
+    remove: "删除"
   },
   pageIndex: {
     shell: ZhShell,
@@ -400,17 +402,19 @@ export const zhHans = {
         AlgoliaIndexName: "Algolia 搜索 indexName,创建的 index 的名称"
       }
     },
-    //社交帐户
+    //社交账户
     settingSocial: {
-      title: "社交帐户",
-      //当前支持的图标标识(点击可复制)：
-      tooltipsIcon: "当前支持的图标标识(点击可复制)：",
-      //添加社交账户
+      title: "社交账户",
+      tooltipsIcon: "支持的图标（点击复制）：",
       addSocialAccount: "添加社交账户",
-      //图标标识
       icon: "图标标识",
-      //跳转链接
-      link: "跳转链接"
+      link: "跳转链接",
+      error: {
+        emptyInput: "图标和链接不能为空"
+      },
+      success: {
+        save: "保存成功"
+      }
     },
     //路由重写
     settingRewrite: {
