@@ -139,7 +139,14 @@ export const useVpconfigStore = defineStore("vpconfig", {
       if (!this.vpConfig?.locales) {
         return [];
       }
-      return Object.keys(this.vpConfig.locales);
+      const keys = Object.keys(this.vpConfig.locales);
+      // 确保 root 始终在第一位
+      const rootIndex = keys.indexOf(StringRootLang);
+      if (rootIndex > -1) {
+        keys.splice(rootIndex, 1);
+        keys.unshift(StringRootLang);
+      }
+      return keys;
     },
     saveLangConfig(key:string,langConfig:VpConfigLang) {
       //判断key是否存在
