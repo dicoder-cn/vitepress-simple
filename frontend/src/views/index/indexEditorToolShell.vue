@@ -209,7 +209,7 @@ const createAndRunCmd = async (index: number) => {
 };
 
 const saveConfig = () => {
-  storeConfig.value.configData["vpsimple"] = storeShell.vpsimpleConfig;
+  storeConfig.value.vpConfig["vpsimple"] = storeShell.vpsimpleConfig;
   storeConfig.value.saveConfig();
   setCmdList();
   isShowShellEdit.value = false;

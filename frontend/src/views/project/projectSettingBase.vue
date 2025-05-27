@@ -3,7 +3,7 @@
     <!--    选择logo图片-->
     <div class="my-3 w-1/3 flex justify-between">
       <div class="flex-1">
-        <a-input disabled v-model:value="storeConfig.configData['themeConfig']['logo']" :placeholder="lang('pageProject.settingBase.placeholders.logoUrl')" class="w-full"> </a-input>
+        <a-input disabled v-model:value="storeConfig.vpConfig['themeConfig']['logo']" :placeholder="lang('pageProject.settingBase.placeholders.logoUrl')" class="w-full"> </a-input>
       </div>
 
       <div class="mx-2">
@@ -17,27 +17,27 @@
     </div>
 
     <sim-input
-      v-model="storeConfig.configData['title']"
+      v-model="storeConfig.vpConfig['title']"
       :tooltip="lang('pageProject.settingBase.tooltips.pageTitle')"
       :placeholder="lang('pageProject.settingBase.placeholders.pageTitle')"
       :label="lang('pageProject.settingBase.labels.pageTitle')"></sim-input>
     <sim-input
-      v-model="storeConfig.configData['titleTemplate']"
+      v-model="storeConfig.vpConfig['titleTemplate']"
       :tooltip="lang('pageProject.settingBase.tooltips.titleSuffix')"
       :placeholder="lang('pageProject.settingBase.placeholders.titleSuffix')"
       :label="lang('pageProject.settingBase.labels.titleSuffix')"></sim-input>
     <sim-input
-      v-model="storeConfig.configData['themeConfig']['outline']['level']"
+      v-model="storeConfig.vpConfig['themeConfig']['outline']['level']"
       :tooltip="lang('pageProject.settingBase.tooltips.outlineLevel')"
       :placeholder="lang('pageProject.settingBase.placeholders.outlineLevel')"
       :label="lang('pageProject.settingBase.labels.outlineLevel')"></sim-input>
     <sim-input
-      v-model="storeConfig.configData['lang']"
+      v-model="storeConfig.vpConfig['lang']"
       :tooltip="lang('pageProject.settingBase.tooltips.htmlLang')"
       :placeholder="lang('pageProject.settingBase.placeholders.htmlLang')"
       :label="lang('pageProject.settingBase.labels.htmlLang')"></sim-input>
     <sim-input
-      v-model="storeConfig.configData['description']"
+      v-model="storeConfig.vpConfig['description']"
       :tooltip="lang('pageProject.settingBase.tooltips.siteDescription')"
       :placeholder="lang('pageProject.settingBase.placeholders.siteDescription')"
       :label="lang('pageProject.settingBase.labels.siteDescription')"></sim-input>
@@ -49,31 +49,31 @@
     <!--    多语言-->
 
     <sim-switch
-      v-model="storeConfig.configData['themeConfig']['externalLinkIcon']"
+      v-model="storeConfig.vpConfig['themeConfig']['externalLinkIcon']"
       :tooltip="lang('pageProject.settingBase.tooltips.externalLinkIcon')"
       :placeholder="lang('pageProject.settingBase.placeholders.titleSuffix')"
       :label="lang('pageProject.settingBase.labels.externalLinkIcon')"></sim-switch>
 
     <hr class="my-1 w-full" />
 
-    <sim-input v-model="storeConfig.configData['srcDir']" :tooltip="lang('pageProject.settingBase.tooltips.docPath')" :label="lang('pageProject.settingBase.labels.docPath')"></sim-input>
+    <sim-input v-model="storeConfig.vpConfig['srcDir']" :tooltip="lang('pageProject.settingBase.tooltips.docPath')" :label="lang('pageProject.settingBase.labels.docPath')"></sim-input>
 
     <sim-input
-      v-model="storeConfig.configData['base']"
+      v-model="storeConfig.vpConfig['base']"
       :tooltip="lang('pageProject.settingBase.tooltips.baseUrl')"
       :placeholder="lang('pageProject.settingBase.placeholders.baseUrl')"
       :label="lang('pageProject.settingBase.labels.baseUrl')"></sim-input>
 
-    <sim-input v-model="storeConfig.configData['outDir']" :tooltip="lang('pageProject.settingBase.tooltips.buildPath')" :label="lang('pageProject.settingBase.labels.buildPath')"></sim-input>
+    <sim-input v-model="storeConfig.vpConfig['outDir']" :tooltip="lang('pageProject.settingBase.tooltips.buildPath')" :label="lang('pageProject.settingBase.labels.buildPath')"></sim-input>
     <sim-input
-      v-model="storeConfig.configData['sitemap']['hostname']"
+      v-model="storeConfig.vpConfig['sitemap']['hostname']"
       :tooltip="lang('pageProject.settingBase.tooltips.hostname')"
       :label="lang('pageProject.settingBase.labels.hostname')"></sim-input>
 
-    <sim-input v-model="storeConfig.configData['assetsDir']" :tooltip="lang('pageProject.settingBase.tooltips.staticAssets')" :label="lang('pageProject.settingBase.labels.staticAssets')"></sim-input>
+    <sim-input v-model="storeConfig.vpConfig['assetsDir']" :tooltip="lang('pageProject.settingBase.tooltips.staticAssets')" :label="lang('pageProject.settingBase.labels.staticAssets')"></sim-input>
 
-    <sim-input v-model="storeConfig.configData['cacheDir']" :tooltip="lang('pageProject.settingBase.tooltips.cachePath')" :label="lang('pageProject.settingBase.labels.staticAssets')"></sim-input>
-    <sim-switch v-model="storeConfig.configData['cachePath']" :tooltip="lang('pageProject.settingBase.tooltips.cleanUrls')" label="cleanUrls"></sim-switch>
+    <sim-input v-model="storeConfig.vpConfig['cacheDir']" :tooltip="lang('pageProject.settingBase.tooltips.cachePath')" :label="lang('pageProject.settingBase.labels.staticAssets')"></sim-input>
+    <sim-switch v-model="storeConfig.vpConfig['cachePath']" :tooltip="lang('pageProject.settingBase.tooltips.cleanUrls')" label="cleanUrls"></sim-switch>
     <!--    <sim-switch-->
     <!--      v-model="storeConfig.configData['map']"-->
     <!--      tooltip="设置为 true 时，生产应用程序将在 MPA 模式下构建。MPA 模式默认提供 零 JavaScript 支持，代价是禁用客户端导航，并且需要明确选择加入才能进行交互。"-->
@@ -102,7 +102,7 @@ import { lang } from "@/utils/language";
 const storeConfig = useVpconfigStore();
 const storeIndex = useIndexStore();
 onMounted(() => {
-  console.log(storeConfig.configData, "storeConfig.configData -- console.log");
+  console.log(storeConfig.vpConfig, "storeConfig.configData -- console.log");
 });
 const saveBaseConfig = () => {
   storeConfig.saveConfig();
@@ -121,7 +121,7 @@ const selectLogo = async () => {
   let newImagePath = await PathJoin([publicDir, "images", "logo" + ext]);
   let copyResult = await CopyPath(oriImagePath, newImagePath, false);
   ToastCheck(copyResult);
-  storeConfig.configData["themeConfig"]["logo"] = newImagePath.replaceAll(publicDir, "");
+  storeConfig.vpConfig["themeConfig"]["logo"] = newImagePath.replaceAll(publicDir, "");
 };
 </script>
 <style scoped></style>

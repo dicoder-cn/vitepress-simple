@@ -17,7 +17,7 @@ const isManyLang = ref(false);
 onMounted(() => {
   ParseToTree(storeVpConfig.SrcLangDir).then((res: docparse.DocsTreeNode) => {
     treeData.value = res;
-    isManyLang.value = storeVpConfig.IsUseI18n;
+    isManyLang.value = storeVpConfig.IsUseManyLang;
     console.log("res", res);
   });
 });

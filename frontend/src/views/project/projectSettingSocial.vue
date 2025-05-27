@@ -14,7 +14,7 @@
     key-name="icon"
     value-name="link"
     ref="refDyAdd"
-    v-model:objs="storeConfig.configData['themeConfig']['socialLinks']"></dy-add-k-v>
+    v-model:objs="storeConfig.vpConfig['themeConfig']['socialLinks']"></dy-add-k-v>
 
   <hr class="my-2" />
   <div class="flex justify-center">
@@ -33,7 +33,7 @@ import { onMounted, ref } from "vue";
 import { lang } from "../../utils/language";
 
 onMounted(() => {
-  console.log(storeConfig.configData["themeConfig"]["socialLinks"], " -- console.log");
+  console.log(storeConfig.vpConfig["themeConfig"]["socialLinks"], " -- console.log");
 });
 const storeConfig = useVpconfigStore();
 const soList = ["github", "discord", "facebook", "youtube", "instagram", "linkedin", "mastodon", "npm", "slack", "twitter", "x"];

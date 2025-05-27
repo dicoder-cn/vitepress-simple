@@ -5,13 +5,13 @@
     <div class="mx-2">
       <select-setting-lang></select-setting-lang>
     </div>
-    <a-button v-if="storeConfig.IsUseI18n" class="bg-blue-100 mx-2 flex justify-center items-center hover:bg-blue-100" @click="copyNav()">
+    <a-button v-if="storeConfig.IsUseManyLang" class="bg-blue-100 mx-2 flex justify-center items-center hover:bg-blue-100" @click="copyNav()">
       <icon-park class="mr-1" strokeLinejoin="bevel" theme="outline" type="copy-one" />
       {{ lang("pageNav.copy") }}
-      <span class="text-red">{{ storeConfig.currSettingLangKey }}</span>
+      <span class="text-red">{{ storeConfig.currLangConfigKey }}</span>
       {{ lang("pageNav.clipboard") }}
     </a-button>
-    <a-button v-if="storeConfig.IsUseI18n" class="bg-green-200 mx-2 flex justify-center items-center hover:bg-blue-100" :disabled="!copyNavData" @click="cuttingNav()">
+    <a-button v-if="storeConfig.IsUseManyLang" class="bg-green-200 mx-2 flex justify-center items-center hover:bg-blue-100" :disabled="!copyNavData" @click="cuttingNav()">
       <q-tooltip> {{ lang("pageNav.coverCurrentNav") }}</q-tooltip>
       <icon-park class="mr-1" strokeLinejoin="bevel" theme="outline" type="cutting-one" />
       {{ lang("pageNav.paste") }}<span class="text-red">{{ copyNavLang }}</span
@@ -65,7 +65,7 @@ const copyNavData = ref();
 const copyNavLang = ref("");
 //复制导航
 const copyNav = () => {
-  copyNavLang.value = storeConfig.currSettingLangKey;
+  copyNavLang.value = storeConfig.currLangConfigKey;
   copyNavData.value = DeepClone(storeConfig.currLangConfig["themeConfig"]["nav"]);
 };
 //粘贴导航

@@ -1,3 +1,12 @@
+import { LocaleConfig, UserConfig } from "vitepress";
+import { DefaultTheme } from "vitepress";
+
+export type VpConfig = Partial<UserConfig<DefaultTheme.Config>> & {
+  // 可以添加自定义的配置项
+  vpsimple?: VPSimpleConfig;
+};
+
+export type VpConfigLang = Partial<LocaleConfig>;
 export interface VPSimpleConfig {
   shellBaseDir: string;
   gitBaseDir: string; // git  仓库根目录

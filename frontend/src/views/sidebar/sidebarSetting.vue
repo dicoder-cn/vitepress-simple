@@ -12,7 +12,7 @@
         :ok-button-props="{ class: 'bg-blue-6 00 text-white' }"
         @confirm="changeSidebarConfirmModal()">
         <q-tooltip class="text-2xl">
-          <span class="text-cyan-500"> {{ storeConfig.currSettingLangKey }}</span
+          <span class="text-cyan-500"> {{ storeConfig.currLangConfigKey }}</span
           >{{ lang("pageSidebar.current") }}
           <span class="text-cyan-500">{{ isUseManySidebars ? lang("pageSidebar.multiSidebar") : lang("pageSidebar.singleSidebar") }}</span>
           {{ lang("pageSidebar.mode") }}，
@@ -145,7 +145,7 @@ const recognitionSidebar = async () => {
     return;
   }
 
-  let baseDir = await PathJoin([storeConfig.srcDir, storeConfig.currSettingLangKey]);
+  let baseDir = await PathJoin([storeConfig.srcDir, storeConfig.currLangConfigKey]);
 
   if (isUseManySidebars.value) {
     if (currSelectSidebarKey.value == "") {
@@ -213,8 +213,8 @@ const getSubSidebarDirList = async () => {
   currSidebarSubDirList.value = list
     .filter((item) => item && !item.title.endsWith(".md"))
     .map((item) => {
-      if (storeConfig.IsUseI18n) {
-        return `/${storeConfig.currSettingLangKey}/${item.title}/`;
+      if (storeConfig.IsUseManyLang) {
+        return `/${storeConfig.currLangConfigKey}/${item.title}/`;
       } else {
         return `/${item.title}/`;
       }

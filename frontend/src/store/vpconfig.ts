@@ -4,40 +4,28 @@ import { IsEmptyValue, parseJsObject } from "@/utils/utils";
 import { PathExists, PathJoin } from "../../wailsjs/go/system/SystemService";
 import { ConfigKeyProjectDir } from "@/configs/appConfigKey";
 import { ToastCheck, ToastInfo } from "@/utils/Toast";
-
-import {} from "@/configs/defaultLangConfig";
-import { StringGlobalLang, StringRootLang } from "@/configs/cnts";
+import { StringRootLang } from "@/configs/cnts";
 import { CreateDir } from "../../wailsjs/go/services/ArticleTreeData";
 import { AppConfig } from "./appconfig";
-// import { VpConfig } from "@/types/vpConfig";
-import { DefaultTheme, UserConfig } from "vitepress";
+import { VpConfig, VpConfigLang } from "@/types/vpsimpleConfig";
 
-//这是一个简单的推荐store案例，可以在这里定义你的状态
-//新建pinia时把vpconfig全局替换成你的store名字
 export interface vpconfigStore {
-  // themeConfig:DefaultTheme.Config//默认主题的配置
   srcDir: string; //相对路径
   fullSrcDir: string;
   baseDir: string;
-  isInstall: boolean;
-  configData: UserConfig<DefaultTheme.Config> | null; //直接使用vitepress的类型
-  currSettingLangKey: string; //当前正在设置的语言
-  currLangConfigIsUseRootConfig: boolean; //当前语言配置是否指向根目录
-  configContent: string;
+  vpConfig: VpConfig | null; //直接使用vitepress的类型
+  currLangConfigKey: string; //当前正在设置的语言
+  currLangConfig: any; //当前正在设置的语言
 }
 
 export const useVpconfigStore = defineStore("vpconfig", {
   state: (): vpconfigStore => ({
-    // themeConfig:defaultThemeConfig,
     srcDir: "./docs", //doc目录（相对路径），取自配置文件
     baseDir: "", //根目录（绝对路径，已经过join）
     fullSrcDir: "", //doc目录（绝对路径,已经过join）
-    isInstall: false,
-    configData: null, //所有语言的公共配置
-    // currLangConfig: {}, //当前编辑的语言的主题配置
-    currSettingLangKey: "",
-    currLangConfigIsUseRootConfig: false, //当前语言配置是否指向根目录
-    configContent: ""
+    vpConfig: null, //所有语言的公共配置
+    currLangConfigKey: "root", //root表示根目录，不使用多语言的时候使用root
+    currLangConfig: {} //当前正在设置的语言
   }),
   actions: {
     async formatPath() {
@@ -52,15 +40,16 @@ export const useVpconfigStore = defineStore("vpconfig", {
       }
       // await this.backupConfigFile(); //如果是首次则备份文件夹，放在 this.baseDir后面
       const content = await GetVpConfigData(); //获取config.mts文件内容
-      let configData: any = {};
+      let configData: VpConfig = {};
       if (content == "") {
         ToastInfo("读取配置文件内容为空");
+        return;
       } else {
-        configData = parseJsObject(content); //解析config.mts文件内容
+        configData = parseJsObject(content) as VpConfig; //解析config.mts文件内容
         console.log(configData, "configData -- console.log");
       }
-      this.configData = configData ?? {};
-      this.srcDir = configData["srcDir"];
+      this.vpConfig = configData as any;
+      this.srcDir = configData.srcDir ?? "";
 
       this.fullSrcDir = await PathJoin([this.baseDir, this.srcDir]);
       //判断如果原目录不存在则自动创建
@@ -69,6 +58,41 @@ export const useVpconfigStore = defineStore("vpconfig", {
         ToastInfo(`检测到源目录不存在，已自动创建源目录:${this.fullSrcDir}`);
       }
     },
+    //切换当前语言配置
+    changeCurrLang(key: string) {
+      this.currLangConfigKey = key;
+      const langConfig = this.vpConfig?.locales?.[key];
+      if (langConfig) {
+        this.currLangConfig = langConfig;
+      } else {
+        this.addLang(key, key);
+      }
+    },
+    //新增一个语言
+    addLang(key: string, label: string) {
+      if (!this.vpConfig) {
+        this.vpConfig = {};
+      }
+      if (!this.vpConfig.locales) {
+        this.vpConfig.locales = {};
+      }
+      this.vpConfig.locales[key] = { lang: key, label } as any;
+    },
+    //删除一个语言
+    removeLang(key: string) {
+      if (key === StringRootLang) {
+        ToastInfo("can not remove root");
+        return;
+      }
+      if (this.vpConfig?.locales?.[key]) {
+        delete this.vpConfig.locales[key];
+        // 如果删除的是当前语言，则切换到 root
+        if (this.currLangConfigKey === key) {
+          this.changeCurrLang(StringRootLang);
+        }
+      }
+    },
+
     async ExistsProjectDir() {
       await this.formatPath();
       const isExists = await PathExists(this.baseDir);
@@ -79,65 +103,43 @@ export const useVpconfigStore = defineStore("vpconfig", {
         return false;
       }
     },
-
-    //设置当前语言配置指向根目录
-    currLangConfigUseRootConfig() {
-      this.currSettingLangKey = StringGlobalLang;
-      this.currLangConfigIsUseRootConfig = true;
-    },
-    getFirstLang() {
-      if (!this.configData) return "";
-      const keys = Object.keys(this.configData.locales ?? []);
-      if (keys.length == 0) {
-        //没有配置多语言
-        return "";
-      } else {
-        return keys[0];
+    getLangKeys(): string[] {
+      //获取所有语言列表keys
+      if (!this.vpConfig?.locales) {
+        return [];
       }
+      return Object.keys(this.vpConfig.locales);
     },
-
     //保存配置
     async saveConfig() {
-      const res = await SaveConfig(JSON.stringify(this.configData, null, 2));
+      const res = await SaveConfig(JSON.stringify(this.vpConfig, null, 2));
       ToastCheck(res);
     }
   },
   getters: {
-    //相对路径
-    // SrcDir: (state) => state.srcDir,
-    //基于语言的相对路径
+    //语言文档的路径（相对）
     SrcLangDir: (state) => {
-      if (state.currSettingLangKey == StringGlobalLang || state.currSettingLangKey == StringRootLang) {
+      if (state.currLangConfigKey == StringRootLang) {
         return state.srcDir;
       } else {
-        return state.srcDir + "/" + state.currSettingLangKey;
+        return state.srcDir + "/" + state.currLangConfigKey;
       }
     },
+    //语言文档的路径（绝对）
     FullSrcLangDir: (state) => {
-      if (state.currSettingLangKey == StringGlobalLang || state.currSettingLangKey == StringRootLang) {
+      if (state.currLangConfigKey == StringRootLang) {
         return state.fullSrcDir;
       } else {
-        return state.fullSrcDir + "/" + state.currSettingLangKey;
+        return state.fullSrcDir + "/" + state.currLangConfigKey;
       }
     },
     //是否使用多语言
-    IsUseI18n: (state) => {
-      return !IsEmptyValue(state.configData?.locales) && Object.keys(state.configData?.locales ?? {}).length > 0;
-    },
-
-    GetLangArray(state) {
-      const langArray = [];
-      for (const key in state.configData?.locales ?? {}) {
-        langArray.push(key);
-      }
-      return langArray;
+    IsUseManyLang: (state) => {
+      return Object.keys(state.vpConfig?.locales ?? {}).length > 1;
     },
     // 获取当前语言的配置
     CurrLangConfig: (state) => {
-      if (state.currLangConfigIsUseRootConfig) {
-        return state.configData?.locales;
-      }
-      return state.configData?.locales?.[state.currSettingLangKey];
+      return state.vpConfig?.locales?.[state.currLangConfigKey];
     }
   }
 });

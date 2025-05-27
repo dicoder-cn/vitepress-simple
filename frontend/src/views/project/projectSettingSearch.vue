@@ -2,17 +2,17 @@
   <div>
     <sim-radio
       :tooltip="lang('pageProject.settingSearch.tooltips.tooltips')"
-      v-model="storeConfig.configData['themeConfig']['search']['provider']"
+      v-model="storeConfig.vpConfig['themeConfig']['search']['provider']"
       :label="lang('pageProject.settingSearch.searchProvider')"
       :items="[
         { label: 'local', value: 'local' },
         { label: 'algolia', value: 'algolia' }
       ]"></sim-radio>
 
-    <div class="flex justify-start" v-show="storeConfig.configData['themeConfig']['search']['provider'] == 'algolia'">
-      <sim-input v-model="storeConfig.configData['themeConfig']['search']['options']['appId']" :tooltip="lang('pageProject.settingSearch.tooltips.AlgoliaAppId')" label="AppId"> </sim-input>
-      <sim-input v-model="storeConfig.configData['themeConfig']['search']['options']['apiKey']" :tooltip="lang('pageProject.settingSearch.tooltips.AlgoliaSearchKey')" label="apiKey"> </sim-input>
-      <sim-input v-model="storeConfig.configData['themeConfig']['search']['options']['indexName']" :tooltip="lang('pageProject.settingSearch.tooltips.AlgoliaIndexName')" label="indexName">
+    <div class="flex justify-start" v-show="storeConfig.vpConfig['themeConfig']['search']['provider'] == 'algolia'">
+      <sim-input v-model="storeConfig.vpConfig['themeConfig']['search']['options']['appId']" :tooltip="lang('pageProject.settingSearch.tooltips.AlgoliaAppId')" label="AppId"> </sim-input>
+      <sim-input v-model="storeConfig.vpConfig['themeConfig']['search']['options']['apiKey']" :tooltip="lang('pageProject.settingSearch.tooltips.AlgoliaSearchKey')" label="apiKey"> </sim-input>
+      <sim-input v-model="storeConfig.vpConfig['themeConfig']['search']['options']['indexName']" :tooltip="lang('pageProject.settingSearch.tooltips.AlgoliaIndexName')" label="indexName">
       </sim-input>
     </div>
 
@@ -36,8 +36,8 @@ import { lang } from "@/utils/language";
 const storeConfig = useVpconfigStore();
 onBeforeMount(() => {
   //监测语言
-  if (IsEmptyValue(storeConfig.configData["themeConfig"]["search"])) {
-    storeConfig.configData["themeConfig"]["search"] = defaultShareConfigValue.themeConfig.search;
+  if (IsEmptyValue(storeConfig.vpConfig["themeConfig"]["search"])) {
+    storeConfig.vpConfig["themeConfig"]["search"] = defaultShareConfigValue.themeConfig.search;
   }
 
   checkSearchKey1("provider", "local");
@@ -48,14 +48,14 @@ onBeforeMount(() => {
 });
 
 const checkSearchKey1 = (key1: string, defaultValue: any) => {
-  if (IsEmptyValue(storeConfig.configData["themeConfig"]["search"][key1])) {
-    storeConfig.configData["themeConfig"]["search"][key1] = defaultValue;
+  if (IsEmptyValue(storeConfig.vpConfig["themeConfig"]["search"][key1])) {
+    storeConfig.vpConfig["themeConfig"]["search"][key1] = defaultValue;
   }
 };
 const checkSearchKey2 = (key1: string, key2: string, defaultValue: any) => {
   checkSearchKey1(key1, {});
-  if (IsEmptyValue(storeConfig.configData["themeConfig"]["search"][key1][key2])) {
-    let base = (storeConfig.configData["themeConfig"]["search"][key1][key2] = defaultValue);
+  if (IsEmptyValue(storeConfig.vpConfig["themeConfig"]["search"][key1][key2])) {
+    let base = (storeConfig.vpConfig["themeConfig"]["search"][key1][key2] = defaultValue);
   }
 };
 const saveBaseConfig = () => {

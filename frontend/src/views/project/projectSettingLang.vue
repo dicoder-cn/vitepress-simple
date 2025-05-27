@@ -118,7 +118,7 @@ const inputLangArray = ref<any[]>([]);
 const refAddLang = ref();
 onMounted(() => {
   //获取原始数据
-  let langData = storeConfig.configData["locales"];
+  let langData = storeConfig.vpConfig["locales"];
 
   let arrData: any = [];
   for (const langDataKey in langData) {
@@ -133,7 +133,7 @@ onMounted(() => {
 const saveLangConfig = () => {
   //将数据转换成vitepress所需要的格式
   // let resultData: any = {};
-  let resultData = storeConfig.configData["locales"];
+  let resultData = storeConfig.vpConfig["locales"];
 
   for (let i = 0; i < inputLangArray.value.length; i++) {
     let item = inputLangArray.value[i];
@@ -148,17 +148,17 @@ const saveLangConfig = () => {
       resultData[item.lang].lang = item.lang;
     }
   }
-  storeConfig.configData["locales"] = resultData;
-  if (storeConfig.IsUseI18n) {
-    if (storeConfig.currSettingLangKey == "" || storeConfig.currSettingLangKey == StringGlobalLang) {
-      storeConfig.currSettingLangKey = inputLangArray.value[0]["lang"];
+  storeConfig.vpConfig["locales"] = resultData;
+  if (storeConfig.IsUseManyLang) {
+    if (storeConfig.currLangConfigKey == "" || storeConfig.currLangConfigKey == StringGlobalLang) {
+      storeConfig.currLangConfigKey = inputLangArray.value[0]["lang"];
     }
   }
   storeConfig.saveConfig();
 };
 //移除一个元素后 刷新数据
 const removeLangItem = (k: string, v: string, removeIndex: number) => {
-  delete storeConfig.configData["locales"][k];
+  delete storeConfig.vpConfig["locales"][k];
 
   //storeConfig.configData["locales"][k] = undefined;
 };
