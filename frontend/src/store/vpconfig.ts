@@ -141,10 +141,18 @@ export const useVpconfigStore = defineStore("vpconfig", {
       }
       return Object.keys(this.vpConfig.locales);
     },
+    saveLangConfig(key:string,langConfig:VpConfigLang) {
+      //判断key是否存在
+      if (!this.vpConfig.locales[key]) {
+        this.addLang(key, key);
+      }
+      this.vpConfig.locales[key] = langConfig;
+    },
     //保存配置
     async saveConfig() {
-      console.log("this.vpConfig", this.vpConfig);
-      console.log("this.currlang key", this.currLangConfigKey, this.currLangConfig);
+      // console.log("this.vpConfig", this.vpConfig);
+      // console.log("this.currlang key", this.currLangConfigKey, this.currLangConfig);
+      this.saveLangConfig(this.currLangConfigKey,this.currLangConfig);
       const res = await SaveConfig(JSON.stringify(this.vpConfig, null, 2));
       ToastCheck(res);
     },
