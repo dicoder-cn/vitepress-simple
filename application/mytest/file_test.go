@@ -14,8 +14,7 @@ func TestCopy(t *testing.T) {
 
 func TestParseDir(t *testing.T) {
 	parser := docparse.NewParseService()
-	rootPath := "/Users/ddd-mac/SyncData/Blog/docs" // 替换为你的目标目录路径
-
+	rootPath := "/Users/ddd-mac/SyncData/Blog/docs" // 替换为你的目标目录路
 	treeData, err := parser.ParseToTree(rootPath)
 	if err != nil {
 		fmt.Println(err.Error())

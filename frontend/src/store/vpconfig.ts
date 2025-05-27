@@ -5,7 +5,6 @@ import {
 } from "../../wailsjs/go/vpsimpler/VpConfig";
 import { IsEmptyValue, parseJsObject } from "@/utils/utils";
 import {
-
   CopyPath,
   PathExists,
   PathJoin,
@@ -52,21 +51,21 @@ export const useVpconfigStore = defineStore("vpconfig", {
   
     async formatPath() {
       this.baseDir = await PathJoin([AppConfig.getString(ConfigKeyProjectDir)]);
-    },
+    }, 
     //获取config.mts文件内容
     async readVpConfig() {
       //获取项目根目录(绝对路径)
       await this.formatPath();
-      if (IsEmptyValue(this.baseDir)) {
+      if (IsEmptyValue(this.baseDir)) { 
         return;
-      }
+      } 
       // await this.backupConfigFile(); //如果是首次则备份文件夹，放在 this.baseDir后面
       const content = await GetVpConfigData(); //获取config.mts文件内容
       let configData: any = {};
       if (content == "") {
         ToastInfo("读取配置文件内容为空");
-      } else {
-      
+      } else { 
+       
         configData = parseJsObject(content); //解析config.mts文件内容
         console.log(configData, "configData -- console.log");
       }
