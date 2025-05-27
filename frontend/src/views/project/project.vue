@@ -63,7 +63,7 @@ import { useVpconfigStore } from "@/store/vpconfig";
 import { IconPark } from "@icon-park/vue-next/es/all";
 import DyAddKV from "@/components/dyAddKV.vue";
 
-import SettingLang from "@/views/project/projectSettingLang.vue";
+import SettingLang from "@/views/project/projectSettingTheme.vue";
 import SettingSocial from "@/views/project/projectSettingSocial.vue";
 import { useIndexStore } from "@/store";
 import EmptyProject from "@/components/emptyProject.vue";

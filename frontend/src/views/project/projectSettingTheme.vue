@@ -4,6 +4,64 @@
   <hr class="my-2" />
   <select-setting-lang></select-setting-lang>
   <div class="flex justify-start items-center my-2 mx-8">
+    <!-- Logo 配置 -->
+    <div class="my-3 w-1/3 flex justify-between">
+      <div class="flex-1">
+        <a-input 
+          disabled 
+          :value="storeConfig.currLangConfig?.themeConfig?.logo"
+          @update:value="(val: string) => {
+            if (storeConfig.currLangConfig?.themeConfig) {
+              storeConfig.currLangConfig.themeConfig.logo = val;
+            }
+          }"
+          :placeholder="lang('pageProject.settingBase.placeholders.logoUrl')" 
+          class="w-full">
+        </a-input>
+      </div>
+
+      <div class="mx-2">
+        <a-button class="bg-blue-200" @click="selectLogo">
+          <q-tooltip anchor="bottom left" self="bottom right">
+            {{ lang("pageProject.settingBase.logoSavePath") }}
+          </q-tooltip>
+          {{ lang("pageProject.settingBase.selectLogo") }}
+        </a-button>
+      </div>
+    </div>
+
+    <!-- 大纲级别配置 -->
+    <sim-input
+      :model-value="(() => {
+        const outline = storeConfig.currLangConfig?.themeConfig?.outline;
+        if (outline && typeof outline === 'object' && 'level' in outline) {
+          return outline.level?.toString() || '';
+        }
+        return '';
+      })()"
+      @update:model-value="(val: string) => {
+        if (storeConfig.currLangConfig?.themeConfig) {
+          const numVal = parseInt(val);
+          if (!isNaN(numVal)) {
+            storeConfig.currLangConfig.themeConfig.outline = { level: numVal };
+          }
+        }
+      }"
+      :tooltip="lang('pageProject.settingBase.tooltips.outlineLevel')"
+      :placeholder="lang('pageProject.settingBase.placeholders.outlineLevel')"
+      :label="lang('pageProject.settingBase.labels.outlineLevel')"></sim-input>
+
+    <!-- 外部链接图标配置 -->
+    <sim-switch
+      :model-value="storeConfig.currLangConfig?.themeConfig?.externalLinkIcon"
+      @update:model-value="(val: boolean) => {
+        if (storeConfig.currLangConfig?.themeConfig) {
+          storeConfig.currLangConfig.themeConfig.externalLinkIcon = val;
+        }
+      }"
+      :tooltip="lang('pageProject.settingBase.tooltips.externalLinkIcon')"
+      :label="lang('pageProject.settingBase.labels.externalLinkIcon')"></sim-switch>
+
     <sim-switch
       :model-value="storeConfig.currLangConfig?.themeConfig?.i18nRouting"
       @update:model-value="(val: boolean) => {
@@ -165,12 +223,32 @@ import SelectSettingLang from "@/components/selectSettingLang.vue";
 import SimBoolInput from "@/components/simBoolInput.vue";
 import SimSwitch from "@/components/simSwitch.vue";
 import { lang } from "@/utils/language";
-;
+import { CopyPath, GetPathExt, PathJoin, SelectFile } from "../../../wailsjs/go/system/SystemService";
+import { ToastCheck, ToastError } from "@/utils/Toast";
 
 const storeConfig = useVpconfigStore();
 
 const saveLangConfig = () => {
   storeConfig.saveConfig();
+};
+
+const selectLogo = async () => {
+  let oriImagePath = await SelectFile("选择主页图片", "");
+  console.log(oriImagePath, "filePath -- console.log");
+  let ext = await GetPathExt(oriImagePath);
+  let allowExt = [".png", ".jpg", ".jpeg", ".bmp"];
+  if (!allowExt.includes(ext)) {
+    ToastError("请选则图片格式文件" + allowExt);
+    return;
+  }
+  //组装新路径
+  let publicDir = await PathJoin([storeConfig.fullSrcDir, "public"]);
+  let newImagePath = await PathJoin([publicDir, "images", "logo" + ext]);
+  let copyResult = await CopyPath(oriImagePath, newImagePath, false);
+  ToastCheck(copyResult);
+  if (storeConfig.currLangConfig?.themeConfig) {
+    storeConfig.currLangConfig.themeConfig.logo = newImagePath.replaceAll(publicDir, "");
+  }
 };
 </script>
 

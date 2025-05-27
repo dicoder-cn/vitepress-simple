@@ -56,7 +56,7 @@
             <div class="col-2">
               <q-input
                 v-model="vpConfig.locales[key].titleTemplate"
-                label="站点标题模板"
+                label="标题后缀"
                 dense
               />
             </div>

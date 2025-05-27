@@ -2,71 +2,16 @@
   <div class="flex justify-start items-center my-2 mx-8">
     <LangEdit></LangEdit>
 
-    <!--    选择logo图片-->
-    <div class="my-3 w-1/3 flex justify-between">
-      <div class="flex-1">
-        <a-input 
-          disabled 
-          :value="storeConfig.currLangConfig?.themeConfig?.logo"
-          @update:value="(val: string) => {
-            if (storeConfig.currLangConfig?.themeConfig) {
-              storeConfig.currLangConfig.themeConfig.logo = val;
-            }
-          }"
-          :placeholder="lang('pageProject.settingBase.placeholders.logoUrl')" 
-          class="w-full">
-        </a-input>
-      </div>
-
-      <div class="mx-2">
-        <a-button class="bg-blue-200" @click="selectLogo">
-          <q-tooltip anchor="bottom left" self="bottom right">
-            {{ lang("pageProject.settingBase.logoSavePath") }}
-          </q-tooltip>
-          {{ lang("pageProject.settingBase.selectLogo") }}
-        </a-button>
-      </div>
-    </div>
-
-    <sim-input
-      :model-value="storeConfig.vpConfig?.title"
+     <sim-input 
+      :model-value="storeConfig.vpConfig?.srcDir"
       @update:model-value="(val: string) => {
         if (storeConfig.vpConfig) {
-          storeConfig.vpConfig.title = val;
+          storeConfig.vpConfig.srcDir = val;
         }
       }"
-      :tooltip="lang('pageProject.settingBase.tooltips.pageTitle')"
-      :placeholder="lang('pageProject.settingBase.placeholders.pageTitle')"
-      :label="lang('pageProject.settingBase.labels.pageTitle')"></sim-input>
-    <sim-input
-      :model-value="storeConfig.vpConfig?.titleTemplate"
-      @update:model-value="(val: string) => {
-        if (storeConfig.vpConfig) {
-          storeConfig.vpConfig.titleTemplate = val;
-        }
-      }"
-      :tooltip="lang('pageProject.settingBase.tooltips.titleSuffix')"
-      :placeholder="lang('pageProject.settingBase.placeholders.titleSuffix')"
-      :label="lang('pageProject.settingBase.labels.titleSuffix')"></sim-input>
-    <sim-input
-      :model-value="(() => {
-        const outline = storeConfig.currLangConfig?.themeConfig?.outline;
-        if (outline && typeof outline === 'object' && 'level' in outline) {
-          return outline.level?.toString() || '';
-        }
-        return '';
-      })()"
-      @update:model-value="(val: string) => {
-        if (storeConfig.currLangConfig?.themeConfig) {
-          const numVal = parseInt(val);
-          if (!isNaN(numVal)) {
-            storeConfig.currLangConfig.themeConfig.outline = { level: numVal };
-          }
-        }
-      }"
-      :tooltip="lang('pageProject.settingBase.tooltips.outlineLevel')"
-      :placeholder="lang('pageProject.settingBase.placeholders.outlineLevel')"
-      :label="lang('pageProject.settingBase.labels.outlineLevel')"></sim-input>
+      :tooltip="lang('pageProject.settingBase.tooltips.docPath')" 
+      :label="lang('pageProject.settingBase.labels.docPath')"></sim-input>
+
     <sim-input
       :model-value="storeConfig.vpConfig?.lang"
       @update:model-value="(val: string) => {
@@ -77,43 +22,9 @@
       :tooltip="lang('pageProject.settingBase.tooltips.htmlLang')"
       :placeholder="lang('pageProject.settingBase.placeholders.htmlLang')"
       :label="lang('pageProject.settingBase.labels.htmlLang')"></sim-input>
-    <sim-input
-      :model-value="storeConfig.vpConfig?.description"
-      @update:model-value="(val: string) => {
-        if (storeConfig.vpConfig) {
-          storeConfig.vpConfig.description = val;
-        }
-      }"
-      :tooltip="lang('pageProject.settingBase.tooltips.siteDescription')"
-      :placeholder="lang('pageProject.settingBase.placeholders.siteDescription')"
-      :label="lang('pageProject.settingBase.labels.siteDescription')"></sim-input>
 
-    <!--    切换日/夜间文字- -->
 
-    <!--    仅手机端生效-->
-
-    <!--    多语言-->
-
-    <sim-switch
-      :model-value="storeConfig.currLangConfig?.themeConfig?.externalLinkIcon"
-      @update:model-value="(val: boolean) => {
-        if (storeConfig.currLangConfig?.themeConfig) {
-          storeConfig.currLangConfig.themeConfig.externalLinkIcon = val;
-        }
-      }"
-      :tooltip="lang('pageProject.settingBase.tooltips.externalLinkIcon')"
-      :placeholder="lang('pageProject.settingBase.placeholders.titleSuffix')"
-      :label="lang('pageProject.settingBase.labels.externalLinkIcon')"></sim-switch>
-    <hr class="my-1 w-full" />
-    <sim-input 
-      :model-value="storeConfig.vpConfig?.srcDir"
-      @update:model-value="(val: string) => {
-        if (storeConfig.vpConfig) {
-          storeConfig.vpConfig.srcDir = val;
-        }
-      }"
-      :tooltip="lang('pageProject.settingBase.tooltips.docPath')" 
-      :label="lang('pageProject.settingBase.labels.docPath')"></sim-input>
+   
     <sim-input
       :model-value="storeConfig.vpConfig?.base"
       @update:model-value="(val: string) => {
