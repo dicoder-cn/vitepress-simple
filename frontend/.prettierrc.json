@@ -5,7 +5,6 @@
   "printWidth": 180,
   "vueIndentScriptAndStyle": true,
   "bracketSameLine": true,
-
   "importOrder": ["^@/(.*)$", "^[./]"],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true
