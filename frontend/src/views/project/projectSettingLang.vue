@@ -2,19 +2,7 @@
   <div class="m-3">
     <a-alert type="success" closable :show-icon="false" :description="lang('pageProject.settingLang.tooltips.multiLanguageEnabled')"></a-alert>
   </div>
-  <dy-add-k-v
-    :add-btn-text="lang('pageProject.settingLang.labels.addLangType')"
-    :key-placeholder="lang('pageProject.settingLang.placeholders.langDirectory')"
-    :value-placeholder="lang('pageProject.settingLang.placeholders.langLabel')"
-    key-name="lang"
-    value-name="label"
-    ref="refAddLang"
-    :remove-confirm="true"
-    :remove-confirm-text="lang('pageProject.settingLang.labels.removeConfirm')"
-    @remove-item="removeLangItem"
-    v-model:objs="inputLangArray">
-  </dy-add-k-v>
-
+  <LangEdit></LangEdit>
   <hr class="my-2" />
   <select-setting-lang></select-setting-lang>
   <div class="flex justify-start items-center my-2 mx-8">
@@ -170,72 +158,21 @@
     </a-button>
   </div>
 </template>
+
 <script setup lang="ts">
-import DyAddKV from "@/components/dyAddKV.vue";
 import SimInput from "@/components/simInput.vue";
 import { useVpconfigStore } from "@/store/vpconfig";
 import { IconPark } from "@icon-park/vue-next/es/all";
-import { onMounted, ref } from "vue";
-import { IsEmptyValue } from "@/utils/utils";
 import SelectSettingLang from "@/components/selectSettingLang.vue";
 import SimBoolInput from "@/components/simBoolInput.vue";
 import SimSwitch from "@/components/simSwitch.vue";
-import { StringRootLang } from "@/configs/cnts";
 import { lang } from "@/utils/language";
+import LangEdit from "@/components/langEdit.vue";
 
 const storeConfig = useVpconfigStore();
-const inputLangArray = ref<any[]>([]);
-const refAddLang = ref();
-onMounted(() => {
-  //获取原始数据
-  let langData = storeConfig.vpConfig?.locales ?? {};
 
-  let arrData: any = [];
-  for (const langDataKey in langData) {
-    let item: any = {
-      lang: langDataKey,
-      label: langData[langDataKey].label
-    };
-    arrData.push(item);
-  }
-  refAddLang.value.setArrayValue(arrData);
-});
 const saveLangConfig = () => {
-  //将数据转换成vitepress所需要的格式
-  if (!storeConfig.vpConfig) {
-    storeConfig.vpConfig = {};
-  }
-  if (!storeConfig.vpConfig.locales) {
-    storeConfig.vpConfig.locales = {};
-  }
-  let resultData = storeConfig.vpConfig.locales;
-
-  for (let i = 0; i < inputLangArray.value.length; i++) {
-    let item = inputLangArray.value[i];
-    console.log(item, "item -- console.log");
-    if (IsEmptyValue(resultData[item.lang])) {
-      resultData[item.lang] = {
-        label: item.label,
-        lang: item.lang
-      };
-    } else {
-      resultData[item.lang].label = item.label;
-      resultData[item.lang].lang = item.lang;
-    }
-  }
-  storeConfig.vpConfig.locales = resultData;
-  if (storeConfig.IsUseManyLang) {
-    if (storeConfig.currLangConfigKey == "" || storeConfig.currLangConfigKey == StringRootLang) {
-      storeConfig.currLangConfigKey = inputLangArray.value[0]["lang"];
-    }
-  }
   storeConfig.saveConfig();
-};
-//移除一个元素后 刷新数据
-const removeLangItem = (k: string, v: string, removeIndex: number) => {
-  if (storeConfig.vpConfig?.locales) {
-    delete storeConfig.vpConfig.locales[k];
-  }
 };
 </script>
 

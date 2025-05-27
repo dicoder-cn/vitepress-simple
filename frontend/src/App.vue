@@ -34,7 +34,7 @@ onMounted(async () => {
 
   // 初始化编辑器监听器
   useEditorStore().initWatcher();
-
+  
   EventsOn("shell", (data: NotifyShellData) => {
     useShellStore().handlerShellNotify(data);
   });
@@ -45,12 +45,13 @@ onMounted(async () => {
   await storeIndex.getVersion(); //获取当前系统版本
   await storeIndex.getStaticDir();
   await storeIndex.getStaticPort();
+
   const res = AppConfig.getString(ConfigKeyLang);
   locale.value = res == "" ? "en" : res;
-  let hasNewVersion = await HasNewVersion();
-  if (hasNewVersion) {
-    UpdateNewVersion();
-  }
+  HasNewVersion().then(hasNewVersion=>{
+     if(hasNewVersion)  UpdateNewVersion();
+  });
+
   //设定初始项目
   let dir = AppConfig.getString(ConfigKeyProjectDir);
   if (dir !== "") {
@@ -61,6 +62,8 @@ onMounted(async () => {
   //初始化配置
   AppConfig.updateState();
 });
+
+
 onBeforeUnmount(() => {
   // 不要忘记在组件卸载时移除事件监听器，防止内存泄漏
   window.removeEventListener("keydown", handleKeyDown);

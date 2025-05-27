@@ -5,25 +5,48 @@
         <icon-park class="mr-1" strokeLinejoin="bevel" theme="outline" type="add-one" />
         {{ props.addBtnText }}
       </a-button>
+      <a-button v-if="props.showSaveBtn" class="ml-2 bg-green-500 text-white hover:bg-green-400" @click="handleSave">
+        {{ props.saveBtnText || '保存' }}
+      </a-button>
     </div>
     <div v-for="(item, index) in inputs" :key="index" class="flex mt-2 justify-start items-center">
       <div class="mt-1 px-1 w-2/5">
-        <a-input :style="StyleNoDrag" @blur="inputsConvertObject" class="w-full" v-model:value="inputs[index].key" :placeholder="props.keyPlaceholder" />
+        <a-input 
+          :style="StyleNoDrag" 
+          @blur="inputsConvertObject" 
+          class="w-full" 
+          v-model:value="inputs[index].key" 
+          :placeholder="props.keyPlaceholder"
+          :disabled="isReadonlyKey(inputs[index].key)"
+          :class="{ 'bg-gray-100': isReadonlyKey(inputs[index].key) }"
+        />
       </div>
       <div class="mt-1 px-1 w-2/5">
-        <a-textarea :style="StyleNoDrag" @blur="inputsConvertObject" class="w-full" :auto-size="{ minRows: 1 }" v-model:value="inputs[index].value" :placeholder="props.valuePlaceholder"></a-textarea>
+        <a-textarea 
+          :style="StyleNoDrag" 
+          @blur="inputsConvertObject" 
+          class="w-full" 
+          :auto-size="{ minRows: 1 }" 
+          v-model:value="inputs[index].value" 
+          :placeholder="props.valuePlaceholder"
+        ></a-textarea>
       </div>
       <div class="mt-1 px-1">
-        <a-button v-if="inputs.length > 0 && !props.removeConfirm" type="dashed" @click="removeInput(index)">移除 </a-button>
+        <a-button 
+          v-if="inputs.length > 0 && !props.removeConfirm && !isReadonlyKey(inputs[index].key)" 
+          type="dashed" 
+          @click="removeInput(index)"
+        >移除</a-button>
         <a-popconfirm
-          v-if="props.removeConfirm"
+          v-if="props.removeConfirm && !isReadonlyKey(inputs[index].key)"
           class="ml-3 pt-1"
           :title="props.removeConfirmText"
           ok-text="确认移除"
           cancel-text="算了"
-          :ok-button-props="{ class: 'bg-blue-6 00 text-white' }"
-          @confirm="removeInput(index)">
-          <a-button v-if="inputs.length > 0" type="dashed" @click="removeInput(index)">移除 </a-button>
+          :ok-button-props="{ class: 'bg-blue-600 text-white' }"
+          @confirm="removeInput(index)"
+        >
+          <a-button v-if="inputs.length > 0" type="dashed">移除</a-button>
         </a-popconfirm>
       </div>
     </div>
@@ -78,10 +101,13 @@ export interface dyAddKvProps {
   removeConfirm?: boolean; //是否需要确认删除
   removeConfirmText?: string; //确认删除文本
   dataType?: DataType;
+  showSaveBtn?: boolean; // 是否显示保存按钮
+  saveBtnText?: string; // 保存按钮文本
+  readonlyKeys?: string[]; // 不可编辑的key列表
 }
 
 const props = defineProps<dyAddKvProps>();
-const emits = defineEmits(["removeItem"]);
+const emits = defineEmits(["removeItem", "addItem", "save"]);
 
 onMounted(() => {
   parseParamModel();
@@ -104,7 +130,7 @@ const parseParamModel = () => {
   }
 };
 
-interface InputItem {
+export interface InputItem {
   key: string;
   value: string;
 }
@@ -170,6 +196,7 @@ const setMeta = (arrData: any[]) => {
 // Method to add a new set of inputs
 const addInput = () => {
   inputs.value.push({ key: "", value: "" });
+ 
 };
 
 // Method to remove a set of inputs
@@ -236,5 +263,15 @@ const getMeta = () => {
   }
   return result;
 };
+
+const handleSave = () => {
+  emits("save", inputs.value);
+};
+
+// 判断是否为只读key
+const isReadonlyKey = (key: string) => {
+  return props.readonlyKeys?.includes(key) ?? false;
+};
+
 defineExpose({ getArray, getObject, setArrayValue });
 </script>
