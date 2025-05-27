@@ -1,5 +1,22 @@
 <template>
   <div class="lang-edit">
+    <div class="row items-center justify-between q-mb-md">
+      <h3 class="text-lg font-medium m-0">{{ lang("pageProject.settingBase.labels.languageManagement") }}</h3>
+      <div class="q-gutter-sm">
+        <q-btn
+          color="primary"
+          icon="add"
+          label="添加语言"
+          @click="handleAddLang"
+        />
+        <q-btn
+          color="positive"
+          icon="save"
+          label="保存配置"
+          @click="handleSaveConfig"
+        />
+      </div>
+    </div>
     <q-list bordered separator>
       <q-item v-for="key in sortedLangKeys" :key="key">
         <q-item-section>
@@ -73,21 +90,6 @@
         </q-item-section>
       </q-item>
     </q-list>
-
-    <div class="q-mt-md row justify-center q-gutter-sm">
-      <q-btn
-        color="primary"
-        icon="add"
-        label="添加语言"
-        @click="handleAddLang"
-      />
-      <q-btn
-        color="positive"
-        icon="save"
-        label="保存配置"
-        @click="handleSaveConfig"
-      />
-    </div>
   </div>
 </template>
 
@@ -98,6 +100,7 @@ import { StringRootLang } from '@/configs/cnts'
 import { useQuasar } from 'quasar'
 import type { VpConfigLang } from '@/types/vpsimpleConfig'
 import { ToastError, ToastInfo, ToastSuccess } from '@/utils/Toast'
+import { lang } from '@/utils/language'
 
 const $q = useQuasar()
 const vpConfigStore = useVpconfigStore()

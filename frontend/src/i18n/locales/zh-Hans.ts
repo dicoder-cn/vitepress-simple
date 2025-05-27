@@ -294,7 +294,8 @@ export const zhHans = {
         hostname: "hostname",
         staticAssets: "生成静态目录",
         cachePath: "缓存路径",
-        cleanUrls: "cleanUrls"
+        cleanUrls: "cleanUrls",
+        languageManagement: "语言管理"
       },
       // 占位符文本
       placeholders: {

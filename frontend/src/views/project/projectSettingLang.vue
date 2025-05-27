@@ -1,8 +1,6 @@
 <template>
-  <div class="m-3">
-    <a-alert type="success" closable :show-icon="false" :description="lang('pageProject.settingLang.tooltips.multiLanguageEnabled')"></a-alert>
-  </div>
-  <LangEdit></LangEdit>
+
+
   <hr class="my-2" />
   <select-setting-lang></select-setting-lang>
   <div class="flex justify-start items-center my-2 mx-8">
@@ -167,7 +165,7 @@ import SelectSettingLang from "@/components/selectSettingLang.vue";
 import SimBoolInput from "@/components/simBoolInput.vue";
 import SimSwitch from "@/components/simSwitch.vue";
 import { lang } from "@/utils/language";
-import LangEdit from "@/components/langEdit.vue";
+;
 
 const storeConfig = useVpconfigStore();
 

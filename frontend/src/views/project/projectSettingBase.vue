@@ -1,5 +1,7 @@
 <template>
   <div class="flex justify-start items-center my-2 mx-8">
+    <LangEdit></LangEdit>
+
     <!--    选择logo图片-->
     <div class="my-3 w-1/3 flex justify-between">
       <div class="flex-1">
@@ -194,6 +196,7 @@ import { useIndexStore } from "@/store";
 import { IconPark } from "@icon-park/vue-next/es/all";
 import { onBeforeMount, onMounted, ref } from "vue";
 import { lang } from "@/utils/language";
+import LangEdit from "@/components/langEdit.vue"
 
 const storeConfig = useVpconfigStore();
 const storeIndex = useIndexStore();
