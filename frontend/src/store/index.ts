@@ -1,39 +1,20 @@
 import { defineStore } from "pinia";
-import Vditor from "vditor";
-import { ToastError, ToastInfo, ToastSuccess } from "@/utils/Toast";
-import {
-  ParseTreeData,
-  WriteFileContent,
-} from "../../wailsjs/go/services/ArticleTreeData";
+import { ToastError, ToastSuccess } from "@/utils/Toast";
+import { ParseTreeData } from "../../wailsjs/go/services/ArticleTreeData";
 import { dto } from "../../wailsjs/go/models";
 import { getDirectoryPath } from "@/utils/file";
-import {
-  ConfigSet,
-  GetCurrVersion,
-  GetSystemType,
-  PathExists,
-  PathJoin,
-} from "../../wailsjs/go/system/SystemService";
-import {
-  ConfigKeyFrontMatterSaveType,
-  ConfigKeyProjectDir,
-  ConfigKeySysProjectStaticDirName,
-  ConfigKeySysStaticServerPort,
-} from "@/configs/appConfigKey";
+import { ConfigSet, GetCurrVersion, GetSystemType, PathExists, PathJoin } from "../../wailsjs/go/system/SystemService";
+import { ConfigKeyProjectDir, ConfigKeySysProjectStaticDirName, ConfigKeySysStaticServerPort } from "@/configs/appConfigKey";
 import { useVpconfigStore } from "@/store/vpconfig";
-import { getFileNameFromPath, IsEmptyValue } from "@/utils/utils";
 import { VitePressHome } from "@/types/home";
 import { moveTo } from "@/utils/system";
-import { defaultFrontMatter } from "@/configs/defaultFrontMatter";
 import { useHistoryStore } from "@/store/history";
 import { isEmptyArray } from "@/utils/array";
 // @ts-ignore
-import yaml from "js-yaml";
-import { replaceImageUrlToLocalStatic } from "@/utils/repalceStatic";
+
 import { StartStaticServer } from "../../wailsjs/go/services/StaticServer";
 import { useShellStore } from "@/store/shell"; // 浏览器环境（需确保构建工具已正确处理）
 import { AppConfig } from "./appconfig";
-
 
 //定义首页的数据类型
 export interface indexStore {
@@ -67,7 +48,7 @@ export const useIndexStore = defineStore("index", {
     searchValue: "", //搜索值
     staticBaseDir: "vpstatic",
     staticServerPort: "9874",
-    currCopyPath: "", //当前剪切路径
+    currCopyPath: "" //当前剪切路径
   }),
   //定义actions
   actions: {
@@ -138,13 +119,9 @@ export const useIndexStore = defineStore("index", {
       });
     },
 
-  
- 
     setCurrCutPath(path: string) {
       this.currCopyPath = path;
-    },
-
-  
+    }
   },
   getters: {
     //大驼峰命名法
@@ -153,12 +130,11 @@ export const useIndexStore = defineStore("index", {
     SelectKeys: (state) => state.selectKeys,
     CurrCutPath: (state) => state.currCopyPath,
 
-
     CurrProjectDir: (state) => state.currProjectDir,
     // IsEmptyProject: (state) => isEmptyArray(state.articleTreeData),
-    IsEmptyTreeData: (state) => isEmptyArray(state.articleTreeData),
+    IsEmptyTreeData: (state) => isEmptyArray(state.articleTreeData)
     // CurrArticleTitle: (state) =>
     // getFileNameFromPath(state.currArticlePath).replaceAll(".md", ""),
     // GetArticleFrontMatter: (state) => state.currArticleFrontMatter,
-  },
+  }
 });

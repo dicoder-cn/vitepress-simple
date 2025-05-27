@@ -1,11 +1,22 @@
 {
-  "semi": false,
-  "singleQuote": true,
-  "trailingComma": "es5",
-  "printWidth": 180,
-  "vueIndentScriptAndStyle": true,
+  "printWidth": 200,
   "bracketSameLine": true,
-  "importOrder": ["^@/(.*)$", "^[./]"],
-  "importOrderSeparation": true,
-  "importOrderSortSpecifiers": true
+  "trailingComma": "none",
+  "importOrder": ["^[a-zA-Z]", "^@/", "^[./]"],
+  "importOrderSeparation": false,
+  "importOrderSortSpecifiers": true,
+  "overrides": [
+    {
+      "files": "*.js",
+      "options": {
+        "parser": "babel"
+      }
+    },
+    {
+      "files": "*.vue",
+      "options": {
+        "parser": "vue"
+      }
+    }
+  ]
 }
