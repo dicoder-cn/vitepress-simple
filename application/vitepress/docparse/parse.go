@@ -11,17 +11,17 @@ import (
 )
 
 type DocsTreeNode struct {
-	Name              string      //如:test 不带后缀
-	IsMdFile          bool        //是否是文件
-	MdFileFrontMatter FrontMatter //如果是文件，这里存放的是FrontMatter
-	Path              string      //如:test/test.md 带后缀(如果是文件)相对路径
-	FullPath          string      // 如:/user/data/test/test.md 带后缀绝对路径
+	Name              string         //如:test 不带后缀
+	IsMdFile          bool           //是否是文件
+	MdFileFrontMatter map[string]any //如果是文件，这里存放的是FrontMatter
+	Path              string         //如:test/test.md 带后缀(如果是文件)相对路径
+	FullPath          string         // 如:/user/data/test/test.md 带后缀绝对路径
 	Children          []*DocsTreeNode
 }
 
 // FrontMatter  第一层key是绝对路径，第二个是FrontMatter对应的key
 // 读取格式如[/user/data/test/test.md]["title"]="Docs with VitePress"
-type FrontMatter map[string]any
+//type FrontMatter map[string]any
 
 type ParseService struct {
 }
@@ -90,7 +90,7 @@ func (s *ParseService) ParseToTree(root string) (*DocsTreeNode, error) {
 						return err
 					}
 					// 尝试将 map[string]interface{} 转换为 docparse.FrontMatter
-					var fm FrontMatter
+					var fm map[string]any
 					data, err := json.Marshal(frontMatter)
 					if err != nil {
 						return err
@@ -115,8 +115,8 @@ func (s *ParseService) ParseToTree(root string) (*DocsTreeNode, error) {
 	return rootNode, nil
 }
 
-func (s *ParseService) ParseDocsFontMatter(root string) (FrontMatter, error) {
-	result := make(FrontMatter)
+func (s *ParseService) ParseDocsFontMatter(root string) (map[string]any, error) {
+	result := make(map[string]any)
 	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
