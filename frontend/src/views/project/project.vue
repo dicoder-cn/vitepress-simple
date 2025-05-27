@@ -29,7 +29,7 @@
               :add-btn-text="lang('pageProject.settingRewrite.addRewriteRule')"
               :key-placeholder="lang('pageProject.settingRewrite.filePath')"
               :value-placeholder="lang('pageProject.settingRewrite.routePath')"
-              v-model:obj="storeConfig.vpConfig['rewrites']"></dy-add-k-v>
+              v-model:obj="storeConfig.vpConfig?.rewrites"></dy-add-k-v>
             <hr class="my-2" />
             <div class="flex justify-center">
               <a-button @click="savePageConfig" class="bg-blue-600 hover:bg-blue-500 text-white flex justify-center items-center">

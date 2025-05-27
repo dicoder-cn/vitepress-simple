@@ -15,7 +15,7 @@ export interface vpconfigStore {
   baseDir: string;
   vpConfig: VpConfig | null; //直接使用vitepress的类型
   currLangConfigKey: string; //当前正在设置的语言
-  currLangConfig: any; //当前正在设置的语言
+  currLangConfig: VpConfigLang; //当前正在设置的语言
 }
 
 export const useVpconfigStore = defineStore("vpconfig", {
@@ -57,6 +57,7 @@ export const useVpconfigStore = defineStore("vpconfig", {
         await CreateDir(this.fullSrcDir);
         ToastInfo(`检测到源目录不存在，已自动创建源目录:${this.fullSrcDir}`);
       }
+      this.changeCurrLang(StringRootLang);
     },
     //切换当前语言配置
     changeCurrLang(key: string) {

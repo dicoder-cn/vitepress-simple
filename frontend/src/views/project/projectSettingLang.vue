@@ -19,75 +19,75 @@
   <select-setting-lang></select-setting-lang>
   <div class="flex justify-start items-center my-2 mx-8">
     <sim-switch
-      v-model="storeConfig.currLangConfig['themeConfig']['i18nRouting']"
+      v-model="storeConfig.currLangConfig?.themeConfig?.i18nRouting"
       :tooltip="lang('pageProject.settingLang.tooltips.i18nRouting')"
       :label="lang('pageProject.settingLang.labels.i18nRouting')"></sim-switch>
     <sim-input
-      v-model="storeConfig.currLangConfig['themeConfig']['siteTitle']"
+      v-model="storeConfig.currLangConfig?.themeConfig?.siteTitle"
       :tooltip="lang('pageProject.settingLang.tooltips.siteTitleInfo')"
       :placeholder="lang('pageProject.settingLang.placeholders.siteTitle')"
       :label="lang('pageProject.settingLang.labels.siteTitle')"></sim-input>
     <sim-input
-      v-model="storeConfig.currLangConfig['themeConfig']['footer']['message']"
+      v-model="storeConfig.currLangConfig?.themeConfig?.footer?.message"
       :tooltip="lang('pageProject.settingLang.tooltips.footerMessageInfo')"
       :placeholder="lang('pageProject.settingLang.placeholders.footerMessage')"
       :label="lang('pageProject.settingLang.labels.footerMessage')"></sim-input>
     <sim-input
-      v-model="storeConfig.currLangConfig['themeConfig']['footer']['copyright']"
+      v-model="storeConfig.currLangConfig?.themeConfig?.footer?.copyright"
       :tooltip="lang('pageProject.settingLang.tooltips.copyrightInfo')"
       :placeholder="lang('pageProject.settingLang.placeholders.copyright')"
       :label="lang('pageProject.settingLang.labels.copyright')"></sim-input>
 
     <sim-input
-      v-model="storeConfig.currLangConfig['themeConfig']['langMenuLabel']"
+      v-model="storeConfig.currLangConfig?.themeConfig?.langMenuLabel"
       :tooltip="lang('pageProject.settingLang.tooltips.langMenuLabelInfo')"
       :placeholder="lang('pageProject.settingLang.placeholders.langSwitchLabel')"
       :label="lang('pageProject.settingLang.labels.langSwitchLabel')"></sim-input>
     <sim-input
-      v-model="storeConfig.currLangConfig['themeConfig']['returnToTopLabel']"
+      v-model="storeConfig.currLangConfig?.themeConfig?.returnToTopLabel"
       :tooltip="lang('pageProject.settingLang.tooltips.returnToTop')"
       placeholder=""
       :label="lang('pageProject.settingLang.labels.returnToTop')"></sim-input>
     <sim-input
-      v-model="storeConfig.currLangConfig['themeConfig']['sidebarMenuLabel']"
+      v-model="storeConfig.currLangConfig?.themeConfig?.sidebarMenuLabel"
       :tooltip="lang('pageProject.settingLang.tooltips.sidebarMenuLabelInfo')"
       :placeholder="lang('pageProject.settingLang.placeholders.sidebarMenu')"
       :label="lang('pageProject.settingLang.labels.sidebarMenu')"></sim-input>
     <sim-input
-      v-model="storeConfig.currLangConfig['themeConfig']['darkModeSwitchLabel']"
+      v-model="storeConfig.currLangConfig?.themeConfig?.darkModeSwitchLabel"
       :tooltip="lang('pageProject.settingLang.tooltips.darkModeSwitchLabelInfo')"
       :placeholder="lang('pageProject.settingLang.placeholders.darkModeSwitch')"
       :label="lang('pageProject.settingLang.labels.darkModeSwitch')"></sim-input>
     <sim-input
-      v-model="storeConfig.currLangConfig['themeConfig']['lightModeSwitchTitle']"
+      v-model="storeConfig.currLangConfig?.themeConfig?.lightModeSwitchTitle"
       :tooltip="lang('pageProject.settingLang.tooltips.lightModeSwitchTitleInfo')"
       :placeholder="lang('pageProject.settingLang.placeholders.lightModeSwitchTitle')"
       :label="lang('pageProject.settingLang.labels.lightModeSwitchTitle')"></sim-input>
     <sim-input
-      v-model="storeConfig.currLangConfig['themeConfig']['darkModeSwitchTitle']"
+      v-model="storeConfig.currLangConfig?.themeConfig?.darkModeSwitchTitle"
       :tooltip="lang('pageProject.settingLang.tooltips.darkModeSwitchTitleInfo')"
       :placeholder="lang('pageProject.settingLang.placeholders.darkModeSwitchTitle')"
       :label="lang('pageProject.settingLang.labels.darkModeSwitchTitle')"></sim-input>
     <sim-input
-      v-model="storeConfig.currLangConfig['themeConfig']['editLink']['text']"
+      v-model="storeConfig.currLangConfig?.themeConfig?.editLink?.text"
       :tooltip="lang('pageProject.settingLang.tooltips.editLinkTextInfo')"
       :placeholder="lang('pageProject.settingLang.placeholders.editLinkText')"
       :label="lang('pageProject.settingLang.labels.editLinkText')"></sim-input>
     <sim-input
-      v-model="storeConfig.currLangConfig['themeConfig']['editLink']['pattern']"
+      v-model="storeConfig.currLangConfig?.themeConfig?.editLink?.pattern"
       :tooltip="lang('pageProject.settingLang.tooltips.editLinkPatternInfo')"
       :placeholder="lang('pageProject.settingLang.placeholders.editLinkPattern')"
       :label="lang('pageProject.settingLang.labels.editLinkPattern')"></sim-input>
     <sim-bool-input
       class="w-full"
-      v-model="storeConfig.currLangConfig['themeConfig']['docFooter']['prev']"
+      v-model="storeConfig.currLangConfig?.themeConfig?.docFooter?.prev"
       :input-label="lang('pageProject.settingLang.labels.prevButtonText')"
       :bool-tooltip="lang('pageProject.settingLang.tooltips.prevNextPageInfo')"
       :bool-label="lang('pageProject.settingLang.labels.prevButton')"
       :input-tooltip="lang('pageProject.settingLang.tooltips.preButtonTextInfo')"></sim-bool-input>
     <sim-bool-input
       class="w-full"
-      v-model="storeConfig.currLangConfig['themeConfig']['docFooter']['next']"
+      v-model="storeConfig.currLangConfig?.themeConfig?.docFooter?.next"
       :input-label="lang('pageProject.settingLang.labels.nextButtonText')"
       :bool-tooltip="lang('pageProject.settingLang.tooltips.prevNextPageInfo')"
       :bool-label="lang('pageProject.settingLang.labels.nextButton')"
@@ -110,7 +110,7 @@ import { IsEmptyValue } from "@/utils/utils";
 import SelectSettingLang from "@/components/selectSettingLang.vue";
 import SimBoolInput from "@/components/simBoolInput.vue";
 import SimSwitch from "@/components/simSwitch.vue";
-import { StringGlobalLang } from "@/configs/cnts";
+import { StringRootLang } from "@/configs/cnts";
 import { lang } from "@/utils/language";
 
 const storeConfig = useVpconfigStore();
@@ -118,7 +118,7 @@ const inputLangArray = ref<any[]>([]);
 const refAddLang = ref();
 onMounted(() => {
   //获取原始数据
-  let langData = storeConfig.vpConfig["locales"];
+  let langData = storeConfig.vpConfig?.locales ?? {};
 
   let arrData: any = [];
   for (const langDataKey in langData) {
@@ -132,8 +132,13 @@ onMounted(() => {
 });
 const saveLangConfig = () => {
   //将数据转换成vitepress所需要的格式
-  // let resultData: any = {};
-  let resultData = storeConfig.vpConfig["locales"];
+  if (!storeConfig.vpConfig) {
+    storeConfig.vpConfig = {};
+  }
+  if (!storeConfig.vpConfig.locales) {
+    storeConfig.vpConfig.locales = {};
+  }
+  let resultData = storeConfig.vpConfig.locales;
 
   for (let i = 0; i < inputLangArray.value.length; i++) {
     let item = inputLangArray.value[i];
@@ -148,9 +153,9 @@ const saveLangConfig = () => {
       resultData[item.lang].lang = item.lang;
     }
   }
-  storeConfig.vpConfig["locales"] = resultData;
+  storeConfig.vpConfig.locales = resultData;
   if (storeConfig.IsUseManyLang) {
-    if (storeConfig.currLangConfigKey == "" || storeConfig.currLangConfigKey == StringGlobalLang) {
+    if (storeConfig.currLangConfigKey == "" || storeConfig.currLangConfigKey == StringRootLang) {
       storeConfig.currLangConfigKey = inputLangArray.value[0]["lang"];
     }
   }
@@ -158,9 +163,9 @@ const saveLangConfig = () => {
 };
 //移除一个元素后 刷新数据
 const removeLangItem = (k: string, v: string, removeIndex: number) => {
-  delete storeConfig.vpConfig["locales"][k];
-
-  //storeConfig.configData["locales"][k] = undefined;
+  if (storeConfig.vpConfig?.locales) {
+    delete storeConfig.vpConfig.locales[k];
+  }
 };
 </script>
 

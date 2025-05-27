@@ -109,8 +109,10 @@ const Create = async () => {
     } else {
       // await storeVpconfig.readVpConfig();
       // //设置项目信息
-      storeVpconfig.vpConfig["description"] = formData.value.description;
-      storeVpconfig.vpConfig["title"] = formData.value.title;
+      if (storeVpconfig.vpConfig) {
+        storeVpconfig.vpConfig.description = formData.value.description;
+        storeVpconfig.vpConfig.title = formData.value.title;
+      }
       await storeVpconfig.saveConfig();
       modalVisible.value = false;
       useHistoryStore().add(formData.value.dir); //添加到历史记录
