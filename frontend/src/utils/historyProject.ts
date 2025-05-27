@@ -1,19 +1,18 @@
 // 定义一个简单的类 `Person`
-import { AppConfig } from "@/store/appconfig";
-import { ConfigSet } from "../../wailsjs/go/system/SystemService";
-import { ConfigKeyHistoryProject } from "@/configs/appConfigKey";
-
+import { AppConfig } from '@/store/appconfig'
+import { ConfigSet } from '../../wailsjs/go/system/SystemService'
+import { ConfigKeyHistoryProject } from '@/configs/appConfigKey'
 
 export class HistoryProject {
-  public static currentList: string[] = [];
+  public static currentList: string[] = []
 
   // 初始化配置文件中的配置(启动时执行一次即可)
   public static async initList() {
-    const currListString = AppConfig.getString(ConfigKeyHistoryProject);
+    const currListString = AppConfig.getString(ConfigKeyHistoryProject)
     try {
-      this.currentList = JSON.parse(currListString);
+      this.currentList = JSON.parse(currListString)
     } catch (e) {
-      this.currentList = [];
+      this.currentList = []
     }
   }
 
@@ -23,20 +22,20 @@ export class HistoryProject {
    */
   public static add(dir: string) {
     // 从当前列表中移除指定目录，确保后续添加不会重复
-    this.currentList = this.currentList.filter((item) => item !== dir);
+    this.currentList = this.currentList.filter((item) => item !== dir)
 
     // 将指定目录添加到列表的开头
-    this.currentList.unshift(dir);
+    this.currentList.unshift(dir)
 
     // 限制列表长度不超过10，超出部分会被移除
-    this.currentList = this.currentList.slice(0, 10);
+    this.currentList = this.currentList.slice(0, 10)
 
     // 保存更新后的列表到配置文件
-    this.SaveToConfig();
+    this.SaveToConfig()
   }
 
   //保存历史数据到到配置文件
   public static SaveToConfig() {
-    ConfigSet(ConfigKeyHistoryProject, JSON.stringify(this.currentList));
+    ConfigSet(ConfigKeyHistoryProject, JSON.stringify(this.currentList))
   }
 }

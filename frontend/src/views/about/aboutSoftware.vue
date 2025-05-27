@@ -1,17 +1,15 @@
 <script setup lang="ts">
-import { OpenURL } from "../../../wailsjs/go/system/SystemService";
+  import { OpenURL } from '../../../wailsjs/go/system/SystemService'
 
-import { useIndexStore } from "../../store";
-import { onMounted } from "vue";
-import { ConfigKeyLang } from "@/configs/appConfigKey";
-import { AppConfig } from "@/store/appconfig";
+  import { useIndexStore } from '../../store'
+  import { onMounted } from 'vue'
+  import { ConfigKeyLang } from '@/configs/appConfigKey'
+  import { AppConfig } from '@/store/appconfig'
 
-
-
-let lang = "";
-onMounted(async () => {
-  lang = AppConfig.getString(ConfigKeyLang);
-});
+  let lang = ''
+  onMounted(async () => {
+    lang = AppConfig.getString(ConfigKeyLang)
+  })
 </script>
 
 <template>
@@ -22,15 +20,14 @@ onMounted(async () => {
       >
       <div class="px-4">
         <p>
-          This software is built with Vue3, TypeScript, and Wails, aiming to
-          provide VitePress users with a convenient and visual configuration
-          experience.
+          This software is built with Vue3, TypeScript, and Wails, aiming to provide VitePress users
+          with a convenient and visual configuration experience.
         </p>
 
         <ul>
           <li>
-            Named "VitePressSimple" (short for VPSimple), the source code of
-            this software is made fully open-source on
+            Named "VitePressSimple" (short for VPSimple), the source code of this software is made
+            fully open-source on
             <span
               class="cursor-pointer"
               @click="OpenURL('https://github.com/zhangdi168/VitePressSimple')"
@@ -39,92 +36,80 @@ onMounted(async () => {
             under the <strong>Apache 2.0</strong> license.
           </li>
           <li>
-            Any individual or organization can freely access, download, use,
-            study, modify, and redistribute this software, as long as they
-            adhere to the corresponding open-source license terms.
+            Any individual or organization can freely access, download, use, study, modify, and
+            redistribute this software, as long as they adhere to the corresponding open-source
+            license terms.
           </li>
         </ul>
 
         <p>
-          "<strong>VitePressSimple</strong>" focuses on enhancing the efficiency
-          and user experience of configuring VitePress projects with the
-          following core features:
+          "<strong>VitePressSimple</strong>" focuses on enhancing the efficiency and user experience
+          of configuring VitePress projects with the following core features:
         </p>
 
         <ul>
           <li>
             <strong>Developed with Vue3 and TypeScript:</strong>
-            Leveraging the powerful component-based system of Vue3 and the
-            static type checking of TypeScript, ensuring high performance,
-            stability, and maintainability.
+            Leveraging the powerful component-based system of Vue3 and the static type checking of
+            TypeScript, ensuring high performance, stability, and maintainability.
           </li>
           <li>
             <strong>Integrated with Wails framework:</strong>
-            Built as a desktop client application, providing a seamless
-            connection to the user's local environment with a native, intuitive
-            operation experience.
+            Built as a desktop client application, providing a seamless connection to the user's
+            local environment with a native, intuitive operation experience.
           </li>
           <li>
             <strong>Quick configuration:</strong>
-            Offers a rich set of VitePress configuration options through a clean
-            interface, simplifying project initialization and advanced
-            configurations, reducing manual setup efforts.
+            Offers a rich set of VitePress configuration options through a clean interface,
+            simplifying project initialization and advanced configurations, reducing manual setup
+            efforts.
           </li>
           <li>
             <strong>Visual configuration interface:</strong>
-            Provides an easy-to-understand graphical interface that demonstrates
-            configuration effects in real-time, making complex VitePress
-            configurations straightforward and minimizing the learning curve and
-            error probability.
+            Provides an easy-to-understand graphical interface that demonstrates configuration
+            effects in real-time, making complex VitePress configurations straightforward and
+            minimizing the learning curve and error probability.
           </li>
         </ul>
 
         <p>
-          We warmly welcome you to try "<strong>VitePressSimple</strong>" and
-          look forward to your valuable feedback and suggestions. You can
-          interact with us through the following channels:
+          We warmly welcome you to try "<strong>VitePressSimple</strong>" and look forward to your
+          valuable feedback and suggestions. You can interact with us through the following
+          channels:
         </p>
 
         <ul>
           <li>
             <strong>Report issues or suggest features:</strong>
-            Submit issues or feature requests on the open-source platform's
-            Issue section, and we will respond promptly and consider
-            incorporating useful suggestions.
+            Submit issues or feature requests on the open-source platform's Issue section, and we
+            will respond promptly and consider incorporating useful suggestions.
           </li>
           <li>
             <strong>Contribute code and documentation:</strong>
-            If you'd like to contribute to the software's development and
-            improvement, feel free to submit a Pull Request.
+            If you'd like to contribute to the software's development and improvement, feel free to
+            submit a Pull Request.
           </li>
           <li>
             <strong>User discussion and interaction:</strong>
             Join our
-            <a href="[Community Link (e.g., Discord, forum)]"
-              ><strong>GitHub community</strong></a
-            >
-            to share experiences, discuss technical issues with other users and
-            developers.
+            <a href="[Community Link (e.g., Discord, forum)]"><strong>GitHub community</strong></a>
+            to share experiences, discuss technical issues with other users and developers.
           </li>
         </ul>
 
         <p>
-          While we strive to ensure the quality and suitability of the software,
-          due to its open-source nature and user-configurable flexibility, we
-          cannot be held responsible for any direct, indirect losses, or issues
-          arising in special circumstances resulting from the use of this
-          software. Users should abide by relevant laws and regulations when
-          using the software and must not use it for any illegal, infringing, or
-          detrimental purposes.
+          While we strive to ensure the quality and suitability of the software, due to its
+          open-source nature and user-configurable flexibility, we cannot be held responsible for
+          any direct, indirect losses, or issues arising in special circumstances resulting from the
+          use of this software. Users should abide by relevant laws and regulations when using the
+          software and must not use it for any illegal, infringing, or detrimental purposes.
         </p>
       </div>
     </div>
   </div>
   <div v-else>
     <div class="mx-20 mt-4 flex justify-center border p-3">
-      <span class="text-3xl font-bold text-center"
-        >关于VPSimple {{ useIndexStore().version }}</span
-      >
+      <span class="text-3xl font-bold text-center">关于VPSimple {{ useIndexStore().version }}</span>
       <div class="px-4">
         <p>
           本软件以Vue3、TypeScript与Wails技术栈为核心，旨在为VitePress用户提供便捷与可视化配置体验。
@@ -177,13 +162,11 @@ onMounted(async () => {
             >在开源平台的Issue板块提交问题或提出新功能建议，我们将及时响应并积极采纳有益意见。
           </li>
           <li>
-            <strong>贡献代码与文档：</strong
-            >如果您愿意参与软件的进一步开发与完善，欢迎您提交Pull
+            <strong>贡献代码与文档：</strong>如果您愿意参与软件的进一步开发与完善，欢迎您提交Pull
             Request，共同提升软件品质。
           </li>
           <li>
-            <strong>用户交流与讨论：</strong>加入我们的<a
-              href="[社区链接（如Discord、论坛等）]"
+            <strong>用户交流与讨论：</strong>加入我们的<a href="[社区链接（如Discord、论坛等）]"
               ><strong>github社区</strong></a
             >，与其他用户、开发者共享使用经验，探讨技术问题。
           </li>

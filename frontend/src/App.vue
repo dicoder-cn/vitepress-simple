@@ -5,84 +5,81 @@
   <nav-template2 v-if="useTemplateIndex === 2"></nav-template2>
 </template>
 <script lang="ts" setup>
-import NavTemplate1 from "@/layout/nav/navTemplate1.vue";
-import NavTemplate2 from "@/layout/nav/navTemplate2.vue";
-import { onBeforeUnmount, onMounted, ref } from "vue";
+  import NavTemplate1 from '@/layout/nav/navTemplate1.vue'
+  import NavTemplate2 from '@/layout/nav/navTemplate2.vue'
+  import { onBeforeUnmount, onMounted, ref } from 'vue'
 
-import { ConfigKeyLang, ConfigKeyProjectDir } from "@/configs/appConfigKey";
-import { useIndexStore } from "@/store";
-import { useEditorStore } from "@/store/editor";
-import {
-  HasNewVersion,
-  UpdateNewVersion,
-} from "../wailsjs/go/services/UpdateService";
-import { StartStaticServer } from "../wailsjs/go/services/StaticServer";
-import { SystemMac } from "@/constant/enums/system";
-import { useI18n } from "vue-i18n";
-import { EventsOff, EventsOffAll, EventsOn } from "../wailsjs/runtime";
+  import { ConfigKeyLang, ConfigKeyProjectDir } from '@/configs/appConfigKey'
+  import { useIndexStore } from '@/store'
+  import { useEditorStore } from '@/store/editor'
+  import { HasNewVersion, UpdateNewVersion } from '../wailsjs/go/services/UpdateService'
+  import { StartStaticServer } from '../wailsjs/go/services/StaticServer'
+  import { SystemMac } from '@/constant/enums/system'
+  import { useI18n } from 'vue-i18n'
+  import { EventsOff, EventsOffAll, EventsOn } from '../wailsjs/runtime'
 
-import { useShellStore } from "@/store/shell";
-import { shell } from "../wailsjs/go/models";
-import NotifyShellData = shell.NotifyShellData;
-import { AppConfig } from "@/store/appconfig";
-//在这里可以设置默认的模板
-const useTemplateIndex = ref(2);
-const storeIndex = useIndexStore();
-const storeEditor = useEditorStore();
-const { locale } = useI18n();
+  import { useShellStore } from '@/store/shell'
+  import { shell } from '../wailsjs/go/models'
+  import NotifyShellData = shell.NotifyShellData
+  import { AppConfig } from '@/store/appconfig'
+  //在这里可以设置默认的模板
+  const useTemplateIndex = ref(2)
+  const storeIndex = useIndexStore()
+  const storeEditor = useEditorStore()
+  const { locale } = useI18n()
 
-onMounted(async () => {
-  //初始化软件配置
-  await AppConfig.initAppConfig();
+  onMounted(async () => {
+    //初始化软件配置
+    await AppConfig.initAppConfig()
 
-  // 初始化编辑器监听器
-  useEditorStore().initWatcher();
+    // 初始化编辑器监听器
+    useEditorStore().initWatcher()
 
-  EventsOn("shell", (data: NotifyShellData) => {
-    useShellStore().handlerShellNotify(data);
-  });
+    EventsOn('shell', (data: NotifyShellData) => {
+      useShellStore().handlerShellNotify(data)
+    })
 
-  // await HistoryProject.initList(); //初始化历史数据
-  // await vpConfig.initConfig();
-  await storeIndex.getSystemType(); //获取当前系统
-  await storeIndex.getVersion(); //获取当前系统版本
-  await storeIndex.getStaticDir();
-  await storeIndex.getStaticPort();
-  const res = AppConfig.getString(ConfigKeyLang);
-  locale.value = res == "" ? "en" : res;
-  let hasNewVersion = await HasNewVersion();
-  if (hasNewVersion) {
-    UpdateNewVersion();
+    // await HistoryProject.initList(); //初始化历史数据
+    // await vpConfig.initConfig();
+    await storeIndex.getSystemType() //获取当前系统
+    await storeIndex.getVersion() //获取当前系统版本
+    await storeIndex.getStaticDir()
+    await storeIndex.getStaticPort()
+    const res = AppConfig.getString(ConfigKeyLang)
+    locale.value = res == '' ? 'en' : res
+    let hasNewVersion = await HasNewVersion()
+    if (hasNewVersion) {
+      UpdateNewVersion()
+    }
+    //设定初始项目
+    let dir = AppConfig.getString(ConfigKeyProjectDir)
+    if (dir !== '') {
+      await storeIndex.changeProject(dir)
+    }
+    //监听快捷键
+    window.addEventListener('keydown', handleKeyDown)
+    //初始化配置
+    AppConfig.updateState()
+  })
+  onBeforeUnmount(() => {
+    // 不要忘记在组件卸载时移除事件监听器，防止内存泄漏
+    window.removeEventListener('keydown', handleKeyDown)
+
+    //取消监听所有的事件
+    EventsOff('shell')
+  })
+
+  function handleKeyDown(event: KeyboardEvent) {
+    const isMacOS = storeIndex.systemType == SystemMac
+
+    // 根据操作系统判断使用哪个键
+    const controlKey = isMacOS ? event.metaKey : event.ctrlKey
+
+    // 监听 Ctrl (或 Mac 的 Meta) + S 快捷键
+    if (controlKey && event.key === 's') {
+      console.log('快捷键被按下 -- console.log')
+      storeEditor.saveArticle(storeEditor.getCurrArticleIndex)
+    }
   }
-  //设定初始项目
-  let dir = AppConfig.getString(ConfigKeyProjectDir);
-  if (dir !== "") {
-    await storeIndex.changeProject(dir);
-  }
-  //监听快捷键
-  window.addEventListener("keydown", handleKeyDown);
-  //初始化配置
-  AppConfig.updateState();
-});
-onBeforeUnmount(() => {
-  // 不要忘记在组件卸载时移除事件监听器，防止内存泄漏
-  window.removeEventListener("keydown", handleKeyDown);
-
-  //取消监听所有的事件
-  EventsOff("shell");
-});
-
-function handleKeyDown(event: KeyboardEvent) {
-  const isMacOS = storeIndex.systemType == SystemMac;
-
-  // 根据操作系统判断使用哪个键
-  const controlKey = isMacOS ? event.metaKey : event.ctrlKey;
-
-  // 监听 Ctrl (或 Mac 的 Meta) + S 快捷键
-  if (controlKey && event.key === "s") {
-    console.log("快捷键被按下 -- console.log");
-    storeEditor.saveArticle(storeEditor.getCurrArticleIndex);
-  }
-}
 </script>
 <style lang="scss"></style>

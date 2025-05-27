@@ -3,10 +3,7 @@
     <div class="flex items-center justify-start">
       <a-form-item :label="label">
         <a-radio-group v-model:value="model">
-          <a-radio
-            v-for="item in props.items"
-            :key="item.value"
-            :value="item.value"
+          <a-radio v-for="item in props.items" :key="item.value" :value="item.value"
             >{{ item.label }}
           </a-radio>
         </a-radio-group>
@@ -18,25 +15,25 @@
   </div>
 </template>
 <script setup lang="ts">
-import { onMounted } from "vue";
+  import { onMounted } from 'vue'
 
-import { InfoCircleOutlined } from "@ant-design/icons-vue";
+  import { InfoCircleOutlined } from '@ant-design/icons-vue'
 
-const model = defineModel();
+  const model = defineModel()
 
-interface radioItems {
-  label: string;
-  value: string;
-}
+  interface radioItems {
+    label: string
+    value: string
+  }
 
-interface Props {
-  tooltip: string;
-  label: string;
-  items: radioItems[];
-  isFullWidth?: boolean;
-}
+  interface Props {
+    tooltip: string
+    label: string
+    items: radioItems[]
+    isFullWidth?: boolean
+  }
 
-const props = defineProps<Props>();
+  const props = defineProps<Props>()
 </script>
 
 <style scoped></style>

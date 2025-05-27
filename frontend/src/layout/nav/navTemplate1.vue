@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { useNavStore } from "@/store/nav";
-import { NavList } from "@/configs/navs";
-import { useRouter } from "vue-router";
-const navRouter = useNavStore();
-const router = useRouter();
-const routerClick = (path: string, name: string) => {
-  navRouter.setActiveNav(path, name);
-  router.push(path);
-};
+  import { useNavStore } from '@/store/nav'
+  import { NavList } from '@/configs/navs'
+  import { useRouter } from 'vue-router'
+  const navRouter = useNavStore()
+  const router = useRouter()
+  const routerClick = (path: string, name: string) => {
+    navRouter.setActiveNav(path, name)
+    router.push(path)
+  }
 </script>
 
 <template>
@@ -21,8 +21,7 @@ const routerClick = (path: string, name: string) => {
           :key="item.name"
           :class="navRouter.ActiveName == item.name ? 'bg-blue-600' : ''"
           class="text-white text-base cursor-pointer mx-1 my-1 font-bold hover:bg-orange-500 px-3 py-1 rounded-lg"
-          @click="routerClick(item.path, item.name)"
-        >
+          @click="routerClick(item.path, item.name)">
           {{ item.title }}
         </div>
       </div>

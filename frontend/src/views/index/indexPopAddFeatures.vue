@@ -11,8 +11,7 @@
         class: 'bg-green-600',
       }"
       :cancel-button-props="{ ghost: true }"
-      @ok="okClick"
-    >
+      @ok="okClick">
       <div>
         <div></div>
       </div>
@@ -20,22 +19,22 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref } from "vue";
+  import { ref } from 'vue'
 
-export interface dyAddFeaturesProps {
-  title: string;
-  placeholder: string;
-}
+  export interface dyAddFeaturesProps {
+    title: string
+    placeholder: string
+  }
 
-const props = defineProps<dyAddFeaturesProps>();
-const modalVisible = ref();
+  const props = defineProps<dyAddFeaturesProps>()
+  const modalVisible = ref()
 
-const okClick = () => {};
+  const okClick = () => {}
 
-const showModal = () => {
-  modalVisible.value = true;
-};
+  const showModal = () => {
+    modalVisible.value = true
+  }
 
-defineExpose({ showModal });
+  defineExpose({ showModal })
 </script>
 <style scoped></style>

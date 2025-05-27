@@ -11,58 +11,52 @@
         class: 'bg-blue-600 text-white',
       }"
       :cancel-button-props="{ ghost: true }"
-      @ok="hideModal"
-    >
+      @ok="hideModal">
       <div class="mt-4 mb-2">
         <a-input
           ref="refInput"
           v-model:value="val"
           @keydown.prevent.enter="hideModal"
           :placeholder="props.placeholder"
-          auto-size
-        />
+          auto-size />
       </div>
     </a-modal>
   </div>
 </template>
 <script lang="ts" setup>
-import { nextTick, onMounted, ref } from "vue";
+  import { nextTick, onMounted, ref } from 'vue'
 
-interface inputModelProps {
-  defaultValue?: string;
-  placeholder?: string;
-  title?: string;
-}
-
-const props = defineProps<inputModelProps>();
-onMounted(() => {
-  if (
-    props.defaultValue != undefined ||
-    props.defaultValue != null ||
-    props.defaultValue != ""
-  ) {
-    val.value = props.defaultValue;
+  interface inputModelProps {
+    defaultValue?: string
+    placeholder?: string
+    title?: string
   }
-});
 
-const modalVisible = ref<boolean>(false);
-const val = ref();
-const refInput = ref();
-const showModal = (val_: string = "") => {
-  val.value = val_;
-  modalVisible.value = true;
-  nextTick(() => {
-    refInput.value.focus();
-  });
-};
+  const props = defineProps<inputModelProps>()
+  onMounted(() => {
+    if (props.defaultValue != undefined || props.defaultValue != null || props.defaultValue != '') {
+      val.value = props.defaultValue
+    }
+  })
 
-//隐藏弹出层并返回输入的值
-const emits = defineEmits(["submitInputModal"]);
-const hideModal = () => {
-  modalVisible.value = false;
-  emits("submitInputModal", val.value);
-  return val.value;
-};
+  const modalVisible = ref<boolean>(false)
+  const val = ref()
+  const refInput = ref()
+  const showModal = (val_: string = '') => {
+    val.value = val_
+    modalVisible.value = true
+    nextTick(() => {
+      refInput.value.focus()
+    })
+  }
 
-defineExpose({ showModal });
+  //隐藏弹出层并返回输入的值
+  const emits = defineEmits(['submitInputModal'])
+  const hideModal = () => {
+    modalVisible.value = false
+    emits('submitInputModal', val.value)
+    return val.value
+  }
+
+  defineExpose({ showModal })
 </script>

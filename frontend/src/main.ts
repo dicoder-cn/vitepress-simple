@@ -1,10 +1,10 @@
-import { createApp } from "vue";
-import { createPinia } from "pinia";
-import "./style.scss";
-import "./styles/global.css";
-import App from "./App.vue";
-import router from "./router";
-import i18n from "./i18n";
+import { createApp } from 'vue'
+import { createPinia } from 'pinia'
+import './style.scss'
+import './styles/global.css'
+import App from './App.vue'
+import router from './router'
+import i18n from './i18n'
 import {
   Alert,
   Button,
@@ -25,23 +25,23 @@ import {
   Tag,
   Tooltip,
   Tree,
-} from "ant-design-vue";
+} from 'ant-design-vue'
 
 // Import icon libraries
-import { Quasar } from "quasar";
-import "@quasar/extras/material-icons/material-icons.css";
+import { Quasar } from 'quasar'
+import '@quasar/extras/material-icons/material-icons.css'
 // Import Quasar css
-import "quasar/src/css/index.sass";
-import { InstallCodemirro } from "codemirror-editor-vue3";
-const app = createApp(App);
+import 'quasar/src/css/index.sass'
+import { InstallCodemirro } from 'codemirror-editor-vue3'
+const app = createApp(App)
 
-app.use(createPinia());
-app.use(router);
-app.use(i18n);
+app.use(createPinia())
+app.use(router)
+app.use(i18n)
 
 app.use(Quasar, {
   plugins: {}, // import Quasar plugins and add here
-});
+})
 
 //局部注册Antd
 app
@@ -62,10 +62,10 @@ app
   .use(Tag)
   .use(Divider)
   .use(Popconfirm)
-  .use(Tooltip);
+  .use(Tooltip)
 
-app.use(InstallCodemirro);
+app.use(InstallCodemirro)
 
-app.config.globalProperties.$message = message;
+app.config.globalProperties.$message = message
 
-app.mount("#app");
+app.mount('#app')

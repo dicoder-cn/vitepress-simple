@@ -2,10 +2,7 @@
   <div class="flex items-center">
     <a-form-item :label="label">
       <a-radio-group v-model:value="value" @change="handleChange">
-        <a-radio
-          v-for="item in props.items"
-          :key="item.value"
-          :value="item.value"
+        <a-radio v-for="item in props.items" :key="item.value" :value="item.value"
           >{{ item.label }}
         </a-radio>
       </a-radio-group>
@@ -16,37 +13,37 @@
   </div>
 </template>
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+  import { onMounted, ref } from 'vue'
 
-import { InfoCircleOutlined } from "@ant-design/icons-vue";
-import { AppConfig } from "@/store/appconfig";
-import { ConfigSet } from "../../wailsjs/go/system/SystemService";
+  import { InfoCircleOutlined } from '@ant-design/icons-vue'
+  import { AppConfig } from '@/store/appconfig'
+  import { ConfigSet } from '../../wailsjs/go/system/SystemService'
 
-const value = ref();
+  const value = ref()
 
-interface radioItems {
-  label: string;
-  value: string;
-}
+  interface radioItems {
+    label: string
+    value: string
+  }
 
-interface Props {
-  tooltip: string;
-  label: string;
-  configKey: string;
-  items: radioItems[];
-  isFullWidth?: boolean;
-}
+  interface Props {
+    tooltip: string
+    label: string
+    configKey: string
+    items: radioItems[]
+    isFullWidth?: boolean
+  }
 
-const props = defineProps<Props>();
+  const props = defineProps<Props>()
 
-onMounted(() => {
-  value.value = AppConfig.getString(props.configKey);
-});
+  onMounted(() => {
+    value.value = AppConfig.getString(props.configKey)
+  })
 
-const handleChange = (e: any) => {
-  // console.log("handleChange", e.target.value);
-  AppConfig.set(props.configKey, e.target.value);
-};
+  const handleChange = (e: any) => {
+    // console.log("handleChange", e.target.value);
+    AppConfig.set(props.configKey, e.target.value)
+  }
 </script>
 
 <style scoped></style>

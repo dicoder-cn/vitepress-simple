@@ -24,21 +24,21 @@
   </div>
 </template>
 <script lang="ts" setup>
-import DyAddHead from "../../components/dyAddKV.vue";
-import { IconPark } from "@icon-park/vue-next/es/all";
-import { nextTick, onMounted, reactive, ref, UnwrapRef } from "vue";
-import IndexEditorViewVue from "./indexEditorViewVue.vue";
-import { useIndexStore } from "../../store";
-import { useLayoutStore } from "@/store/layout";
-import IndexEditorViewBase from "@/views/index/indexEditorViewBase.vue";
-import IndexEditorViewHero from "@/views/index/indexEditorViewHero.vue";
-import { lang } from "@/utils/language";
-import { useEditorStore } from "@/store/editor";
-const storeEditor = useEditorStore();
-const storeIndex = useIndexStore();
-const storeLayout = useLayoutStore();
-const activeKey = ref("1");
-const savePageConfig = () => {};
+  import DyAddHead from '../../components/dyAddKV.vue'
+  import { IconPark } from '@icon-park/vue-next/es/all'
+  import { nextTick, onMounted, reactive, ref, UnwrapRef } from 'vue'
+  import IndexEditorViewVue from './indexEditorViewVue.vue'
+  import { useIndexStore } from '../../store'
+  import { useLayoutStore } from '@/store/layout'
+  import IndexEditorViewBase from '@/views/index/indexEditorViewBase.vue'
+  import IndexEditorViewHero from '@/views/index/indexEditorViewHero.vue'
+  import { lang } from '@/utils/language'
+  import { useEditorStore } from '@/store/editor'
+  const storeEditor = useEditorStore()
+  const storeIndex = useIndexStore()
+  const storeLayout = useLayoutStore()
+  const activeKey = ref('1')
+  const savePageConfig = () => {}
 </script>
 
 <style scoped></style>

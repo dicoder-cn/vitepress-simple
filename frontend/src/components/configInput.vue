@@ -6,8 +6,7 @@
       type="text"
       :disable="props.disEnable"
       v-model="CurrInputValue"
-      :label="props.label"
-    />
+      :label="props.label" />
 
     <q-input
       v-if="props.formType == 'password'"
@@ -15,60 +14,58 @@
       type="password"
       :disable="props.disEnable"
       v-model="CurrInputValue"
-      :label="props.label"
-    />
+      :label="props.label" />
     <q-input
       v-if="props.formType == 'textarea'"
       outlined
       type="textarea"
       :disable="props.disEnable"
       v-model="CurrInputValue"
-      :label="props.label"
-    />
+      :label="props.label" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { defineProps, onMounted, ref, watch } from "vue";
-import { AppConfig } from "@/store/appconfig";
-import { StyleNoDrag } from "@/configs/cnts";
+  import { defineProps, onMounted, ref, watch } from 'vue'
+  import { AppConfig } from '@/store/appconfig'
+  import { StyleNoDrag } from '@/configs/cnts'
 
-const props = defineProps({
-  configKey: {
-    type: String,
-    default: "",
-  },
-  label: {
-    type: String,
-    default: "请输入",
-  },
-  formType: {
-    type: String,
-    default: "text",
-  },
-  disEnable: {
-    type: Boolean,
-    default: false,
-  },
-});
+  const props = defineProps({
+    configKey: {
+      type: String,
+      default: '',
+    },
+    label: {
+      type: String,
+      default: '请输入',
+    },
+    formType: {
+      type: String,
+      default: 'text',
+    },
+    disEnable: {
+      type: Boolean,
+      default: false,
+    },
+  })
 
-onMounted(async () => {
-  CurrInputValue.value = AppConfig.getString(props.configKey);
-});
+  onMounted(async () => {
+    CurrInputValue.value = AppConfig.getString(props.configKey)
+  })
 
-let CurrInputValue = ref("");
-watch(CurrInputValue, (nval: string, oval: string) => {
-  AppConfig.set(props.configKey, nval);
-});
+  let CurrInputValue = ref('')
+  watch(CurrInputValue, (nval: string, oval: string) => {
+    AppConfig.set(props.configKey, nval)
+  })
 
-const SetModelValue = (val: string) => {
-  LoadConfigValue();
-};
-const LoadConfigValue = () => {
-  CurrInputValue.value = AppConfig.getString(props.configKey);
-};
+  const SetModelValue = (val: string) => {
+    LoadConfigValue()
+  }
+  const LoadConfigValue = () => {
+    CurrInputValue.value = AppConfig.getString(props.configKey)
+  }
 
-defineExpose({ SetModelValue, LoadConfigValue });
+  defineExpose({ SetModelValue, LoadConfigValue })
 </script>
 
 <style scoped></style>

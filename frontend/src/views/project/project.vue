@@ -22,8 +22,7 @@
           v-model:activeKey="activeKey2"
           :tab-position="'left'"
           type="line"
-          animated
-        >
+          animated>
           <a-tab-pane key="1-1" :tab="lang('pageProject.settingBase.title')">
             <setting-base></setting-base>
           </a-tab-pane>
@@ -35,21 +34,14 @@
               :add-btn-text="lang('pageProject.settingRewrite.addRewriteRule')"
               :key-placeholder="lang('pageProject.settingRewrite.filePath')"
               :value-placeholder="lang('pageProject.settingRewrite.routePath')"
-              v-model:obj="storeConfig.configData['rewrites']"
-            ></dy-add-k-v>
+              v-model:obj="storeConfig.configData['rewrites']"></dy-add-k-v>
             <hr class="my-2" />
             <div class="flex justify-center">
               <a-button
                 @click="savePageConfig"
-                class="bg-blue-600 hover:bg-blue-500 text-white flex justify-center items-center"
-              >
-                <icon-park
-                  class="mr-1"
-                  strokeLinejoin="bevel"
-                  theme="outline"
-                  type="save"
-                />
-                {{ lang("common.saveConfig") }}
+                class="bg-blue-600 hover:bg-blue-500 text-white flex justify-center items-center">
+                <icon-park class="mr-1" strokeLinejoin="bevel" theme="outline" type="save" />
+                {{ lang('common.saveConfig') }}
               </a-button>
             </div>
           </a-tab-pane>
@@ -66,29 +58,29 @@
   <empty-project></empty-project>
 </template>
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import SettingBase from "@/views/project/projectSettingBase.vue";
-import { useVpconfigStore } from "@/store/vpconfig";
-import { IconPark } from "@icon-park/vue-next/es/all";
-import DyAddKV from "@/components/dyAddKV.vue";
+  import { onMounted, ref } from 'vue'
+  import SettingBase from '@/views/project/projectSettingBase.vue'
+  import { useVpconfigStore } from '@/store/vpconfig'
+  import { IconPark } from '@icon-park/vue-next/es/all'
+  import DyAddKV from '@/components/dyAddKV.vue'
 
-import SettingLang from "@/views/project/projectSettingLang.vue";
-import SettingSocial from "@/views/project/projectSettingSocial.vue";
-import { useIndexStore } from "@/store";
-import EmptyProject from "@/components/emptyProject.vue";
-import SettingSearch from "@/views/project/projectSettingSearch.vue";
-import { lang } from "@/utils/language";
+  import SettingLang from '@/views/project/projectSettingLang.vue'
+  import SettingSocial from '@/views/project/projectSettingSocial.vue'
+  import { useIndexStore } from '@/store'
+  import EmptyProject from '@/components/emptyProject.vue'
+  import SettingSearch from '@/views/project/projectSettingSearch.vue'
+  import { lang } from '@/utils/language'
 
-const activeKey1 = ref<string>("1");
-const activeKey2 = ref("1-1");
-const storeConfig = useVpconfigStore();
-const storeIndex = useIndexStore();
-onMounted(() => {
-  storeConfig.readVpConfig();
-});
-//保存配置
-const savePageConfig = () => {
-  storeConfig.saveConfig();
-};
+  const activeKey1 = ref<string>('1')
+  const activeKey2 = ref('1-1')
+  const storeConfig = useVpconfigStore()
+  const storeIndex = useIndexStore()
+  onMounted(() => {
+    storeConfig.readVpConfig()
+  })
+  //保存配置
+  const savePageConfig = () => {
+    storeConfig.saveConfig()
+  }
 </script>
 <style scoped></style>

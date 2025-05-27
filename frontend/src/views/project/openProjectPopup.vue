@@ -12,19 +12,15 @@
       }"
       width="42%"
       :cancel-button-props="{ ghost: true }"
-      @ok="OpenDir"
-    >
+      @ok="OpenDir">
       <div class="mr-4 my-2">
         <a-alert
           closable
           :description="lang('pageProject.errorProjectNotVPSimple')"
-          type="success"
-        />
+          type="success" />
       </div>
       <div class="flex justify-start items-center">
-        <span class="select-none text-h5">{{
-          lang("pageProject.recentProject")
-        }}</span>
+        <span class="select-none text-h5">{{ lang('pageProject.recentProject') }}</span>
       </div>
       <div class="mt-2">
         <!--        最近项目列表-->
@@ -33,10 +29,8 @@
             <template #renderItem="{ item }">
               <a-list-item>
                 <template #actions>
-                  <a-button
-                    @click="openProject(item.title)"
-                    class="bg-blue-500 text-white"
-                    >{{ lang("common.open") }}
+                  <a-button @click="openProject(item.title)" class="bg-blue-500 text-white"
+                    >{{ lang('common.open') }}
                   </a-button>
                 </template>
                 <a-list-item-meta>
@@ -56,67 +50,63 @@
   </div>
 </template>
 <script lang="ts" setup>
-import {
-  PathExists,
-  PathJoin,
-  SelectDir,
-} from "../../../wailsjs/go/system/SystemService";
-import { nextTick, onMounted, ref, watch } from "vue";
-import { HistoryProject } from "@/utils/historyProject";
-import { useIndexStore } from "@/store";
-import { useHistoryStore } from "@/store/history";
-import { ToastError, ToastInfo, ToastSuccess } from "@/utils/Toast";
-import { lang } from "@/utils/language";
+  import { PathExists, PathJoin, SelectDir } from '../../../wailsjs/go/system/SystemService'
+  import { nextTick, onMounted, ref, watch } from 'vue'
+  import { HistoryProject } from '@/utils/historyProject'
+  import { useIndexStore } from '@/store'
+  import { useHistoryStore } from '@/store/history'
+  import { ToastError, ToastInfo, ToastSuccess } from '@/utils/Toast'
+  import { lang } from '@/utils/language'
 
-const OpenDir = () => {
-  SelectDir(lang("pageProject.errorProjectRootEmpty")).then((res: string) => {
-    if (res != "") {
-      openProject(res);
+  const OpenDir = () => {
+    SelectDir(lang('pageProject.errorProjectRootEmpty')).then((res: string) => {
+      if (res != '') {
+        openProject(res)
+      }
+    })
+  }
+
+  interface DataItem {
+    title: string
+  }
+
+  const data = ref<DataItem[]>([])
+  const storeHistory = useHistoryStore()
+  onMounted(async () => {
+    // await loadHistoryList();
+  })
+
+  //切换项目
+  const openProject = async (dir: string) => {
+    await useIndexStore().changeProject(dir)
+    modalVisible.value = false //弹窗关闭
+  }
+
+  interface inputModelProps {
+    defaultValue?: string
+    placeholder?: string
+  }
+
+  const modalVisible = ref(false)
+  const props = defineProps<inputModelProps>()
+  watch(modalVisible, async (newVal: boolean) => {
+    console.log(newVal, 'newVal -- console.log')
+    if (newVal) {
+      await loadHistoryList()
     }
-  });
-};
-
-interface DataItem {
-  title: string;
-}
-
-const data = ref<DataItem[]>([]);
-const storeHistory = useHistoryStore();
-onMounted(async () => {
-  // await loadHistoryList();
-});
-
-//切换项目
-const openProject = async (dir: string) => {
-  await useIndexStore().changeProject(dir);
-  modalVisible.value = false; //弹窗关闭
-};
-
-interface inputModelProps {
-  defaultValue?: string;
-  placeholder?: string;
-}
-
-const modalVisible = ref(false);
-const props = defineProps<inputModelProps>();
-watch(modalVisible, async (newVal: boolean) => {
-  console.log(newVal, "newVal -- console.log");
-  if (newVal) {
-    await loadHistoryList();
+  })
+  const loadHistoryList = async () => {
+    await useHistoryStore().initList()
+    data.value = []
+    for (let i = 0; i < storeHistory.currentList.length; i++) {
+      data.value.push({
+        title: storeHistory.currentList[i],
+      })
+    }
   }
-});
-const loadHistoryList = async () => {
-  await useHistoryStore().initList();
-  data.value = [];
-  for (let i = 0; i < storeHistory.currentList.length; i++) {
-    data.value.push({
-      title: storeHistory.currentList[i],
-    });
+  const showModal = () => {
+    modalVisible.value = true
   }
-};
-const showModal = () => {
-  modalVisible.value = true;
-};
 
-defineExpose({ showModal });
+  defineExpose({ showModal })
 </script>
