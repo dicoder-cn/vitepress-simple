@@ -1,5 +1,5 @@
-import { LocaleSpecificConfig, UserConfig } from "vitepress";
-import { DefaultTheme } from "vitepress";
+import { DefaultTheme, UserConfig } from "./vpconfig/dist/node/vp";
+import { LocaleSpecificConfig } from "./vpconfig/types";
 
 export type VpConfig = Partial<UserConfig<DefaultTheme.Config>> & {
   // 可以添加自定义的配置项

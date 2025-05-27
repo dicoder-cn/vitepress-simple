@@ -33,6 +33,7 @@ export interface indexStore {
   version: string; //系统类型
   staticServerPort: string;
   staticBaseDir: string;
+  currVueCode: string; // 当前Vue代码
 }
 
 export const useIndexStore = defineStore("index", {
@@ -49,7 +50,8 @@ export const useIndexStore = defineStore("index", {
     searchValue: "", //搜索值
     staticBaseDir: "vpstatic",
     staticServerPort: "9874",
-    currCopyPath: "" //当前剪切路径
+    currCopyPath: "", //当前剪切路径
+    currVueCode: "" // 当前Vue代码
   }),
   //定义actions
   actions: {
@@ -123,6 +125,10 @@ export const useIndexStore = defineStore("index", {
 
     setCurrCutPath(path: string) {
       this.currCopyPath = path;
+    },
+
+    setCurrVueCode(code: string) {
+      this.currVueCode = code;
     }
   },
   getters: {

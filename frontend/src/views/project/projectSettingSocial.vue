@@ -14,7 +14,15 @@
     key-name="icon"
     value-name="link"
     ref="refDyAdd"
-    v-model:objs="storeConfig.currLangConfig?.themeConfig?.socialLinks"></dy-add-k-v>
+    :objs="storeConfig.currLangConfig?.themeConfig?.socialLinks || []"
+    @update:objs="(val: Record<string, string>) => {
+      if (storeConfig.currLangConfig?.themeConfig) {
+        storeConfig.currLangConfig.themeConfig.socialLinks = Object.entries(val).map(([icon, link]) => ({
+          icon,
+          link
+        }));
+      }
+    }"></dy-add-k-v>
 
   <hr class="my-2" />
   <div class="flex justify-center">

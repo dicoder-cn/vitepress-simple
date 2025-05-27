@@ -2,7 +2,12 @@
   <div>
     <sim-radio
       :tooltip="lang('pageProject.settingSearch.tooltips.tooltips')"
-      v-model="(storeConfig.currLangConfig?.themeConfig?.search as SearchConfig)?.provider"
+      :model-value="(storeConfig.currLangConfig?.themeConfig?.search as SearchConfig)?.provider"
+      @update:model-value="(val: string) => {
+        if (storeConfig.currLangConfig?.themeConfig?.search) {
+          (storeConfig.currLangConfig.themeConfig.search as SearchConfig).provider = val;
+        }
+      }"
       :label="lang('pageProject.settingSearch.searchProvider')"
       :items="[
         { label: 'local', value: 'local' },
@@ -10,9 +15,35 @@
       ]"></sim-radio>
 
     <div class="flex justify-start" v-show="(storeConfig.currLangConfig?.themeConfig?.search as SearchConfig)?.provider === 'algolia'">
-      <sim-input v-model="(storeConfig.currLangConfig?.themeConfig?.search as SearchConfig)?.options?.appId" :tooltip="lang('pageProject.settingSearch.tooltips.AlgoliaAppId')" label="AppId"> </sim-input>
-      <sim-input v-model="(storeConfig.currLangConfig?.themeConfig?.search as SearchConfig)?.options?.apiKey" :tooltip="lang('pageProject.settingSearch.tooltips.AlgoliaSearchKey')" label="apiKey"> </sim-input>
-      <sim-input v-model="(storeConfig.currLangConfig?.themeConfig?.search as SearchConfig)?.options?.indexName" :tooltip="lang('pageProject.settingSearch.tooltips.AlgoliaIndexName')" label="indexName">
+      <sim-input 
+        :model-value="(storeConfig.currLangConfig?.themeConfig?.search as SearchConfig)?.options?.appId"
+        @update:model-value="(val: string) => {
+          if (storeConfig.currLangConfig?.themeConfig?.search?.options) {
+            (storeConfig.currLangConfig.themeConfig.search as SearchConfig).options.appId = val;
+          }
+        }"
+        :tooltip="lang('pageProject.settingSearch.tooltips.AlgoliaAppId')" 
+        label="AppId">
+      </sim-input>
+      <sim-input 
+        :model-value="(storeConfig.currLangConfig?.themeConfig?.search as SearchConfig)?.options?.apiKey"
+        @update:model-value="(val: string) => {
+          if (storeConfig.currLangConfig?.themeConfig?.search?.options) {
+            (storeConfig.currLangConfig.themeConfig.search as SearchConfig).options.apiKey = val;
+          }
+        }"
+        :tooltip="lang('pageProject.settingSearch.tooltips.AlgoliaSearchKey')" 
+        label="apiKey">
+      </sim-input>
+      <sim-input 
+        :model-value="(storeConfig.currLangConfig?.themeConfig?.search as SearchConfig)?.options?.indexName"
+        @update:model-value="(val: string) => {
+          if (storeConfig.currLangConfig?.themeConfig?.search?.options) {
+            (storeConfig.currLangConfig.themeConfig.search as SearchConfig).options.indexName = val;
+          }
+        }"
+        :tooltip="lang('pageProject.settingSearch.tooltips.AlgoliaIndexName')" 
+        label="indexName">
       </sim-input>
     </div>
 
@@ -32,7 +63,8 @@ import { IsEmptyValue } from "@/utils/utils";
 import { defaultShareConfigValue } from "@/configs/defaultShareConfig";
 import SimInput from "@/components/simInput.vue";
 import { lang } from "@/utils/language";
-import { DefaultTheme } from "vitepress";
+import { VpConfig, VpConfigLang } from "@/types/vpsimpleConfig";
+
 
 interface AlgoliaSearchOptions {
   appId: string;
@@ -60,6 +92,23 @@ onBeforeMount(() => {
     storeConfig.vpConfig.themeConfig.search = defaultShareConfigValue.themeConfig.search;
   }
 
+  if (!storeConfig.currLangConfig) {
+    storeConfig.currLangConfig = {
+      label: 'zh',
+      themeConfig: {
+        search: defaultShareConfigValue.themeConfig.search
+      }
+    } as VpConfigLang;
+  }
+  if (!storeConfig.currLangConfig.themeConfig) {
+    storeConfig.currLangConfig.themeConfig = {
+      search: defaultShareConfigValue.themeConfig.search
+    };
+  }
+  if (!storeConfig.currLangConfig.themeConfig.search) {
+    storeConfig.currLangConfig.themeConfig.search = defaultShareConfigValue.themeConfig.search;
+  }
+
   checkSearchKey1("provider", "local");
   checkSearchKey1("options", defaultShareConfigValue.themeConfig.search.options);
   checkSearchKey2("options", "appId", "");
@@ -71,7 +120,7 @@ const checkSearchKey1 = (key1: string, defaultValue: any) => {
   if (!storeConfig.currLangConfig?.themeConfig?.search) {
     return;
   }
-  const search = storeConfig.currLangConfig?.themeConfig.search as SearchConfig;
+  const search = storeConfig.currLangConfig.themeConfig.search as SearchConfig;
   if (IsEmptyValue(search[key1])) {
     search[key1] = defaultValue;
   }
@@ -92,6 +141,9 @@ const checkSearchKey2 = (key1: string, key2: string, defaultValue: any) => {
   }
 };
 const saveBaseConfig = () => {
+  if (!storeConfig.currLangConfig?.themeConfig?.search) {
+    return;
+  }
   storeConfig.saveConfig();
 };
 </script>

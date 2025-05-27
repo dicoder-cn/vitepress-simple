@@ -30,7 +30,7 @@
         <a-radio-group class="mt-2" @change="subSidebarChange" v-model:value="currSelectSidebarKey">
           <a-radio-button v-for="(item, index) in currSidebarSubDirList" :key="index" :value="item">
             <q-tooltip
-              >{{ lang("pageSidebar.whenRouteInTip") }} ‘{{ item }}’
+              >{{ lang("pageSidebar.whenRouteInTip") }} '{{ item }}'
               {{ lang("pageSidebar.whenRouteInTip2") }}
             </q-tooltip>
             {{ item }}
@@ -127,10 +127,35 @@ const setCurrTreeData = async () => {
   if (isUseManySidebars.value) {
     //多侧栏模式
     await getSubSidebarDirList(); //获取本地侧栏目录列表
-    sidebarTree.value = storeConfig.currLangConfig.themeConfig["sidebar"][currSelectSidebarKey.value];
+    if (storeConfig.currLangConfig?.themeConfig?.sidebar && typeof storeConfig.currLangConfig.themeConfig.sidebar === 'object') {
+      const sidebar = storeConfig.currLangConfig.themeConfig.sidebar as Record<string, VpNav[]>;
+      sidebarTree.value = sidebar[currSelectSidebarKey.value] || [];
+    } else {
+      sidebarTree.value = [];
+    }
   } else {
     //单侧栏模式
-    sidebarTree.value = storeConfig.currLangConfig.themeConfig["sidebar"];
+    if (storeConfig.currLangConfig?.themeConfig?.sidebar) {
+      const sidebar = storeConfig.currLangConfig.themeConfig.sidebar;
+      sidebarTree.value = Array.isArray(sidebar) ? sidebar.map(item => {
+        const vpNav: VpNav = {
+          text: item.text || '',
+          link: item.link || '',
+          items: item.items ? item.items.map(subItem => ({
+            text: subItem.text || '',
+            link: subItem.link || '',
+            items: subItem.items ? subItem.items.map(nestedItem => ({
+              text: nestedItem.text || '',
+              link: nestedItem.link || '',
+              items: undefined
+            })) : undefined
+          })) : undefined
+        };
+        return vpNav;
+      }) : [];
+    } else {
+      sidebarTree.value = [];
+    }
   }
 
   if (IsEmptyValue(sidebarTree.value)) {
@@ -283,14 +308,23 @@ const saveSidebar = () => {
   }
   const formatData: VpNav[] = formatNavData(sidebarTree.value);
   checkCurrIsUseManySidebars();
+  
+  if (!storeConfig.currLangConfig?.themeConfig) {
+    ToastError("配置数据不存在");
+    return;
+  }
+
   if (isUseManySidebars.value) {
     if (currSelectSidebarKey.value == "") {
       ToastError("请选择操作的侧栏");
       return;
     }
-    storeConfig.currLangConfig.themeConfig["sidebar"][currSelectSidebarKey.value] = formatData;
+    if (typeof storeConfig.currLangConfig.themeConfig.sidebar !== 'object') {
+      storeConfig.currLangConfig.themeConfig.sidebar = {};
+    }
+    (storeConfig.currLangConfig.themeConfig.sidebar as Record<string, VpNav[]>)[currSelectSidebarKey.value] = formatData;
   } else {
-    storeConfig.currLangConfig.themeConfig["sidebar"] = formatData;
+    storeConfig.currLangConfig.themeConfig.sidebar = formatData;
   }
 
   storeConfig.saveConfig();
@@ -304,6 +338,15 @@ const addTopSidebar = () => {
     return;
   }
   refSidebar.value.addTopNav();
+};
+
+// 添加一个辅助函数来处理嵌套的 items
+const processNestedItems = (items: any[]): VpNav[] => {
+  return items.map(item => ({
+    text: item.text || '',
+    link: item.link || '',
+    items: item.items ? processNestedItems(item.items) : undefined
+  }));
 };
 </script>
 <style scoped></style>

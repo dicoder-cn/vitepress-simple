@@ -33,11 +33,11 @@
 
   <hr class="my-3" />
   <div>
-    <dy-add-nav ref="refNav" :show-add-top-nav="false" :level="1" v-model:nav-array="storeConfig.currLangConfig['themeConfig']['nav']"></dy-add-nav>
+    <dy-add-nav ref="refNav" :show-add-top-nav="false" :level="1" v-model:nav-array="navArray"></dy-add-nav>
   </div>
 </template>
 <script setup lang="ts">
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch, computed } from "vue";
 import { useVpconfigStore } from "@/store/vpconfig";
 import DyAddNav from "@/components/dyAddNav.vue";
 import { VpNav } from "@/utils/tree";
@@ -66,39 +66,46 @@ const copyNavLang = ref("");
 //复制导航
 const copyNav = () => {
   copyNavLang.value = storeConfig.currLangConfigKey;
-  copyNavData.value = DeepClone(storeConfig.currLangConfig["themeConfig"]["nav"]);
+  if (storeConfig.currLangConfig?.themeConfig?.nav) {
+    copyNavData.value = DeepClone(storeConfig.currLangConfig.themeConfig.nav);
+  }
 };
 //粘贴导航
 const cuttingNav = () => {
-  storeConfig.currLangConfig["themeConfig"]["nav"] = copyNavData.value;
+  if (storeConfig.currLangConfig?.themeConfig) {
+    storeConfig.currLangConfig.themeConfig.nav = copyNavData.value;
+  }
   copyNavData.value = null;
   copyNavLang.value = "";
 };
 
-const formatNavData = (data: VpNav[]) => {
+const formatNavData = (data: any[]): VpNav[] => {
   return data.map((item) => {
-    const formattedItem: any = { text: item.text };
-    if (item.items && item.items.length > 0) {
-      // If 'items' exists and has a length greater than 0
-      formattedItem.items = item.items.map((subItem) => ({
-        text: subItem.text,
-        link: subItem.items?.length ? undefined : subItem.link,
-        // Recursive call to handle nested items
-        items: subItem.items?.length ? formatNavData(subItem.items) : undefined
-      }));
-    } else {
-      // If 'items' doesn't exist or its length is 0
-      formattedItem.link = item.link;
-      formattedItem.text = item.text;
-    }
+    const formattedItem: VpNav = {
+      text: item.text || '',
+      link: item.link || '',
+      items: item.items ? formatNavData(item.items) : undefined
+    };
     return formattedItem;
   });
 };
+
 const saveNav = () => {
-  const formatData: VpNav[] = formatNavData(storeConfig.currLangConfig["themeConfig"]["nav"]);
-  console.log(formatData, "formatData -- console.log");
-  storeConfig.currLangConfig["themeConfig"]["nav"] = formatData;
-  storeConfig.saveConfig();
+  if (storeConfig.currLangConfig?.themeConfig?.nav) {
+    const formatData: VpNav[] = formatNavData(storeConfig.currLangConfig.themeConfig.nav);
+    console.log(formatData, "formatData -- console.log");
+    storeConfig.currLangConfig.themeConfig.nav = formatData;
+    storeConfig.saveConfig();
+  }
 };
+
+const navArray = computed({
+  get: () => storeConfig.currLangConfig?.themeConfig?.nav || [],
+  set: (val) => {
+    if (storeConfig.currLangConfig?.themeConfig) {
+      storeConfig.currLangConfig.themeConfig.nav = val;
+    }
+  }
+});
 </script>
 <style scoped></style>
