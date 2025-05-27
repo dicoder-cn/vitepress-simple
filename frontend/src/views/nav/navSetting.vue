@@ -1,10 +1,11 @@
 <template>
   <empty-project></empty-project>
-  <div v-if="!storeIndex.IsEmptyProject" class="flex justify-center mx-20 mt-4">
-    <!--    选择操作的语言-->
-    <div class="mx-2">
+  <div class="mx-2 my-1">
       <select-setting-lang></select-setting-lang>
     </div>
+  <div v-if="!storeIndex.IsEmptyProject" class="flex justify-center mx-20 mt-4">
+    <!--    选择操作的语言-->
+
     <a-button v-if="storeConfig.IsUseManyLang" class="bg-blue-100 mx-2 flex justify-center items-center hover:bg-blue-100" @click="copyNav()">
       <icon-park class="mr-1" strokeLinejoin="bevel" theme="outline" type="copy-one" />
       {{ lang("pageNav.copy") }}

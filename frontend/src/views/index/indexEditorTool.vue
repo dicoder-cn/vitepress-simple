@@ -2,7 +2,7 @@
   <div class="flex items-center justify-between w-full pr-5" v-show="!storeIndex.IsEmptyProject" :style="StyleNoDrag">
     <!-- 左侧文章列表 -->
     <div class="flex-1 flex items-center">
-      <div class="flex items-center hide-scrollbar overflow-x-auto" style="max-width: 60%; padding-right: 1px">
+      <div class="flex items-center hide-scrollbar overflow-x-auto" style="max-width: 80%; padding-right: 1px">
         <template v-for="(article, index) in storeEditor.getArticleContents" :key="article.path">
           <div
             class="tab-item flex items-center px-3 py-1.5 mr-1 cursor-pointer transition-all duration-200 group relative"
@@ -30,6 +30,9 @@
     <div class="flex items-center justify-end space-x-2 mr-2">
       <!--    终端-->
       <index-editor-tool-shell></index-editor-tool-shell>
+
+      <!-- 生成工具 -->
+      <index-editor-tool-generate></index-editor-tool-generate>
 
       <!-- 侧边栏设置 -->
       <index-editor-tool-sidebar></index-editor-tool-sidebar>
@@ -78,17 +81,32 @@ import { useEditorStore } from "@/store/editor";
 import { lang } from "../../utils/language";
 import IndexEditorToolShell from "@/views/index/indexEditorToolShell.vue";
 import IndexEditorToolSidebar from "@/views/index/indexEditorToolSidebar.vue";
+import IndexEditorToolGenerate from "@/views/index/indexEditorToolGen.vue";
 import { StyleNoDrag } from "@/configs/cnts";
+import { ref } from "vue";
 
 const storeIndex = useIndexStore();
 const storeConfig = useVpconfigStore();
 const storeLayout = useLayoutStore();
 const storeEditor = useEditorStore();
 
+const isShowGenerateSidebar = ref(false);
+const isShowGenerateSEO = ref(false);
+
 const handleSave = () => {
   if (storeEditor.getCurrArticleIndex >= 0) {
     storeEditor.saveArticle(storeEditor.getCurrArticleIndex);
   }
+};
+
+const handleGenerateSidebar = () => {
+  // 处理生成侧栏的逻辑
+  isShowGenerateSidebar.value = false;
+};
+
+const handleGenerateSEO = () => {
+  // 处理生成SEO关键词的逻辑
+  isShowGenerateSEO.value = false;
 };
 </script>
 
