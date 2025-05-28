@@ -157,7 +157,8 @@ export const en = {
     selectSidebarTip: "Please select the sidebar you are currently editing",
     recognitionWarning2: "Detected sidebar data is empty, ensure",
     existFile: "files exist in the folder",
-    existFolder: "folders exist in the folder"
+    existFolder: "folders exist in the folder",
+    sidebarSettings: "Sidebar Settings"
   },
   pageProject: {
     newVitePressProject: "New VitePress Project",
@@ -372,5 +373,9 @@ export const en = {
       "VPSimple is released under the Apache License\n" +
       "2.0 open-source license. While the software follows open-source principles, the handling of user personal information still adheres to this Privacy Policy. The open-source license does not affect or alter our commitment to protecting your personal information.",
     privacy8: "This Privacy Policy takes effect from the date of publication. Thank you for choosing VitePressSimple; we will continue to respect and protect your personal information rights."
+  },
+  indexPage: {
+    newProject: "New Project",
+    openProject: "Open Project"
   }
 };
