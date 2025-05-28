@@ -52,8 +52,8 @@ import { lang } from "../../utils/language";
 const storeConfig = useVpconfigStore();
 const storeIndex = useIndexStore();
 onMounted(() => {
-  // navList.value = storeConfig.configData["themeConfig"]["nav"];
-  // console.log(navList.value, "navList -- console.log");
+  const nav = storeConfig.currLangConfig?.themeConfig?.nav;
+  navArray.value = Array.isArray(nav) ? DeepClone(nav) : [];
 });
 
 //新增顶级导航
@@ -81,32 +81,26 @@ const cuttingNav = () => {
 };
 
 const formatNavData = (data: any[]): VpNav[] => {
-  return data.map((item) => {
-    const formattedItem: VpNav = {
-      text: item.text || '',
-      link: item.link || '',
-      items: item.items ? formatNavData(item.items) : undefined
-    };
-    return formattedItem;
-  });
+  return data
+    .filter(item => item.text && item.link) // 只保留有 text 和 link 的项
+    .map((item) => {
+      const formattedItem: VpNav = {
+        text: item.text || '',
+        link: item.link || '',
+        items: item.items ? formatNavData(item.items) : undefined
+      };
+      return formattedItem;
+    });
 };
 
+const navArray = ref<VpNav[]>([]);
+
 const saveNav = () => {
-  if (storeConfig.currLangConfig?.themeConfig?.nav) {
-    const formatData: VpNav[] = formatNavData(storeConfig.currLangConfig.themeConfig.nav);
-    console.log(formatData, "formatData -- console.log");
+  const formatData: VpNav[] = formatNavData(navArray.value);
+  if (storeConfig.currLangConfig?.themeConfig) {
     storeConfig.currLangConfig.themeConfig.nav = formatData;
     storeConfig.saveConfig();
   }
 };
-
-const navArray = computed({
-  get: () => storeConfig.currLangConfig?.themeConfig?.nav || [],
-  set: (val) => {
-    if (storeConfig.currLangConfig?.themeConfig) {
-      storeConfig.currLangConfig.themeConfig.nav = val;
-    }
-  }
-});
 </script>
 <style scoped></style>
