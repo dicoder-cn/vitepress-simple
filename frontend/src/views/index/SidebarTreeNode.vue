@@ -22,7 +22,8 @@
         <el-input v-model="nodeData.text" placeholder="文档标题" class="text-input" @change.stop="updateNode"/>
         <label class="input-label">链接：</label>
         <el-input v-model="nodeData.link" placeholder="链接路径" class="link-input" @change.stop="updateNode"/>
-        <el-button type="danger" size="small" class="delete-btn" @click.stop="deleteSelf" circle>
+        <span class="weight-label">权重：{{ weight }}</span>
+        <el-button size="small" class="delete-btn" @click.stop="deleteSelf" circle>
           <svg viewBox="0 0 1024 1024" width="14" height="14"><path d="M360 820a40 40 0 0 0 40 40h224a40 40 0 0 0 40-40V384H360v436z m464-532h-112l-34-56a48 48 0 0 0-41-24H387a48 48 0 0 0-41 24l-34 56H200a24 24 0 0 0 0 48h16v520a88 88 0 0 0 88 88h416a88 88 0 0 0 88-88V336h16a24 24 0 0 0 0-48z m-352-40h208l24 40H408l24-40z" fill="#f56c6c"/></svg>
         </el-button>
       </div>
@@ -77,7 +78,15 @@ const collapsed = ref(props.node.collapsed !== false); // 默认收起
 
 const hasChildren = computed(() => Array.isArray(props.node.children) && props.node.children.length > 0);
 
-// 排序：目录在前，md文件在后，md文件按weight升序
+// 权重值
+const weight = computed(() => {
+  if (props.node.MdFileFrontMatter && typeof props.node.MdFileFrontMatter.weight === 'number') {
+    return props.node.MdFileFrontMatter.weight;
+  }
+  return 0;
+});
+
+// 排序：目录在前，md文件在后，md文件按weight降序
 const sortedChildren = computed(() => {
   if (!props.node.children) return [];
   const dirs = props.node.children.filter(child => !child.IsMdFile);
@@ -85,7 +94,7 @@ const sortedChildren = computed(() => {
   mds.sort((a, b) => {
     const wa = (a.MdFileFrontMatter && typeof a.MdFileFrontMatter.weight === 'number') ? a.MdFileFrontMatter.weight : 0;
     const wb = (b.MdFileFrontMatter && typeof b.MdFileFrontMatter.weight === 'number') ? b.MdFileFrontMatter.weight : 0;
-    return wa - wb;
+    return wb - wa; // weight越大越靠前
   });
   return [...dirs, ...mds];
 });
@@ -219,6 +228,13 @@ function handleAddChild(parentPath: string) {
 
 .link-input {
   flex: 1;
+}
+
+.weight-label {
+  margin-left: 8px;
+  color: #888;
+  font-size: 13px;
+  align-self: center;
 }
 
 .delete-btn {
