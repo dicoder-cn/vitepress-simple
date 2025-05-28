@@ -242,7 +242,8 @@ export const en = {
         editLinkPatternInfo: "Pattern for the edit link to pages on Git management services.",
         prevNextPageInfo: "Globally enable or disable previous/next page links and customize their text.",
         nextButtonTextInfo: "Text to appear above the next page link.",
-        preButtonTextInfo: "Text to appear above the previous page link."
+        preButtonTextInfo: "Text to appear above the previous page link.",
+        returnToTop: "Custom label for the back-to-top button, visible only in mobile views."
       },
       placeholders: {
         langDirectory: "Language Directory",

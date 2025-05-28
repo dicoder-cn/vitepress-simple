@@ -343,7 +343,8 @@ export const zhHans = {
         prevNextPageInfo: "用于全局启用或禁用上/下一页链接及自定义文本",
         //用于自定义出现在下一页链接上方的文本
         nextButtonTextInfo: "用于自定义出现在下一页链接上方的文本",
-        preButtonTextInfo: "用于自定义出现在上一页链接上方的文本"
+        preButtonTextInfo: "用于自定义出现在上一页链接上方的文本",
+        returnToTop: "返回顶部按钮的自定义标签，仅在移动端视图中显示。"
       },
       // 占位符文本
       placeholders: {
