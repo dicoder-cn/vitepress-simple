@@ -5,7 +5,7 @@
     "docs:preview": "vitepress preview"
   },
   "devDependencies": {
-    "vitepress": "^1.2.3"
+    "vitepress": "latest"
   },
   "dependencies": {
     "markdown-it-custom-attrs": "^1.0.2"

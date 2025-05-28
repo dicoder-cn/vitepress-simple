@@ -184,26 +184,66 @@ const convertDisplayTreeToSidebar = (nodes: ProcessedTreeNode[], isLanguageLevel
     }
 };
 
-// 保存树数据到store
+// 生成符合vitepress多侧边栏的sidebar结构
+function buildSidebarByRouteKey(docDirs: ProcessedTreeNode[]) {
+    const sidebarObj: Record<string, any> = {};
+    docDirs.forEach(routeNode => {
+        if (!routeNode.children) return;
+        const routeKey = routeNode.text;
+        const sidebarKey = `/${routeKey}/`;
+        const items: any[] = [];
+        // 只处理一级子目录和md文件
+        const subDirs = (routeNode.children || []).filter(child => child.children && child.children.length > 0);
+        const mdFiles = (routeNode.children || []).filter(child => !child.children || child.children.length === 0);
+        // 先处理子目录
+        subDirs.forEach(subDir => {
+            // 只处理子目录下的md文件，忽略更深层目录
+            const subMdFiles = (subDir.children || []).filter(child => !child.children || child.children.length === 0);
+            items.push({
+                text: subDir.text,
+                collapsed: false,
+                items: subMdFiles.map(md => ({
+                    text: md.text,
+                    link: ensureSlash(md.link)
+                }))
+            });
+        });
+        // 再处理当前目录下的md文件
+        mdFiles.forEach(md => {
+            items.push({
+                text: md.text,
+                link: ensureSlash(md.link)
+            });
+        });
+        sidebarObj[sidebarKey] = items;
+    });
+    return sidebarObj;
+}
+
+function ensureSlash(link: string) {
+    if (!link.startsWith('/')) return '/' + link;
+    return link;
+}
+
 const saveTreeData = () => {
     if (storeVpconfig.IsUseManyLang) {
         // 多语言模式
-        const langSidebars = convertDisplayTreeToSidebar(processedTreeData.value, true);
-        
-        // 为每种语言设置侧边栏
-        Object.keys(langSidebars).forEach(langKey => {
+        processedTreeData.value.forEach(langNode => {
+            const langKey = langNode.text;
+            const docDirs = langNode.children || [];
+            const sidebar = buildSidebarByRouteKey(docDirs);
             if (storeVpconfig.vpConfig?.locales && storeVpconfig.vpConfig.locales[langKey]) {
                 if (!storeVpconfig.vpConfig.locales[langKey].themeConfig) {
                     storeVpconfig.vpConfig.locales[langKey].themeConfig = {};
                 }
-                storeVpconfig.vpConfig.locales[langKey].themeConfig.sidebar = langSidebars[langKey];
+                storeVpconfig.vpConfig.locales[langKey].themeConfig.sidebar = sidebar;
             }
         });
     } else {
         // 单语言模式，使用root语言键
         const rootKey = 'root';
-        const sidebar = convertDisplayTreeToSidebar(processedTreeData.value);
-        
+        const docDirs = processedTreeData.value;
+        const sidebar = buildSidebarByRouteKey(docDirs);
         if (storeVpconfig.vpConfig?.locales && storeVpconfig.vpConfig.locales[rootKey]) {
             if (!storeVpconfig.vpConfig.locales[rootKey].themeConfig) {
                 storeVpconfig.vpConfig.locales[rootKey].themeConfig = {};
@@ -211,7 +251,6 @@ const saveTreeData = () => {
             storeVpconfig.vpConfig.locales[rootKey].themeConfig.sidebar = sidebar;
         }
     }
-    
     // 保存配置到文件
     storeVpconfig.saveConfig().then(() => {
         ElMessage.success('侧边栏配置已保存');
