@@ -245,7 +245,8 @@ export const zhHans = {
     //文件夹下存在文件
     existFile: "文件夹下存在文件",
     //文件夹下存在文件夹
-    existFolder: "文件夹下存在文件夹"
+    existFolder: "文件夹下存在文件夹",
+    sidebarSettings: "侧边栏设置"
   },
   pageProject: {
     newVitePressProject: "新建VitePress项目",
@@ -496,5 +497,9 @@ export const zhHans = {
       " VPSimple严格遵守法律法规要求，采取适当的技术和组织措施保护您的个人信息安全，防止数据丢失、不当使用、未经授权访问、披露或修改。我们会根据业务需求和法律要求，在实现目的所需的最短时间内保留您的个人信息，并在不再需要时及时删除或匿名化处理。",
     privacy7: "VPSimple基于Apache License\n" + "      2.0开源许可协议发布。尽管本软件遵循开源原则，但对用户个人信息的处理仍遵循本隐私协议的规定。开源许可并不影响或改变我们对您个人信息的保护承诺。",
     privacy8: " 本隐私协议自发布之日起生效。感谢您选择使用VitePressSimple，我们将一如既往地尊重并保护您的个人信息权益。"
+  },
+  indexPage: {
+    newProject: "新建项目",
+    openProject: "打开项目"
   }
 };

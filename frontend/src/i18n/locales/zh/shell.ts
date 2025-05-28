@@ -33,8 +33,8 @@ export const ZhShell = {
     //git运行的目录，一般为vitepress项目根目录，但有时vitepres是做其它项目的子项目，所以需要指定git运行的目录
     gitPath: "git运行的目录，一般为vitepress项目根目录，但有时vitepres是做其它项目的子项目，所以需要指定git运行的目录",
     //文档dev命令，默认值是vitepress项目根目录下的dev命令
-    docsDev: "文档dev命令，默认值:" + defaultVpSimple.cmdDocsDev,
+    docsDev: "文档dev命令，默认值: npm run docs:dev",
     //文档build命令，默认值是vitepress项目根目录下的build命令
-    docsBuild: "文档build命令，默认值:" + defaultVpSimple.cmdDocsBuild
+    docsBuild: "文档build命令，默认值: npm run docs:build"
   }
 };
