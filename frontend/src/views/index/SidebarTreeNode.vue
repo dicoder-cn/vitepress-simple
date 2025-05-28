@@ -9,6 +9,12 @@
         <span class="arrow" :class="{ collapsed }">
           <svg width="12" height="12" viewBox="0 0 24 24"><path d="M8 10l4 4 4-4" stroke="#999" stroke-width="2" fill="none"/></svg>
         </span>
+        <div class="add-btn-wrapper">
+          <el-button type="primary" size="small" class="add-btn" @click.stop="addSidebarItem">
+            <svg viewBox="0 0 1024 1024" width="14" height="14"><path d="M480 480V224a32 32 0 1 1 64 0v256h256a32 32 0 1 1 0 64H544v256a32 32 0 1 1-64 0V544H224a32 32 0 1 1 0-64h256z" fill="#409eff"/></svg>
+            新增侧栏项
+          </el-button>
+        </div>
       </div>
       <div v-else class="file-node">
         <el-icon class="file-icon"><Document /></el-icon>
@@ -23,19 +29,13 @@
     </div>
     <div v-if="hasChildren && !collapsed" class="node-children">
       <sidebar-tree-node 
-        v-for="child in node.children" 
+        v-for="child in sortedChildren" 
         :key="child.path" 
         :node="child"
         @update:node="handleChildUpdate"
         @delete:node="handleChildDelete"
         @add:node="handleAddChild"
       />
-      <div class="add-btn-wrapper">
-        <el-button type="primary" size="small" class="add-btn" @click.stop="addSidebarItem">
-          <svg viewBox="0 0 1024 1024" width="14" height="14"><path d="M480 480V224a32 32 0 1 1 64 0v256h256a32 32 0 1 1 0 64H544v256a32 32 0 1 1-64 0V544H224a32 32 0 1 1 0-64h256z" fill="#409eff"/></svg>
-          新增侧栏项
-        </el-button>
-      </div>
     </div>
   </div>
 </template>
@@ -53,6 +53,8 @@ interface TreeNode {
   text: string;
   link: string;
   collapsed?: boolean;
+  MdFileFrontMatter?: Record<string, any>;
+  IsMdFile?: boolean;
 }
 
 const props = defineProps<{
@@ -74,6 +76,19 @@ const nodeData = ref({
 const collapsed = ref(props.node.collapsed !== false); // 默认收起
 
 const hasChildren = computed(() => Array.isArray(props.node.children) && props.node.children.length > 0);
+
+// 排序：目录在前，md文件在后，md文件按weight升序
+const sortedChildren = computed(() => {
+  if (!props.node.children) return [];
+  const dirs = props.node.children.filter(child => !child.IsMdFile);
+  const mds = props.node.children.filter(child => child.IsMdFile);
+  mds.sort((a, b) => {
+    const wa = (a.MdFileFrontMatter && typeof a.MdFileFrontMatter.weight === 'number') ? a.MdFileFrontMatter.weight : 0;
+    const wb = (b.MdFileFrontMatter && typeof b.MdFileFrontMatter.weight === 'number') ? b.MdFileFrontMatter.weight : 0;
+    return wa - wb;
+  });
+  return [...dirs, ...mds];
+});
 
 watch(() => props.node.text, val => { nodeData.value.text = val; });
 watch(() => props.node.link, val => { nodeData.value.link = val; });
@@ -133,7 +148,9 @@ function addSidebarItem() {
     path: newPath,
     text: '新建文档',
     link: newPath.replace(/\.md$/, ''),
-    collapsed: false
+    collapsed: false,
+    IsMdFile: true,
+    MdFileFrontMatter: { weight: 0 }
   };
   const updatedChildren = props.node.children ? [...props.node.children, newNode] : [newNode];
   const updatedNode = {
@@ -162,6 +179,7 @@ function handleAddChild(parentPath: string) {
   border: 1px solid #ebeef5;
   border-radius: 4px;
   cursor: pointer;
+  position: relative;
 }
 
 .node-content.clickable:hover {
@@ -210,7 +228,10 @@ function handleAddChild(parentPath: string) {
 }
 
 .add-btn-wrapper {
-  margin: 4px 0 4px 32px;
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  margin: 0;
 }
 
 .add-btn {
