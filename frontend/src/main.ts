@@ -13,6 +13,9 @@ import "@quasar/extras/material-icons/material-icons.css";
 // Import Quasar css
 import "quasar/src/css/index.sass";
 import { InstallCodemirro } from "codemirror-editor-vue3";
+import ElementPlus from "element-plus";
+import "element-plus/dist/index.css";
+
 const app = createApp(App);
 
 app.use(createPinia());
@@ -45,6 +48,8 @@ app
   .use(Tooltip);
 
 app.use(InstallCodemirro);
+
+app.use(ElementPlus);
 
 app.config.globalProperties.$message = message;
 
