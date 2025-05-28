@@ -16,6 +16,9 @@
         <el-input v-model="nodeData.text" placeholder="文档标题" class="text-input" @change.stop="updateNode"/>
         <label class="input-label">链接：</label>
         <el-input v-model="nodeData.link" placeholder="链接路径" class="link-input" @change.stop="updateNode"/>
+        <el-button type="danger" size="small" class="delete-btn" @click.stop="deleteSelf" circle>
+          <svg viewBox="0 0 1024 1024" width="14" height="14"><path d="M360 820a40 40 0 0 0 40 40h224a40 40 0 0 0 40-40V384H360v436z m464-532h-112l-34-56a48 48 0 0 0-41-24H387a48 48 0 0 0-41 24l-34 56H200a24 24 0 0 0 0 48h16v520a88 88 0 0 0 88 88h416a88 88 0 0 0 88-88V336h16a24 24 0 0 0 0-48z m-352-40h208l24 40H408l24-40z" fill="#f56c6c"/></svg>
+        </el-button>
       </div>
     </div>
     <div v-if="hasChildren && !collapsed" class="node-children">
@@ -24,14 +27,22 @@
         :key="child.path" 
         :node="child"
         @update:node="handleChildUpdate"
+        @delete:node="handleChildDelete"
+        @add:node="handleAddChild"
       />
+      <div class="add-btn-wrapper">
+        <el-button type="primary" size="small" class="add-btn" @click.stop="addSidebarItem">
+          <svg viewBox="0 0 1024 1024" width="14" height="14"><path d="M480 480V224a32 32 0 1 1 64 0v256h256a32 32 0 1 1 0 64H544v256a32 32 0 1 1-64 0V544H224a32 32 0 1 1 0-64h256z" fill="#409eff"/></svg>
+          新增侧栏项
+        </el-button>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, defineProps, defineEmits, watch, computed } from 'vue';
-import { ElInput, ElIcon } from 'element-plus';
+import { ElInput, ElIcon, ElButton } from 'element-plus';
 import { Folder, Document } from '@element-plus/icons-vue';
 
 // 定义节点类型
@@ -50,6 +61,8 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'update:node', node: TreeNode): void
+  (e: 'delete:node', path: string): void
+  (e: 'add:node', parentPath: string): void
 }>();
 
 // 创建本地节点数据的副本，以便于编辑
@@ -80,6 +93,10 @@ function updateNode() {
   emit('update:node', updatedNode);
 }
 
+function deleteSelf() {
+  emit('delete:node', props.node.path);
+}
+
 function handleChildUpdate(childNode: TreeNode) {
   if (props.node.children) {
     const updatedChildren = [...props.node.children];
@@ -94,6 +111,41 @@ function handleChildUpdate(childNode: TreeNode) {
       emit('update:node', updatedNode);
     }
   }
+}
+
+function handleChildDelete(childPath: string) {
+  if (props.node.children) {
+    const updatedChildren = props.node.children.filter(child => child.path !== childPath);
+    const updatedNode = {
+      ...props.node,
+      children: updatedChildren,
+      collapsed: collapsed.value
+    };
+    emit('update:node', updatedNode);
+  }
+}
+
+function addSidebarItem() {
+  // 生成唯一path
+  const newPath = `${props.node.path}/new-${Date.now()}.md`;
+  const newNode: TreeNode = {
+    title: '新建文档',
+    path: newPath,
+    text: '新建文档',
+    link: newPath.replace(/\.md$/, ''),
+    collapsed: false
+  };
+  const updatedChildren = props.node.children ? [...props.node.children, newNode] : [newNode];
+  const updatedNode = {
+    ...props.node,
+    children: updatedChildren,
+    collapsed: collapsed.value
+  };
+  emit('update:node', updatedNode);
+}
+
+function handleAddChild(parentPath: string) {
+  // 递归冒泡，不需要实现内容
 }
 </script>
 
@@ -149,6 +201,23 @@ function handleChildUpdate(childNode: TreeNode) {
 
 .link-input {
   flex: 1;
+}
+
+.delete-btn {
+  margin-left: 8px;
+  align-self: center;
+  padding: 0 4px;
+}
+
+.add-btn-wrapper {
+  margin: 4px 0 4px 32px;
+}
+
+.add-btn {
+  padding: 0 8px;
+  font-size: 13px;
+  height: 24px;
+  line-height: 22px;
 }
 
 .arrow {
