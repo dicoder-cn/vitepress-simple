@@ -150,10 +150,12 @@ export const useVpconfigStore = defineStore("vpconfig", {
     },
     saveLangConfig(key:string,langConfig:VpConfigLang) {
       //判断key是否存在
-      if (!this.vpConfig.locales[key]) {
+      if (!this.vpConfig?.locales?.[key]) {
         this.addLang(key, key);
       }
-      this.vpConfig.locales[key] = langConfig;
+      if (this.vpConfig?.locales) {
+        this.vpConfig.locales[key] = langConfig;
+      }
     },
     //保存配置
     async saveConfig() {

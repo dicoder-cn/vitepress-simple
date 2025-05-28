@@ -65,6 +65,14 @@ export const zhHans = {
     newProject: "新建项目",
     newArticle: "新建文章",
     openProject: "打开项目",
+    //标签
+    tags: "标签",
+    //输入标签
+    inputTags: "输入标签，按回车添加",
+    //标签权重
+    tagWeight: "标签权重",
+    //输入标签权重
+    inputTagWeight: "请输入标签权重(1-10)",
     //新建目录
     newDirectory: "新建目录",
     //重命名

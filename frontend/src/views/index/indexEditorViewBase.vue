@@ -11,7 +11,8 @@
         class="text-gray-500"
         v-model:value="storeEditor.currArticle.frontMatter['description']"
         :auto-size="{ minRows: 1 }"
-        :placeholder="lang('pageIndex.inputPageSeoDescription')"></a-textarea>
+        :placeholder="lang('pageIndex.inputPageSeoDescription')">
+      </a-textarea>
     </div>
 
     <!-- 标签输入框 -->
@@ -26,6 +27,21 @@
         <q-chip v-for="(tag, index) in storeEditor.currArticle.frontMatter['tags']" :key="index" removable square dense @remove="removeTag(index)" color="gray" text-color="dark">
           {{ tag }}
         </q-chip>
+      </div>
+      <!-- 标签权重配置 -->
+      <div class="mt-2">
+        <q-input
+          v-model="tagWeight"
+          type="number"
+          :label="lang('pageIndex.tagWeight')"
+          :placeholder="lang('pageIndex.inputTagWeight')"
+          dense
+          outlined
+          style="width: 100%"
+          :min="1"
+          :max="10"
+          @update:model-value="handleTagWeightChange"
+        />
       </div>
     </div>
 
@@ -121,6 +137,7 @@ const wrapperCol = { span: 14 };
 const storeIndex = useIndexStore();
 
 const tagInput = ref("");
+const tagWeight = ref("5"); // 默认权重为5
 
 // 确保所有必要的对象和数组都被初始化
 if (!storeEditor.currArticle) {
@@ -131,6 +148,9 @@ if (!storeEditor.currArticle.frontMatter) {
 }
 if (!storeEditor.currArticle.frontMatter["tags"]) {
   storeEditor.currArticle.frontMatter["tags"] = [];
+}
+if (!storeEditor.currArticle.frontMatter["tagWeights"]) {
+  storeEditor.currArticle.frontMatter["tagWeights"] = {};
 }
 
 const handleTagInput = () => {
@@ -144,11 +164,25 @@ const handleTagInput = () => {
     .filter((tag) => tag && !storeEditor.currArticle.frontMatter["tags"].includes(tag));
 
   storeEditor.currArticle.frontMatter["tags"].push(...newTags);
+  // 为新添加的标签设置默认权重
+  newTags.forEach(tag => {
+    storeEditor.currArticle.frontMatter["tagWeights"][tag] = parseInt(tagWeight.value);
+  });
   tagInput.value = "";
 };
 
+const handleTagWeightChange = (value: string) => {
+  const weight = parseInt(value);
+  if (weight >= 1 && weight <= 10) {
+    tagWeight.value = value;
+  }
+};
+
 const removeTag = (index: number) => {
+  const tag = storeEditor.currArticle.frontMatter["tags"][index];
   storeEditor.currArticle.frontMatter["tags"].splice(index, 1);
+  // 删除标签时同时删除对应的权重
+  delete storeEditor.currArticle.frontMatter["tagWeights"][tag];
 };
 
 const refDyAddHead = ref();
