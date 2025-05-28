@@ -4,6 +4,7 @@
             <div class="tree-header">
                 <h3>侧栏目录树</h3>
                 <el-button type="primary" @click="saveTreeData">保存</el-button>
+                <el-button type="default" @click="refreshTreeData" style="margin-left: 8px;">刷新</el-button>
             </div>
             <div v-if="treeData" class="tree-content">
                 <SidebarTreeNode 
@@ -219,14 +220,13 @@ const saveTreeData = () => {
     });
 };
 
-onMounted(() => {
+// 提取初始化逻辑为独立函数
+const refreshTreeData = () => {
     ParseToTree(storeVpconfig.FullSrcLangDir).then((data: docparse.DocsTreeNode) => {
         treeData.value = data;
         processedTreeData.value = convertTreeToDisplayTree(data, true);
-        
         // 初始化sidebar数据
         const sidebar = convertTreeToSidebar(data, true);
-        
         // 如果没有使用多语言，直接设置root的sidebar
         if (!storeVpconfig.IsUseManyLang) {
             const rootKey = 'root';
@@ -241,6 +241,10 @@ onMounted(() => {
         console.error('解析文档树失败:', err);
         ElMessage.error('解析文档树失败');
     });
+};
+
+onMounted(() => {
+    refreshTreeData();
 });
 </script>
 
