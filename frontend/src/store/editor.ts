@@ -141,8 +141,8 @@ export const useEditorStore = defineStore("editor", {
         this.changeCurrArticleIndex(articleIndex);
       } else {
         //最大不能打开超过6个文章
-        if (this.articleLists.length >= 6) {
-          ToastError("最多只能打开6篇文章");
+        if (this.articleLists.length >= 8) {
+          ToastError("最多只能打开8篇文章");
           return;
         }
         const openArticle: ArticleContent = this.getDefaultArticle();
@@ -184,7 +184,7 @@ export const useEditorStore = defineStore("editor", {
       this.articleLists[articleIndex].frontMatter = matterData.data;
       this.articleLists[articleIndex].vueContent = vueContent;
       let mdContent = (matterData.content ?? "").replace(scriptContent, "").replace(styleContent, "");
-      mdContent = mdContent ? mdContent : getFileNameFromPath("# " + path);
+      mdContent = mdContent ? mdContent : `# ${getFileNameFromPath(path)}`;
       //初始化文章的front matter
       this.initArticleFrontMatter(articleIndex);
       //相对路径转换成 域名替换
@@ -207,14 +207,10 @@ export const useEditorStore = defineStore("editor", {
         }
       }
 
-      //默认标题
-      if (articleFrontMatter["title"] == "") {
-        const title = getFileNameFromPath(this.articleLists[articleIndex].path);
-        articleFrontMatter["title"] = title;
-      }
-
-      //创建时间
       if (this.articleLists[articleIndex].isNewFile) {
+        //标题
+        articleFrontMatter["title"] = getFileNameFromPath(this.articleLists[articleIndex].path);
+        //创建时间
         articleFrontMatter["createAt"] = DateUtil.getFormatDate(new Date().toISOString());
       }
 

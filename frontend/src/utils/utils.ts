@@ -30,7 +30,7 @@ export function getFileNameFromPath(absPath: string) {
   const pathArr = absPath.split("/");
   // 获取最后一个元素作为文件名
   const fileName = pathArr[pathArr.length - 1];
-  return fileName;
+  return fileName.replaceAll(".md", "");
 
   // 示例用法
   // const absPath = '/Users/username/Documents/file.txt';
