@@ -13,6 +13,8 @@
                     v-for="node in processedTreeData" 
                     :key="node.path" 
                     :node="node" 
+                    :weight="node.weight"
+                    :MdFileFrontMatter="node.MdFileFrontMatter"
                     @update:node="updateNode"
                 />
             </div>
@@ -47,6 +49,8 @@ interface ProcessedTreeNode {
     children?: ProcessedTreeNode[];
     text: string;
     link: string;
+    weight?: number;
+    MdFileFrontMatter?: Record<string, any>;
 }
 
 const storeVpconfig = useVpconfigStore();
@@ -112,11 +116,24 @@ const convertTreeToDisplayTree = (node: docparse.DocsTreeNode, isRoot: boolean =
             }
         } else {
             if (child.IsMdFile && child.Path.endsWith('.md')) {
+                // 获取weight，字符串转整型，默认0
+                let weight = 0;
+                if (child.MdFileFrontMatter && typeof child.MdFileFrontMatter.weight !== 'undefined') {
+                    const w = child.MdFileFrontMatter.weight;
+                    if (typeof w === 'string') {
+                        weight = parseInt(w, 10);
+                        if (isNaN(weight)) weight = 0;
+                    } else if (typeof w === 'number') {
+                        weight = w;
+                    }
+                }
                 result.push({
                     title: child.Name.replace(/\.md$/, ''),
                     path: child.Path,
                     text: child.Name.replace(/\.md$/, ''),
-                    link: child.Path.replace(/\.md$/, '')
+                    link: child.Path.replace(/\.md$/, ''),
+                    weight,
+                    MdFileFrontMatter: child.MdFileFrontMatter || {}
                 });
             } else if (!child.IsMdFile) {
                 const children = convertTreeToDisplayTree(child, false);
@@ -132,7 +149,11 @@ const convertTreeToDisplayTree = (node: docparse.DocsTreeNode, isRoot: boolean =
             }
         }
     });
-    return result;
+    // 同一目录下的md文件按weight降序排序
+    const dirs = result.filter(item => item.children && item.children.length > 0);
+    const mds = result.filter(item => !item.children || item.children.length === 0);
+    mds.sort((a, b) => (b.weight || 0) - (a.weight || 0));
+    return [...dirs, ...mds];
 };
 
 // 更新节点数据

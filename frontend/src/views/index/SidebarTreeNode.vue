@@ -59,7 +59,9 @@ interface TreeNode {
 }
 
 const props = defineProps<{
-  node: TreeNode
+  node: TreeNode,
+  weight?: number,
+  MdFileFrontMatter?: Record<string, any>
 }>();
 
 const emit = defineEmits<{
@@ -82,8 +84,31 @@ const hasChildren = computed(() => Array.isArray(props.node.children) && props.n
 
 // 权重值
 const weight = computed(() => {
-  if (props.node.MdFileFrontMatter && typeof props.node.MdFileFrontMatter.weight === 'number') {
-    return props.node.MdFileFrontMatter.weight;
+  // 优先用props.weight，否则兼容老数据
+  if (typeof props.weight !== 'undefined') {
+    if (typeof props.weight === 'string') {
+      const w = parseInt(props.weight, 10);
+      return isNaN(w) ? 0 : w;
+    }
+    return props.weight;
+  }
+  if (props.MdFileFrontMatter && typeof props.MdFileFrontMatter.weight !== 'undefined') {
+    const w = props.MdFileFrontMatter.weight;
+    if (typeof w === 'string') {
+      const n = parseInt(w, 10);
+      return isNaN(n) ? 0 : n;
+    } else if (typeof w === 'number') {
+      return w;
+    }
+  }
+  if (props.node.MdFileFrontMatter && typeof props.node.MdFileFrontMatter.weight !== 'undefined') {
+    const w = props.node.MdFileFrontMatter.weight;
+    if (typeof w === 'string') {
+      const n = parseInt(w, 10);
+      return isNaN(n) ? 0 : n;
+    } else if (typeof w === 'number') {
+      return w;
+    }
   }
   return 0;
 });
