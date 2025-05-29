@@ -67,6 +67,11 @@ export function getParentDirectory(path: string): string {
   return parentDirectoryPath.replace(/\$/, "").replace(/\$/, "");
 }
 
+//获取文件名
+export function getFileNameFromPath(path: string) {
+  return path.split("/").pop()?.replace(".md", "");
+}
+
 // 删除md后缀
 export function removeMdExtension(str: string) {
   return str.replace(/\.md$/, "");

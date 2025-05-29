@@ -36,7 +36,7 @@ export const appConfigDefault: Record<string, any> = {
   [ConfigKeyHistoryProject]: "[]", //历史项目
   [ConfigKeyLayoutNavBgColor]: "#ebebeb", //左侧导航栏背景颜色
   [ConfigKeyChangeAutoSave]: "no", //切换文件时自动保存
-  [ConfigKeyFrontMatterSaveType]: "json", //frontMatter保存格式
+  [ConfigKeyFrontMatterSaveType]: "yaml", //frontMatter保存格式 json或yaml
   [ConfigKeySysStaticServerPort]: "9874", //项目的静态资源（图片）服务器端口
   [ConfigKeySysProjectStaticDirName]: "static", //项目静态资源目录名
   [ConfigKeyVditorCdn]: "zstatic", //Vditor CDN

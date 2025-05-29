@@ -122,7 +122,6 @@ const deletePath = (key: string) => {
         } else {
           ToastInfo(key + lang("common.deleteSuccess"));
           //更新当前文件
-
           if (storeEditor.currArticle.path == key) {
             storeEditor.changeCurrArticleIndex(0);
           }
@@ -212,7 +211,11 @@ const showPopCreate = (path_: string, typ: string) => {
 const onSubmitInputModalCreateFile = async (value: string) => {
   let fullFile = currentCreateParentPath.value + "/" + value + ".md";
   let res = await CreateFile(fullFile);
-  if (ToastCheck(res, "文件创建完成")) await storeIndex.loadTreeData();
+  if (ToastCheck(res, "文件创建完成")) {
+    openArticle(fullFile);
+    storeIndex.loadTreeData();
+    
+  }
 };
 
 //创建子文件夹

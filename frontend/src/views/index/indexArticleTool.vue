@@ -70,9 +70,10 @@ import { ToastCheck } from "@/utils/Toast";
 import CreateProjectPopup from "@/views/project/createProjectPopup.vue";
 import OpenProjectPopup from "@/views/project/openProjectPopup.vue";
 import { lang } from "../../utils/language";
-
+import { useEditorStore } from "@/store/editor";
 const iconSize = ref(24);
 const storeIndex = useIndexStore();
+const storeEditor = useEditorStore();
 const storeVpConfig = useVpconfigStore();
 
 //弹出层回调 新建目录
@@ -94,7 +95,10 @@ const createFile = async () => {
 const onSubmitInputModalCreateFile = async (value: string) => {
   let fullFile = storeVpConfig.fullSrcDir + "/" + value + ".md";
   let res = await CreateFile(fullFile);
-  if (ToastCheck(res, lang("pageIndex.articleCreated"))) await storeIndex.loadTreeData();
+  if (ToastCheck(res, lang("pageIndex.articleCreated"))) {
+    await storeIndex.loadTreeData()
+    storeEditor.openArticle(fullFile,true)
+  };
 };
 
 //新建项目

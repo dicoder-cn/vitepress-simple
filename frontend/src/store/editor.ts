@@ -3,7 +3,7 @@ import { ConfigKeyFrontMatterSaveType } from "@/configs/appConfigKey";
 import { parseTagContent, regexScript, regexStyle } from "@/utils/parse";
 import { replaceImageUrlToLocalStatic, replaceLocalStaticToImageUrl } from "@/utils/repalceStatic";
 import { ToastError, ToastInfo } from "@/utils/Toast";
-import { IsEmptyValue } from "@/utils/utils";
+import { getFileNameFromPath, IsEmptyValue } from "@/utils/utils";
 import matter from "gray-matter";
 import { defineStore } from "pinia";
 import { ReadFileContent, WriteFileContent } from "wailsjs/go/services/ArticleTreeData";
@@ -13,6 +13,7 @@ import yaml from "js-yaml";
 import { watch } from "vue";
 import { Modal } from "ant-design-vue";
 import { lang } from "@/utils/language";
+import { DateUtil } from "@/utils/date";
 //这是一个简单的推荐store案例，可以在这里定义你的状态
 //新建pinia时把editor全局替换成你的store名字
 
@@ -23,6 +24,7 @@ interface ArticleContent {
   scriptContent: string; //占位
   styleContent: string; //占位
   vueContent: string; //= scriptContent + styleContent
+  isNewFile: boolean; //是否新建文章，不属于的话意着是打开旧的文章
   path: string; //文章路径
   mdContent: string; //=frontMatter+mdContent
 }
@@ -128,7 +130,7 @@ export const useEditorStore = defineStore("editor", {
       this.currArticle = this.articleLists[index];
     },
     //打开文章
-    openArticle(path: string) {
+    openArticle(path: string, isNewFile = false) {
       if (!Array.isArray(this.articleLists)) {
         this.articleLists = [];
       }
@@ -143,24 +145,20 @@ export const useEditorStore = defineStore("editor", {
           ToastError("最多只能打开6篇文章");
           return;
         }
-        const newArticle: ArticleContent = {
-          path,
-          mdContent: "",
-          isSave: true,
-          frontMatter: undefined,
-          scriptContent: "",
-          styleContent: "",
-          vueContent: ""
-        };
-        this.articleLists.push(newArticle);
+        const openArticle: ArticleContent = this.getDefaultArticle();
+        openArticle.path = path;
+        openArticle.isNewFile = isNewFile;
+        this.articleLists.push(openArticle);
         articleIndex = this.articleLists.length - 1;
       }
+
       this.preHandlerOpenArticle(path, articleIndex); //预处理打开文章
       this.changeCurrArticleIndex(articleIndex);
     },
-    initCurrArticle() {
-      this.currArticle = {
+    getDefaultArticle(): ArticleContent {
+      return {
         isSave: true,
+        isNewFile: false,
         frontMatter: {},
         scriptContent: "",
         styleContent: "",
@@ -172,6 +170,8 @@ export const useEditorStore = defineStore("editor", {
     //打开文章前处理
     async preHandlerOpenArticle(path: string, articleIndex: number) {
       const content = await ReadFileContent(path);
+      // const isNewFile = content == "";
+
       const matterData = matter(content);
       const matchScriptArray = parseTagContent(matterData.content ?? "", regexScript);
       const matchStyleArray = parseTagContent(matterData.content ?? "", regexStyle);
@@ -184,7 +184,7 @@ export const useEditorStore = defineStore("editor", {
       this.articleLists[articleIndex].frontMatter = matterData.data;
       this.articleLists[articleIndex].vueContent = vueContent;
       let mdContent = (matterData.content ?? "").replace(scriptContent, "").replace(styleContent, "");
-      mdContent = mdContent ? mdContent : "# hello vitePress client";
+      mdContent = mdContent ? mdContent : getFileNameFromPath("# " + path);
       //初始化文章的front matter
       this.initArticleFrontMatter(articleIndex);
       //相对路径转换成 域名替换
@@ -194,6 +194,7 @@ export const useEditorStore = defineStore("editor", {
       this.changeCurrArticleIndex(articleIndex);
       console.log(this.currArticle, "currArticle -- console.log");
     },
+
     //设置当前文章front matter
     initArticleFrontMatter(articleIndex: number) {
       //当前文章的front matter
@@ -208,7 +209,13 @@ export const useEditorStore = defineStore("editor", {
 
       //默认标题
       if (articleFrontMatter["title"] == "") {
-        articleFrontMatter["title"] = "test title";
+        const title = getFileNameFromPath(this.articleLists[articleIndex].path);
+        articleFrontMatter["title"] = title;
+      }
+
+      //创建时间
+      if (this.articleLists[articleIndex].isNewFile) {
+        articleFrontMatter["createAt"] = DateUtil.getFormatDate(new Date().toISOString());
       }
 
       console.log(articleFrontMatter, "articleFrontMatter -- console.log");
@@ -281,6 +288,9 @@ export const useEditorStore = defineStore("editor", {
       }
       const articleItem = this.articleLists[articleIndex];
 
+      //更新时间
+      articleItem.frontMatter.updateAt = DateUtil.getFormatDate(new Date().toISOString());
+
       const saveType = AppConfig.getString(ConfigKeyFrontMatterSaveType);
       let fontMatterString = "";
       if (saveType == "yaml") {
@@ -297,6 +307,7 @@ export const useEditorStore = defineStore("editor", {
       //获取动态新增的数据
       WriteFileContent(articleItem.path, fullContent).then(() => {
         if (showToast) ToastInfo("已保存");
+        this.articleLists[articleIndex].isNewFile = false; //保存后默认不属于新文章
         if (this.currArticleIndex === articleIndex) {
           this.currArticle.isSave = true;
         }

@@ -7,9 +7,12 @@ export const defaultFrontMatter: any = {
   outline: [1, 3], //是否显示页脚
   editLink: false, //是否显示编辑链接
   lastUpdated: true, //是否显示页脚更新时间
+  createAt: null, //创建时间
+  updateAt: null, //日期
   aside: "right", //大纲显示位置--默认右边
   layout: "doc", //页面类型
   custom: {}, //用户自定义变量
+  weight: "1", //权重
   //主页
   hero: {
     image: {
@@ -29,3 +32,6 @@ export const defaultFrontMatter: any = {
     // next: "",
   } //用户自定义变量
 };
+
+
+

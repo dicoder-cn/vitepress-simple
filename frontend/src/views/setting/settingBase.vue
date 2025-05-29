@@ -9,7 +9,7 @@
       :tooltip="lang('pageSetting.settingBase.autoSaveArticle.tooltip')"></config-switch>
     <config-switch class="mx-3" :label="lang('pageSetting.settingBase.startup.label')" :tooltip="lang('pageSetting.settingBase.startup.tooltip')" :config-key="ConfigKeyIsStartup"></config-switch>
   </div>
-  <div class="ml-5 mt-5">
+  <!-- <div class="ml-5 mt-5">
     <config-radio
       :config-key="ConfigKeyFrontMatterSaveType"
       :label="lang('pageSetting.settingBase.frontMatterSaveType.label')"
@@ -18,7 +18,7 @@
         { label: 'json', value: 'json' },
         { label: 'yaml', value: 'yaml' }
       ]"></config-radio>
-  </div>
+  </div> -->
 
   <div class="ml-5 mt-5">
     <config-radio
