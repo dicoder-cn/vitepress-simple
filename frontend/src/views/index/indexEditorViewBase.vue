@@ -26,13 +26,13 @@
     <div class="px-1 my-2">
       <a-input
         v-model:value="tagInput"
-        :placeholder="lang('pageIndex.inputTags')"
+        :placeholder="lang('pageIndex.inputTags') + '（回车添加）'"
         :suffix="lang('pageIndex.tags')"
         @keyup.enter="handleTagInput"
         allow-clear
         class="mb-2"
       />
-      <div class="flex flex-wrap items-center gap-0.5 mt-2">
+      <div class="flex flex-wrap items-center gap-0.5 mt-0.5">
         <div v-if="getFrontMatter(['tags'], defaultFrontMatter.tags).length > 0" class="text-gray-500 ml-1 mr-1">Tags:</div>
         <q-chip v-for="(tag, index) in getFrontMatter(['tags'], defaultFrontMatter.tags)" :key="index" removable square dense @remove="removeTag(index)" color="gray" text-color="dark">
           {{ tag }}
@@ -78,7 +78,9 @@
                   @update:value="val => setFrontMatter(['sideBar'], val, defaultFrontMatter)"
                   left-label color="blue" />
       </div>
-      <!-- 是否显示页脚 -->
+      <!-- 是否显示页脚 -->tags:
+
+
       <div>
         <q-toggle :label="lang('pageIndex.showFooter')"
                   :value="getFrontMatter(['footer'], defaultFrontMatter.footer)"
@@ -175,37 +177,22 @@ if (!storeEditor.currArticle.frontMatter) {
 if (!storeEditor.currArticle.frontMatter["tags"]) {
   storeEditor.currArticle.frontMatter["tags"] = [];
 }
-if (!storeEditor.currArticle.frontMatter["tagWeights"]) {
-  storeEditor.currArticle.frontMatter["tagWeights"] = {};
-}
 
 const handleTagInput = () => {
-  if (!tagInput.value.trim()) return;
+  const tag = tagInput.value.trim();
+  if (!tag) return;
   if (!storeEditor.currArticle.frontMatter["tags"]) {
     storeEditor.currArticle.frontMatter["tags"] = [];
   }
-  // 兜底初始化 tagWeights
-  if (!storeEditor.currArticle.frontMatter["tagWeights"] || typeof storeEditor.currArticle.frontMatter["tagWeights"] !== "object") {
-    storeEditor.currArticle.frontMatter["tagWeights"] = {};
+  // 不重复添加
+  if (!storeEditor.currArticle.frontMatter["tags"].includes(tag)) {
+    storeEditor.currArticle.frontMatter["tags"].push(tag);
   }
-  const newTags = tagInput.value
-    .split(",")
-    .map((tag) => tag.trim())
-    .filter((tag) => tag && !storeEditor.currArticle.frontMatter["tags"].includes(tag));
-
-  storeEditor.currArticle.frontMatter["tags"].push(...newTags);
-  // 为新添加的标签设置默认权重
-  newTags.forEach(tag => {
-    storeEditor.currArticle.frontMatter["tagWeights"][tag] = parseInt(weight.value);
-  });
   tagInput.value = "";
 };
 
 const removeTag = (index: number) => {
-  const tag = storeEditor.currArticle.frontMatter["tags"][index];
   storeEditor.currArticle.frontMatter["tags"].splice(index, 1);
-  // 删除标签时同时删除对应的权重
-  delete storeEditor.currArticle.frontMatter["tagWeights"][tag];
 };
 
 const refDyAddHead = ref();
