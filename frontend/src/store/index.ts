@@ -106,7 +106,7 @@ export const useIndexStore = defineStore("index", {
         ToastError(checkString);
         return;
       }
-      ToastSuccess(`当前打开项目："${dir}"`);
+      // ToastSuccess(`当前打开项目："${dir}"`);
       this.IsEmptyProject = false; //设置为非空项目
       await useHistoryStore().add(dir); //加入到历史项目数据中
       //设置当前的项目路径

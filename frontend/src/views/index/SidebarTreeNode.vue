@@ -162,10 +162,11 @@ function addSidebarItem() {
     MdFileFrontMatter: { weight: 0 }
   };
   const updatedChildren = props.node.children ? [...props.node.children, newNode] : [newNode];
+  collapsed.value = false; // 新增后本地展开
   const updatedNode = {
     ...props.node,
     children: updatedChildren,
-    collapsed: collapsed.value
+    collapsed: false // 新增后父组件也展开
   };
   emit('update:node', updatedNode);
 }

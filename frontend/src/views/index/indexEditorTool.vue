@@ -28,11 +28,13 @@
 
     <!-- 右侧工具栏 -->
     <div class="flex items-center justify-end space-x-2 mr-2">
+            <!-- 生成工具 -->
+      <index-editor-tool-generate></index-editor-tool-generate>
+
+      
       <!--    终端-->
       <index-editor-tool-shell></index-editor-tool-shell>
 
-      <!-- 生成工具 -->
-      <index-editor-tool-generate></index-editor-tool-generate>
 
       <!-- 侧边栏设置 -->
       <index-editor-tool-sidebar></index-editor-tool-sidebar>

@@ -3,8 +3,10 @@
         <div class="tree-container">
             <div class="tree-header">
                 <h3>侧栏目录树</h3>
-                <el-button type="primary" @click="saveTreeData">保存</el-button>
-                <el-button type="default" @click="refreshTreeData" style="margin-left: 8px;">刷新</el-button>
+                <div class="button-group">
+                    <el-button type="primary" @click="saveTreeData">保存</el-button>
+                    <el-button type="default" @click="refreshTreeData" style="margin-left: 8px;">刷新</el-button>
+                </div>
             </div>
             <div v-if="treeData" class="tree-content">
                 <SidebarTreeNode 
@@ -317,5 +319,10 @@ onMounted(() => {
     justify-content: center;
     align-items: center;
     height: 200px;
+}
+
+.button-group {
+    display: flex;
+    align-items: center;
 }
 </style>

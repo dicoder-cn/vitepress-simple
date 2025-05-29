@@ -8,7 +8,7 @@
           <!-- 列表 菜单 -->
           <div v-for="(item, index) in generateList" :key="index">
             <a-menu-item @click="handleGenerate(index)">
-              <a href="javascript:;">{{ item.menuLabel }}</a>
+              <a class="no-select" href="javascript:;">{{ item.menuLabel }}</a>
             </a-menu-item>
             <hr v-if="[1].includes(index)" />
           </div>
@@ -95,5 +95,7 @@ const handleGenerate = (index: number) => {
 </script>
 
 <style scoped>
-
+.no-select {
+  user-select: none;
+}
 </style> 
