@@ -98,18 +98,19 @@ const convertTreeToDisplayTree = (node: docparse.DocsTreeNode, isRoot: boolean =
         if (!child.IsMdFile && (child.Name.startsWith('.') || child.Name === 'public' || child.Name === 'vpsimple')) return;
 
         if (isRoot) {
-            // 根目录：只显示文件夹
             if (!child.IsMdFile) {
-                result.push({
-                    title: child.Name,
-                    path: child.Path,
-                    text: child.Name,
-                    link: '',
-                    children: convertTreeToDisplayTree(child, false)
-                });
+                const children = convertTreeToDisplayTree(child, false);
+                if (children.length > 0) { // 只保留有内容的文件夹
+                    result.push({
+                        title: child.Name,
+                        path: child.Path,
+                        text: child.Name,
+                        link: '',
+                        children
+                    });
+                }
             }
         } else {
-            // 子目录：显示文件夹和md文件
             if (child.IsMdFile && child.Path.endsWith('.md')) {
                 result.push({
                     title: child.Name.replace(/\.md$/, ''),
@@ -118,13 +119,16 @@ const convertTreeToDisplayTree = (node: docparse.DocsTreeNode, isRoot: boolean =
                     link: child.Path.replace(/\.md$/, '')
                 });
             } else if (!child.IsMdFile) {
-                result.push({
-                    title: child.Name,
-                    path: child.Path,
-                    text: child.Name,
-                    link: '',
-                    children: convertTreeToDisplayTree(child, false)
-                });
+                const children = convertTreeToDisplayTree(child, false);
+                if (children.length > 0) { // 只保留有内容的文件夹
+                    result.push({
+                        title: child.Name,
+                        path: child.Path,
+                        text: child.Name,
+                        link: '',
+                        children
+                    });
+                }
             }
         }
     });
