@@ -67,38 +67,31 @@
       <!-- 是否显示导航栏 -->
       <div>
         <q-toggle :label="lang('pageIndex.showNav')"
-                  :value="getFrontMatter(['navbar'], defaultFrontMatter.navbar)"
-                  @update:value="val => setFrontMatter(['navbar'], val, defaultFrontMatter)"
+                  v-model="navbarProxy"
                   left-label color="blue" />
       </div>
       <!-- 是否显示侧边栏 -->
       <div>
         <q-toggle :label="lang('pageIndex.showSidebar')"
-                  :value="getFrontMatter(['sideBar'], defaultFrontMatter.sideBar)"
-                  @update:value="val => setFrontMatter(['sideBar'], val, defaultFrontMatter)"
+                  v-model="sideBarProxy"
                   left-label color="blue" />
       </div>
-      <!-- 是否显示页脚 -->tags:
-
-
+      <!-- 是否显示页脚 -->
       <div>
         <q-toggle :label="lang('pageIndex.showFooter')"
-                  :value="getFrontMatter(['footer'], defaultFrontMatter.footer)"
-                  @update:value="val => setFrontMatter(['footer'], val, defaultFrontMatter)"
+                  v-model="footerProxy"
                   left-label color="blue" />
       </div>
       <!-- 是否显示编辑链接 -->
       <div>
         <q-toggle :label="lang('pageIndex.showEditLink')"
-                  :value="getFrontMatter(['editLink'], defaultFrontMatter.editLink)"
-                  @update:value="val => setFrontMatter(['editLink'], val, defaultFrontMatter)"
+                  v-model="editLinkProxy"
                   left-label color="blue" />
       </div>
       <!-- 是否显示更新时间 -->
       <div>
         <q-toggle :label="lang('pageIndex.showUpdateTime')"
-                  :value="getFrontMatter(['lastUpdated'], defaultFrontMatter.lastUpdated)"
-                  @update:value="val => setFrontMatter(['lastUpdated'], val, defaultFrontMatter)"
+                  v-model="lastUpdatedProxy"
                   left-label color="blue" />
       </div>
       <!-- 大纲位置 -->
@@ -149,7 +142,7 @@
 </template>
 <script setup lang="ts">
 import DyAddHead from "@/components/dyAddKV.vue";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, computed } from "vue";
 import { useIndexStore } from "@/store";
 import { lang } from "@/utils/language";
 import { useEditorStore } from "@/store/editor";
@@ -166,6 +159,28 @@ const weight = ref("5"); // 默认权重为5
 // getter
 const getFrontMatter = storeEditor.getCurrFrontMatterValue;
 const setFrontMatter = storeEditor.setCurrFrontMatterValue;
+
+// 新增 computed 代理，保证响应式
+const navbarProxy = computed({
+  get: () => getFrontMatter(["navbar"], defaultFrontMatter.navbar),
+  set: (val) => setFrontMatter(["navbar"], val, defaultFrontMatter)
+});
+const sideBarProxy = computed({
+  get: () => getFrontMatter(["sideBar"], defaultFrontMatter.sideBar),
+  set: (val) => setFrontMatter(["sideBar"], val, defaultFrontMatter)
+});
+const footerProxy = computed({
+  get: () => getFrontMatter(["footer"], defaultFrontMatter.footer),
+  set: (val) => setFrontMatter(["footer"], val, defaultFrontMatter)
+});
+const editLinkProxy = computed({
+  get: () => getFrontMatter(["editLink"], defaultFrontMatter.editLink),
+  set: (val) => setFrontMatter(["editLink"], val, defaultFrontMatter)
+});
+const lastUpdatedProxy = computed({
+  get: () => getFrontMatter(["lastUpdated"], defaultFrontMatter.lastUpdated),
+  set: (val) => setFrontMatter(["lastUpdated"], val, defaultFrontMatter)
+});
 
 // 确保所有必要的对象和数组都被初始化
 if (!storeEditor.currArticle) {
