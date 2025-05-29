@@ -28,13 +28,14 @@
       <index-editor-tool-gen-sidebar></index-editor-tool-gen-sidebar>
     </a-modal>
 
+
+
     <!-- 生成SEO关键词弹窗 -->
     <a-modal
       :style="StyleNoDrag"
       v-model:open="isShowGenerateSEO"
       title="生成SEO关键词"
       :cancel-button-props="{ style: 'display:none' }"
-     
       width="80%">
      <div>
         
@@ -49,6 +50,7 @@ import { IconPark } from "@icon-park/vue-next/es/all";
 import { useLayoutStore } from "@/store/layout";
 import { StyleNoDrag } from "@/configs/cnts";
 import IndexEditorToolGenSidebar from "@/views/index/indexEditorToolGenSidebar.vue";
+import { generateTagService } from '@/services/generateTag';
 
 const storeLayout = useLayoutStore();
 
@@ -64,15 +66,22 @@ const seoTitle = ref('');
 const seoDescription = ref('');
 const seoKeywords = ref<string[]>([]);
 
+// tag标签页生成相关状态
+const isShowGenerateTagPage = ref(false);
+
 interface GenerateItem {
   menuLabel: string;
-  type: 'sidebar' | 'seo';
+  type: 'sidebar' | 'seo' | 'tag';
 }
 
 const generateList = ref<GenerateItem[]>([
   {
     menuLabel: '快速生成侧栏',
     type: 'sidebar'
+  },
+  {
+    menuLabel: '生成tag标签页',
+    type: 'tag'
   },
   {
     menuLabel: '快速生成SEO',
@@ -88,6 +97,10 @@ const handleGenerate = (index: number) => {
       break;
     case 'seo':
         isShowGenerateSEO.value = true;
+        break;
+    case 'tag':
+        generateTagService.genTagPage();
+        break;
   }
 };
 
