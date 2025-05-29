@@ -322,12 +322,41 @@ export const useEditorStore = defineStore("editor", {
           this.saveArticle(index, false);
         }
       });
+    },
+
+    setCurrFrontMatterValue(path: (string | number)[], value: any, defaultValue?: any) {
+      if (!this.currArticle || !this.currArticle.frontMatter) return;
+      let obj = this.currArticle.frontMatter;
+      for (let i = 0; i < path.length - 1; i++) {
+        const key = path[i];
+        if (typeof path[i + 1] === "number") {
+          if (!Array.isArray(obj[key])) obj[key] = defaultValue && Array.isArray(defaultValue[key]) ? [...defaultValue[key]] : [];
+        } else {
+          if (typeof obj[key] !== "object" || obj[key] === null) obj[key] = {};
+        }
+        obj = obj[key];
+      }
+      obj[path[path.length - 1]] = value;
     }
   },
   getters: {
     isOpenArticle: (state): boolean => state.articleLists.length > 0 && state.currArticleIndex >= 0,
     getCurrArticleIndex: (state): number => state.currArticleIndex,
     getCurrArticle: (state): ArticleContent => state.currArticle,
-    getArticleContents: (state): ArticleContent[] => (Array.isArray(state.articleLists) ? state.articleLists : [])
+    getArticleContents: (state): ArticleContent[] => (Array.isArray(state.articleLists) ? state.articleLists : []),
+    // 获取当前文章 frontMatter 的值
+    getCurrFrontMatterValue: (state) => {
+      // path: 属性路径数组，如 ['title']，defaultValue: 默认值
+      const getValue = (path: string[], defaultValue: any = "") => {
+        if (!state.currArticle || !state.currArticle.frontMatter) return defaultValue;
+        let current = state.currArticle.frontMatter as any;
+        for (const key of path) {
+          if (!current || typeof current !== "object") return defaultValue;
+          current = current[key];
+        }
+        return current ?? defaultValue;
+      };
+      return getValue;
+    }
   }
 });

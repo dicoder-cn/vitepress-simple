@@ -1,54 +1,64 @@
 <template>
   <div>
     <!-- 标题 -->
-    <div class="px-1 mb-2" v-if="storeEditor.currArticle?.frontMatter?.title">
-      <a-input v-model:value="storeEditor.currArticle.frontMatter['title']" :placeholder="lang('pageIndex.inputArticleTitle')" prefix="" :suffix="lang('common.title')" />
+    <div class="px-1 mb-2">
+      <a-input
+        :value="getFrontMatter(['title'], defaultFrontMatter.title)"
+        @update:value="val => setFrontMatter(['title'], val, defaultFrontMatter)"
+        :placeholder="lang('pageIndex.inputArticleTitle')"
+        prefix=""
+        :suffix="lang('common.title')"
+      />
     </div>
 
     <!-- 描述 -->
-    <div class="px-1 my-2" v-if="storeEditor.currArticle?.frontMatter?.description">
+    <div class="px-1 my-2">
       <a-textarea
         class="text-gray-500"
-        v-model:value="storeEditor.currArticle.frontMatter['description']"
+        :value="getFrontMatter(['description'], defaultFrontMatter.description)"
+        @update:value="val => setFrontMatter(['description'], val, defaultFrontMatter)"
         :auto-size="{ minRows: 1 }"
-        :placeholder="lang('pageIndex.inputPageSeoDescription')">
-      </a-textarea>
+        :placeholder="lang('pageIndex.inputPageSeoDescription')"
+      />
     </div>
 
     <!-- 标签输入框 -->
     <div class="px-1 my-2">
-      <q-input v-model="tagInput" :label="lang('pageIndex.tags')" :placeholder="lang('pageIndex.inputTags')" dense outlined style="width: 100%" @keyup.enter="handleTagInput">
-        <template v-slot:append>
-          <q-icon name="close" v-if="tagInput" class="cursor-pointer" @click="tagInput = ''" />
-        </template>
-      </q-input>
+      <a-input
+        v-model:value="tagInput"
+        :placeholder="lang('pageIndex.inputTags')"
+        :suffix="lang('pageIndex.tags')"
+        @keyup.enter="handleTagInput"
+        allow-clear
+        class="mb-2"
+      />
       <div class="flex flex-wrap items-center gap-0.5 mt-2">
-        <div v-if="storeEditor.currArticle?.frontMatter?.tags?.length > 0" class="text-gray-500 ml-1 mr-1">Tags:</div>
-        <q-chip v-for="(tag, index) in storeEditor.currArticle.frontMatter['tags']" :key="index" removable square dense @remove="removeTag(index)" color="gray" text-color="dark">
+        <div v-if="getFrontMatter(['tags'], defaultFrontMatter.tags).length > 0" class="text-gray-500 ml-1 mr-1">Tags:</div>
+        <q-chip v-for="(tag, index) in getFrontMatter(['tags'], defaultFrontMatter.tags)" :key="index" removable square dense @remove="removeTag(index)" color="gray" text-color="dark">
           {{ tag }}
         </q-chip>
       </div>
       <!-- 标签权重配置 -->
       <div class="mt-2">
-        <q-input
-          v-model="storeEditor.currArticle.frontMatter['weight']"
-          :label="lang('pageIndex.tagWeight')"
+        <a-input
+          v-model:value="weight"
           :placeholder="lang('pageIndex.inputTagWeight')"
-          dense
-          outlined
-          style="width: 100%"
+          :suffix="lang('pageIndex.tagWeight')"
+          class="w-full"
         />
       </div>
     </div>
 
     <!-- 大纲显示级别 -->
-    <div class="px-2 mb-2" v-if="storeEditor.currArticle?.frontMatter?.outline?.length >= 2">
+    <div class="px-2 mb-2" v-if="getFrontMatter(['outline'], defaultFrontMatter.outline).length >= 2">
       <a-input
-        v-model:value="storeEditor.currArticle.frontMatter['outline'][1]"
+        :value="getFrontMatter(['outline', 1], defaultFrontMatter.outline[1])"
+        @update:value="val => setFrontMatter(['outline', 1], val, defaultFrontMatter.outline)"
         class="text-gray-500"
         prefix=""
         :placeholder="lang('pageIndex.inputOutlineLevel')"
-        :suffix="lang('pageIndex.outlineLevel')" />
+        :suffix="lang('pageIndex.outlineLevel')"
+      />
     </div>
   </div>
 
@@ -56,30 +66,43 @@
     <a-form :label-col="labelCol" :wrapper-col="wrapperCol" class="ml-5" label-align="left">
       <!-- 是否显示导航栏 -->
       <div>
-        <q-toggle :label="lang('pageIndex.showNav')" left-label v-model="storeEditor.currArticle.frontMatter['navbar']" color="blue" />
+        <q-toggle :label="lang('pageIndex.showNav')"
+                  :value="getFrontMatter(['navbar'], defaultFrontMatter.navbar)"
+                  @update:value="val => setFrontMatter(['navbar'], val, defaultFrontMatter)"
+                  left-label color="blue" />
       </div>
       <!-- 是否显示侧边栏 -->
       <div>
-        <q-toggle :label="lang('pageIndex.showSidebar')" left-label v-model="storeEditor.currArticle.frontMatter['sideBar']" color="blue" />
+        <q-toggle :label="lang('pageIndex.showSidebar')"
+                  :value="getFrontMatter(['sideBar'], defaultFrontMatter.sideBar)"
+                  @update:value="val => setFrontMatter(['sideBar'], val, defaultFrontMatter)"
+                  left-label color="blue" />
       </div>
-
       <!-- 是否显示页脚 -->
       <div>
-        <q-toggle :label="lang('pageIndex.showFooter')" left-label v-model="storeEditor.currArticle.frontMatter['footer']" color="blue" />
+        <q-toggle :label="lang('pageIndex.showFooter')"
+                  :value="getFrontMatter(['footer'], defaultFrontMatter.footer)"
+                  @update:value="val => setFrontMatter(['footer'], val, defaultFrontMatter)"
+                  left-label color="blue" />
       </div>
-
       <!-- 是否显示编辑链接 -->
       <div>
-        <q-toggle :label="lang('pageIndex.showEditLink')" left-label v-model="storeEditor.currArticle.frontMatter['editLink']" color="blue" />
+        <q-toggle :label="lang('pageIndex.showEditLink')"
+                  :value="getFrontMatter(['editLink'], defaultFrontMatter.editLink)"
+                  @update:value="val => setFrontMatter(['editLink'], val, defaultFrontMatter)"
+                  left-label color="blue" />
       </div>
       <!-- 是否显示更新时间 -->
       <div>
-        <q-toggle :label="lang('pageIndex.showUpdateTime')" left-label v-model="storeEditor.currArticle.frontMatter['lastUpdated']" color="blue" />
+        <q-toggle :label="lang('pageIndex.showUpdateTime')"
+                  :value="getFrontMatter(['lastUpdated'], defaultFrontMatter.lastUpdated)"
+                  @update:value="val => setFrontMatter(['lastUpdated'], val, defaultFrontMatter)"
+                  left-label color="blue" />
       </div>
-
       <!-- 大纲位置 -->
-      <a-form-item :label="lang('pageIndex.outlinePosition')" v-if="storeEditor.currArticle?.frontMatter?.aside">
-        <a-radio-group v-model:value="storeEditor.currArticle.frontMatter['aside']">
+      <a-form-item :label="lang('pageIndex.outlinePosition')" v-if="getFrontMatter(['aside'], defaultFrontMatter.aside)">
+        <a-radio-group :value="getFrontMatter(['aside'], defaultFrontMatter.aside)"
+                       @update:value="val => setFrontMatter(['aside'], val, defaultFrontMatter)">
           <a-radio value="left">{{ lang("pageIndex.outlineLeft") }}</a-radio>
           <a-radio value="right">{{ lang("pageIndex.outlineRight") }}</a-radio>
         </a-radio-group>
@@ -90,9 +113,10 @@
   <!-- <q-separator inset /> -->
 
   <!-- 自定义head -->
-  <div class="mt-3" v-if="storeEditor.currArticle?.frontMatter?.head?.length > 0">
+  <div class="mt-3" v-if="getFrontMatter(['head'], defaultFrontMatter.head).length > 0">
     <dy-add-head
-      v-model:meta="storeEditor.currArticle.frontMatter['head']"
+      :meta="getFrontMatter(['head'], defaultFrontMatter.head)"
+      @update:meta="val => setFrontMatter(['head'], val, defaultFrontMatter)"
       ref="refDyAddHead"
       :add-btn-text="lang('pageIndex.addMeta')"
       add-btn-class="bg-blue-500 text-white hover:bg-blue-600"
@@ -110,7 +134,8 @@
   <div class="mt-3">
     <a-tooltip :title="lang('pageIndex.customFormatterTip')">
       <dy-add-head
-        v-model:obj="storeEditor.currArticle.frontMatter['custom']"
+        :obj="getFrontMatter(['custom'], defaultFrontMatter.custom)"
+        @update:obj="val => setFrontMatter(['custom'], val, defaultFrontMatter)"
         ref="refDyAddFontMatter"
         add-btn-class="bg-blue-500 text-white hover:bg-blue-600"
         :add-btn-text="lang('pageIndex.addCustomFormatter')"
@@ -126,6 +151,7 @@ import { onMounted, ref } from "vue";
 import { useIndexStore } from "@/store";
 import { lang } from "@/utils/language";
 import { useEditorStore } from "@/store/editor";
+import { defaultFrontMatter } from "@/configs/defaultFrontMatter";
 
 const storeEditor = useEditorStore();
 const labelCol = { style: { width: "150px" } };
@@ -134,6 +160,10 @@ const storeIndex = useIndexStore();
 
 const tagInput = ref("");
 const weight = ref("5"); // 默认权重为5
+
+// getter
+const getFrontMatter = storeEditor.getCurrFrontMatterValue;
+const setFrontMatter = storeEditor.setCurrFrontMatterValue;
 
 // 确保所有必要的对象和数组都被初始化
 if (!storeEditor.currArticle) {
@@ -166,8 +196,6 @@ const handleTagInput = () => {
   });
   tagInput.value = "";
 };
-
-
 
 const removeTag = (index: number) => {
   const tag = storeEditor.currArticle.frontMatter["tags"][index];
