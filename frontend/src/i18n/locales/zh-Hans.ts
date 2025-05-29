@@ -250,7 +250,7 @@ export const zhHans = {
   },
   pageProject: {
     newVitePressProject: "新建VitePress项目",
-    basedOn: "基于vitepress版本：",
+    basedOn: "默认基于vitepress的最新版,创建后可手动修改package.json版本",
     enterProjectName: "请输入项目名称",
     projectNameHint: "项目的名称，请遵循文件的命名规则",
     enterProjectDescription: "请输入项目描述",
@@ -435,7 +435,9 @@ export const zhHans = {
       filePath: "文件路径",
       //路由路径
       routePath: "路由路径"
-    }
+    },
+    enterProjectVersion: "请输入项目版本（可选，默认1.6.3）",
+    projectVersionHint: "项目的 vitepress 版本号，建议填写官方已发布的版本号，如 1.6.3。若不填写则使用默认版本。"
   },
   pageSetting: {
     //基础设置

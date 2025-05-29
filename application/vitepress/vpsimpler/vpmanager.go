@@ -2,13 +2,16 @@ package vpsimpler
 
 import (
 	"embed"
+	"fmt"
 	"io/fs"
 	"os"
 	"path/filepath"
+	"strings"
 	"wailstemplate/application/constant/cnts"
 	"wailstemplate/application/constant/keys"
 	"wailstemplate/application/pkg/cfg"
 	"wailstemplate/application/pkg/filehelper"
+	"wailstemplate/application/pkg/utils"
 )
 
 type VpManager struct {
@@ -20,7 +23,7 @@ func NewVpManager(fs_ embed.FS) *VpManager {
 	return &VpManager{fs: fs_}
 }
 
-func (s *VpManager) CreateProject(dir string) string {
+func (s *VpManager) CreateProject(dir string, replaceData map[string]map[string]string) string {
 	//1.检查node环境
 	//if !NodejsIsInstall() {
 	//	return "环境监测不通过：nodejs is not install"
@@ -40,7 +43,12 @@ func (s *VpManager) CreateProject(dir string) string {
 	}
 
 	//4.复制模板文件到目标目录
-	s.CopyTemplateFile(dir, cnts.TemplateRootDir)
+	//replaceData := map[string]map[string]string{
+	//	"package.json": { //替换版本号
+	//		"{version}": vpVersion,
+	//	},
+	//}
+	s.CopyTemplateFile(dir, filepath.Join(cnts.TemplateRootDir), replaceData)
 
 	//5.设置当前项目目录为新建的目录
 	cfg.Set(keys.ConfigKeyProjectDir, dir)
@@ -62,9 +70,13 @@ func (s *VpManager) CreateProject(dir string) string {
 }
 
 // CopyTemplateFile 复制模板文件到新建项目
-func (s *VpManager) CopyTemplateFile(targetDir string, rootDir string) {
+// replaceData ,要替换的路径和数据，key是文件路径，value是一个映射，键为要替换的数据，值为替换后的内容
+func (s *VpManager) CopyTemplateFile(targetDir string, templateDir string, replaceData map[string]map[string]string) {
 
-	err := fs.WalkDir(s.fs, rootDir, func(path string, d fs.DirEntry, err error) error {
+	fmt.Println("替换内容：", utils.DataToJsonStr(replaceData))
+	err := fs.WalkDir(s.fs, templateDir, func(path string, d fs.DirEntry, err error) error {
+
+		//<当前文件鞋带完整路径> templates/vitepress/package.json
 		if err != nil {
 			return err
 		}
@@ -78,8 +90,26 @@ func (s *VpManager) CopyTemplateFile(targetDir string, rootDir string) {
 			return err
 		}
 
+		// 检查当前文件路径是否在 replaceData 中
+		pathKey := strings.ReplaceAll(path, templateDir, "")
+		//如果pathKey首个字符是/，则去掉
+		if strings.HasPrefix(pathKey, "/") {
+			pathKey = pathKey[1:]
+		}
+		//fmt.Println("<当前文件>", pathKey)
+		if replacements, ok := replaceData[pathKey]; ok {
+
+			content := string(fileData)
+			for oldStr, newStr := range replacements {
+				// 替换文件内容
+				content = strings.ReplaceAll(content, oldStr, newStr)
+				//fmt.Println("开始替换内容：", pathKey, oldStr, newStr)
+			}
+			fileData = []byte(content)
+		}
+
 		// 计算目标路径（假设目标目录为 "./output"）
-		targetPath := filepath.Join(targetDir + path[len("vitepress-template"):])
+		targetPath := filepath.Join(targetDir + path[len(templateDir):])
 		// 创建包含所有上级目录的本地文件
 		err = os.MkdirAll(filepath.Dir(targetPath), 0755)
 		if err != nil {

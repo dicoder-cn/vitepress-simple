@@ -38,14 +38,14 @@ export const NavList = (): navItem[] => {
       borderTop: false,
       iconColor: color
     },
-    {
-      title: lang("nav.sidebar"),
-      name: "sidebarSetting",
-      path: "/sidebarSetting",
-      icon: "mindmap-list",
-      borderTop: false,
-      iconColor: color
-    },
+    // {
+    //   title: lang("nav.sidebar"),
+    //   name: "sidebarSetting",
+    //   path: "/sidebarSetting",
+    //   icon: "mindmap-list",
+    //   borderTop: false,
+    //   iconColor: color
+    // },
     // {
     //   title: lang("nav.preview"),
     //   name: "preview",

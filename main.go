@@ -30,9 +30,9 @@ var assets embed.FS
 var icon []byte
 
 //go:embed all:resources
-var resource embed.FS
+//var resource embed.FS
 
-//go:embed all:vitepress-template
+//go:embed all:templates
 var vpFs embed.FS
 
 func main() {

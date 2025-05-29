@@ -117,7 +117,9 @@ export const en = {
       }
     },
     useExampleVueCode: "Use Example Vue Code",
-    noSelectedArticle: "No Article Selected"
+    noSelectedArticle: "No Article Selected",
+    enterProjectVersion: "Enter project version (optional, default 1.6.3)",
+    projectVersionHint: "VitePress version for the project. It is recommended to fill in the official released version, e.g. 1.6.3. If not filled, the default version will be used."
   },
   pageNav: {
     selectOperationLang: "Select Operation Language",
@@ -162,7 +164,7 @@ export const en = {
   },
   pageProject: {
     newVitePressProject: "New VitePress Project",
-    basedOn: "Based on VitePress Version:",
+    basedOn: "Default based on the latest version of vitepress, if you need to modify, you can modify it manually after creation",
     enterProjectName: "Enter Project Name",
     projectNameHint: "Project name, follow file naming rules",
     enterProjectDescription: "Enter Project Description",

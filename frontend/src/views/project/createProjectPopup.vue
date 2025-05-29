@@ -15,9 +15,9 @@
       <div class="flex justify-start items-center">
         <span class="select-none text-h5">{{ lang("pageProject.newVitePressProject") }}</span>
       </div>
-      <div class="mt-2">
-        <a-alert closable :description="lang('pageProject.basedOn') + lang('vitePressVersion')" type="success" />
-      </div>
+      <!-- <div class="mt-2">
+        <a-alert closable :description="lang('pageProject.basedOn') " type="success" />
+      </div> -->
       <div class="my-2">
         <a-input v-model:value="formData.title" :placeholder="lang('pageProject.enterProjectName')" class="w-full">
           <template #suffix>
@@ -48,6 +48,16 @@
           <template #suffix>
             <a-tooltip :title="lang('pageProject.projectDescriptionHint')">
               <span class="text-gray-500">{{ lang("common.description") }}</span>
+            </a-tooltip>
+          </template>
+        </a-input>
+      </div>
+
+      <div class="my-2">
+        <a-input v-model:value="formData.version" :placeholder="lang('pageProject.enterProjectVersion')" class="w-full">
+          <template #suffix>
+            <a-tooltip :title="lang('pageProject.projectVersionHint')">
+              <span class="text-gray-500">{{ lang("common.version") }}</span>
             </a-tooltip>
           </template>
         </a-input>
@@ -89,9 +99,13 @@ import { useVpconfigStore } from "@/store/vpconfig";
 
 const formData = ref<ProjectCreate>({
   title: "VPSimpleProject",
+  description: "",
   dir: "",
-  docDir: "./docs"
-} as ProjectCreate);
+  fullDir: "",
+  docDir: "./docs",
+  createdAt: "",
+  version: "1.6.3"
+});
 const test = ref("1");
 
 interface inputModelProps {
@@ -103,7 +117,13 @@ const storeVpconfig = useVpconfigStore();
 
 const Create = async () => {
   await CreateDir(formData.value.dir);
-  CreateProject(formData.value.dir).then(async (res) => {
+  //替换的数据，目前只替换版本号
+  const repleceData: Record<string, Record<string, string>> = {
+    "package.json": {
+      "{vp_version}": formData.value.version ?? "1.6.3"
+    }
+  };
+  CreateProject(formData.value.dir,repleceData).then(async (res) => {
     if (res != "") {
       ToastError(res);
     } else {

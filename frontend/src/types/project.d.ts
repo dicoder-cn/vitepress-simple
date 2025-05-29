@@ -6,6 +6,9 @@ export interface ProjectInfo {
   fullDir: string; // 项目完整目录
   docDir: string; // 存放文档文档目录
   createdAt: string; // 创建时间
+  version?: string; // 版本号，可选
 }
 
-export interface ProjectCreate extends ProjectInfo {}
+export interface ProjectCreate extends ProjectInfo {
+  version?: string; // 版本号，可选
+}
