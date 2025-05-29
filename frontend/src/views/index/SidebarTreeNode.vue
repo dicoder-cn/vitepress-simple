@@ -1,9 +1,9 @@
 <template>
   <div class="sidebar-tree-node">
-    <div class="node-content" :class="{ clickable: hasChildren }" @click="toggleCollapse">
-      <div v-if="hasChildren" class="folder-node">
+    <div class="node-content" :class="{ clickable: isFolder }" @click="toggleCollapse">
+      <div v-if="isFolder" class="folder-node">
         <el-icon class="folder-icon">
-          <component :is="collapsed ? 'Folder' : 'Folder'" />
+          <Folder />
         </el-icon>
         <span class="folder-title">{{ nodeData.text }}</span>
         <span class="arrow" :class="{ collapsed }">
@@ -75,6 +75,8 @@ const nodeData = ref({
 });
 
 const collapsed = ref(props.node.collapsed !== false); // 默认收起
+
+const isFolder = computed(() => !props.node.IsMdFile && props.node.children && props.node.children.length > 0);
 
 const hasChildren = computed(() => Array.isArray(props.node.children) && props.node.children.length > 0);
 
