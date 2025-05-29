@@ -184,6 +184,10 @@ const handleTagInput = () => {
   if (!storeEditor.currArticle.frontMatter["tags"]) {
     storeEditor.currArticle.frontMatter["tags"] = [];
   }
+  // 兜底初始化 tagWeights
+  if (!storeEditor.currArticle.frontMatter["tagWeights"] || typeof storeEditor.currArticle.frontMatter["tagWeights"] !== "object") {
+    storeEditor.currArticle.frontMatter["tagWeights"] = {};
+  }
   const newTags = tagInput.value
     .split(",")
     .map((tag) => tag.trim())
