@@ -3,21 +3,17 @@
     <LangEdit></LangEdit>
 
      <sim-input 
-      :model-value="storeConfig.vpConfig?.srcDir"
+      :model-value="storeConfig.getVpConfigValue(['srcDir'],'')"
       @update:model-value="(val: string) => {
-        if (storeConfig.vpConfig) {
-          storeConfig.vpConfig.srcDir = val;
-        }
+        storeConfig.updateVpConfig(['srcDir'], val);
       }"
       :tooltip="lang('pageProject.settingBase.tooltips.docPath')" 
       :label="lang('pageProject.settingBase.labels.docPath')"></sim-input>
 
     <sim-input
-      :model-value="storeConfig.vpConfig?.lang"
+      :model-value="storeConfig.getVpConfigValue(['lang'],'')"
       @update:model-value="(val: string) => {
-        if (storeConfig.vpConfig) {
-          storeConfig.vpConfig.lang = val;
-        }
+        storeConfig.updateVpConfig(['lang'], val);
       }"
       :tooltip="lang('pageProject.settingBase.tooltips.htmlLang')"
       :placeholder="lang('pageProject.settingBase.placeholders.htmlLang')"
@@ -26,60 +22,46 @@
 
    
     <sim-input
-      :model-value="storeConfig.vpConfig?.base"
+      :model-value="storeConfig.getVpConfigValue(['base'],'')"
       @update:model-value="(val: string) => {
-        if (storeConfig.vpConfig) {
-          storeConfig.vpConfig.base = val;
-        }
+        storeConfig.updateVpConfig(['base'], val);
       }"
       :tooltip="lang('pageProject.settingBase.tooltips.baseUrl')"
       :placeholder="lang('pageProject.settingBase.placeholders.baseUrl')"
       :label="lang('pageProject.settingBase.labels.baseUrl')"></sim-input>
 
     <sim-input 
-      :model-value="storeConfig.vpConfig?.outDir"
-      @update:model-value="(val: string) => {
-        if (storeConfig.vpConfig) {
-          storeConfig.vpConfig.outDir = val;
-        }
-      }"
+      :model-value="storeConfig.getVpConfigValue(['outDir'],'')"
+      @update:model-value="storeConfig.updateVpConfig(['outDir'],$event)"
       :tooltip="lang('pageProject.settingBase.tooltips.buildPath')" 
       :label="lang('pageProject.settingBase.labels.buildPath')"></sim-input>
     <sim-input
-      :model-value="storeConfig.vpConfig?.sitemap?.hostname"
+      :model-value="storeConfig.getVpConfigValue(['sitemap','hostname'],'')"
       @update:model-value="(val: string) => {
-        if (storeConfig.vpConfig?.sitemap) {
-          storeConfig.vpConfig.sitemap.hostname = val;
-        }
+        storeConfig.updateVpConfig(['sitemap','hostname'], val);
       }"
       :tooltip="lang('pageProject.settingBase.tooltips.hostname')"
       :label="lang('pageProject.settingBase.labels.hostname')"></sim-input>
 
     <sim-input 
-      :model-value="storeConfig.vpConfig?.assetsDir"
+      :model-value="storeConfig.getVpConfigValue(['assetsDir'],'')"
       @update:model-value="(val: string) => {
-        if (storeConfig.vpConfig) {
-          storeConfig.vpConfig.assetsDir = val;
-        }
+        storeConfig.updateVpConfig(['assetsDir'], val);
       }"
       :tooltip="lang('pageProject.settingBase.tooltips.staticAssets')" 
       :label="lang('pageProject.settingBase.labels.staticAssets')"></sim-input>
 
     <sim-input 
-      :model-value="storeConfig.vpConfig?.cacheDir"
+      :model-value="storeConfig.getVpConfigValue(['cacheDir'],'')"
       @update:model-value="(val: string) => {
-        if (storeConfig.vpConfig) {
-          storeConfig.vpConfig.cacheDir = val;
-        }
+        storeConfig.updateVpConfig(['cacheDir'], val);
       }"
       :tooltip="lang('pageProject.settingBase.tooltips.cachePath')" 
       :label="lang('pageProject.settingBase.labels.cachePath')"></sim-input>
     <sim-switch 
-      :model-value="storeConfig.vpConfig?.cleanUrls"
+      :model-value="storeConfig.getVpConfigValue(['cleanUrls'], false)"
       @update:model-value="(val: boolean) => {
-        if (storeConfig.vpConfig) {
-          storeConfig.vpConfig.cleanUrls = val;
-        }
+        storeConfig.updateVpConfig(['cleanUrls'], val);
       }"
       :tooltip="lang('pageProject.settingBase.tooltips.cleanUrls')" 
       label="cleanUrls"></sim-switch>

@@ -82,12 +82,15 @@ const cuttingNav = () => {
 
 const formatNavData = (data: any[]): VpNav[] => {
   return data
-    .filter(item => item.text && item.link) // 只保留有 text 和 link 的项
+    .filter(item => item.text && (item.link || item.items))
     .map((item) => {
+      const hasChildren = Array.isArray(item.items) && item.items.length > 0;
+      //对于有子导航（items）的父级导航项，link 字段其实可以完全省略，不需要保留 "link": "",空字符也不行
       const formattedItem: VpNav = {
         text: item.text || '',
-        link: item.link || '',
-        items: item.items ? formatNavData(item.items) : undefined
+        ...(hasChildren
+          ? { items: formatNavData(item.items) }
+          : { link: item.link || '' })
       };
       return formattedItem;
     });
@@ -97,6 +100,7 @@ const navArray = ref<VpNav[]>([]);
 
 const saveNav = () => {
   const formatData: VpNav[] = formatNavData(navArray.value);
+  console.log("nav Data",formatData)
   if (storeConfig.currLangConfig?.themeConfig) {
     storeConfig.currLangConfig.themeConfig.nav = formatData;
     storeConfig.saveConfig();

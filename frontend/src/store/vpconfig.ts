@@ -177,6 +177,21 @@ export const useVpconfigStore = defineStore("vpconfig", {
         current = current[path[i]];
       }
       current[path[path.length - 1]] = value;
+    },
+    // 修改 vpConfig 配置更新函数
+    updateVpConfig(path: string[], value: any) {
+      if (!this.vpConfig) {
+        this.vpConfig = {};
+      }
+      
+      let current = this.vpConfig as any;
+      for (let i = 0; i < path.length - 1; i++) {
+        if (!current[path[i]]) {
+          current[path[i]] = {};
+        }
+        current = current[path[i]];
+      }
+      current[path[path.length - 1]] = value;
     }
   },
   getters: {
@@ -210,6 +225,21 @@ export const useVpconfigStore = defineStore("vpconfig", {
         if (!state.currLangConfig?.themeConfig) return defaultValue;
         
         let current = state.currLangConfig.themeConfig as any;
+        for (const key of path) {
+          if (!current || typeof current !== 'object') return defaultValue;
+          current = current[key];
+        }
+        return current ?? defaultValue;
+      };
+      
+      return getValue;
+    },
+    // 获取 vpConfig 中的值
+    getVpConfigValue: (state) => {
+      const getValue = (path: string[], defaultValue: any = '') => {
+        if (!state.vpConfig) return defaultValue;
+        
+        let current = state.vpConfig as any;
         for (const key of path) {
           if (!current || typeof current !== 'object') return defaultValue;
           current = current[key];
