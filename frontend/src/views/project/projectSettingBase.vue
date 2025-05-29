@@ -73,7 +73,7 @@
         }
       }"
       :tooltip="lang('pageProject.settingBase.tooltips.cachePath')" 
-      :label="lang('pageProject.settingBase.labels.staticAssets')"></sim-input>
+      :label="lang('pageProject.settingBase.labels.cachePath')"></sim-input>
     <sim-switch 
       :model-value="storeConfig.vpConfig?.cleanUrls"
       @update:model-value="(val: boolean) => {

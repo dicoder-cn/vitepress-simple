@@ -226,7 +226,7 @@ export const en = {
     },
 
     settingLang: {
-      title: "Multi-language Settings",
+      title: "Theme Settings",
       tooltips: {
         multiLanguageEnabled:
           "[Enabled when language list is not empty], in a multi-language environment, each language has independent navigation, sidebar, and other configurations. It's recommended to decide whether the project needs multi-language support before enabling. Avoid casually deleting languages, as doing so will also delete that language's navigation, sidebar, and multi-language configurations.",

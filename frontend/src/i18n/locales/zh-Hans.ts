@@ -323,7 +323,7 @@ export const zhHans = {
     },
     //多语言设置
     settingLang: {
-      title: "多语言设置",
+      title: "模板设置",
       // 提示信息
       tooltips: {
         multiLanguageEnabled:
