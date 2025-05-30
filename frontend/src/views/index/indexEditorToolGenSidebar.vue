@@ -259,11 +259,11 @@ const saveTreeData = () => {
             const langKey = langNode.text;
             const docDirs = langNode.children || [];
             const sidebar = buildSidebarByRouteKey(docDirs);
-            if (storeVpconfig.vpConfig?.locales && storeVpconfig.vpConfig.locales[langKey]) {
+            if (storeVpconfig.vpConfig?.locales?.[langKey]) {
                 if (!storeVpconfig.vpConfig.locales[langKey].themeConfig) {
                     storeVpconfig.vpConfig.locales[langKey].themeConfig = {};
                 }
-                storeVpconfig.vpConfig.locales[langKey].themeConfig.sidebar = sidebar;
+                (storeVpconfig.vpConfig.locales[langKey].themeConfig as any).sidebar = sidebar;
             }
         });
     } else {
