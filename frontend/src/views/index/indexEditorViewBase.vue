@@ -4,7 +4,7 @@
     <div class="px-1 mb-2">
       <a-input
         :value="getFrontMatter(['title'], defaultFrontMatter.title)"
-        @update:value="val => setFrontMatter(['title'], val, defaultFrontMatter)"
+        @update:value="(val: string) => setFrontMatter(['title'], val, defaultFrontMatter)"
         :placeholder="lang('pageIndex.inputArticleTitle')"
         prefix=""
         :suffix="lang('common.title')"
@@ -16,7 +16,7 @@
       <a-textarea
         class="text-gray-500"
         :value="getFrontMatter(['description'], defaultFrontMatter.description)"
-        @update:value="val => setFrontMatter(['description'], val, defaultFrontMatter)"
+        @update:value="(val: string) => setFrontMatter(['description'], val, defaultFrontMatter)"
         :auto-size="{ minRows: 1 }"
         :placeholder="lang('pageIndex.inputPageSeoDescription')"
       />
@@ -52,8 +52,8 @@
     <!-- 大纲显示级别 -->
     <div class="px-2 mb-2" v-if="getFrontMatter(['outline'], defaultFrontMatter.outline).length >= 2">
       <a-input
-        :value="getFrontMatter(['outline', 1], defaultFrontMatter.outline[1])"
-        @update:value="val => setFrontMatter(['outline', 1], val, defaultFrontMatter.outline)"
+        :value="String(getFrontMatter(['outline', 1], defaultFrontMatter.outline[1]))"
+        @update:value="(val: string) => setFrontMatter(['outline', 1], val, defaultFrontMatter.outline)"
         class="text-gray-500"
         prefix=""
         :placeholder="lang('pageIndex.inputOutlineLevel')"
@@ -97,7 +97,7 @@
       <!-- 大纲位置 -->
       <a-form-item :label="lang('pageIndex.outlinePosition')" v-if="getFrontMatter(['aside'], defaultFrontMatter.aside)">
         <a-radio-group :value="getFrontMatter(['aside'], defaultFrontMatter.aside)"
-                       @update:value="val => setFrontMatter(['aside'], val, defaultFrontMatter)">
+                       @update:value="(val: string) => setFrontMatter(['aside'], val, defaultFrontMatter)">
           <a-radio value="left">{{ lang("pageIndex.outlineLeft") }}</a-radio>
           <a-radio value="right">{{ lang("pageIndex.outlineRight") }}</a-radio>
         </a-radio-group>
@@ -184,7 +184,7 @@ const lastUpdatedProxy = computed({
 
 // 确保所有必要的对象和数组都被初始化
 if (!storeEditor.currArticle) {
-  storeEditor.initCurrArticle();
+  storeEditor.currArticle=storeEditor.getDefaultArticle();
 }
 if (!storeEditor.currArticle.frontMatter) {
   storeEditor.currArticle.frontMatter = {};
