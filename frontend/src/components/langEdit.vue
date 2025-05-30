@@ -23,7 +23,8 @@
           <div class="row q-col-gutter-sm items-center full-width">
             <div class="col-1">
               <q-input
-                v-model="vpConfig?.locales?.[key]?.lang"
+                :model-value="vpConfigStore.vpConfig?.locales?.[key]?.lang"
+                @update:model-value="val => updateLocaleField(key, 'lang', val)"
                 label="语言标识 *"
                 dense
                 :readonly="key === StringRootLang"
@@ -34,7 +35,8 @@
             </div>
             <div class="col-2">
               <q-input
-                v-model="vpConfig?.locales?.[key]?.label"
+                :model-value="vpConfigStore.vpConfig?.locales?.[key]?.label"
+                @update:model-value="val => updateLocaleField(key, 'label', val)"
                 label="语言名称 *"
                 dense
                 required
@@ -43,7 +45,8 @@
             </div>
             <div class="col-1">
               <q-input
-                v-model="vpConfig?.locales?.[key]?.link"
+                :model-value="vpConfigStore.vpConfig?.locales?.[key]?.link"
+                @update:model-value="val => updateLocaleField(key, 'link', val)"
                 label="URL前缀"
                 dense
                 class="full-width"
@@ -51,7 +54,8 @@
             </div>
             <div class="col-3">
               <q-input
-                v-model="vpConfig?.locales?.[key]?.title"
+                :model-value="vpConfigStore.vpConfig?.locales?.[key]?.title"
+                @update:model-value="val => updateLocaleField(key, 'title', val)"
                 label="站点标题"
                 dense
                 class="full-width"
@@ -59,7 +63,8 @@
             </div>
             <div class="col-2">
               <q-input
-                v-model="vpConfig?.locales?.[key]?.titleTemplate"
+                :model-value="vpConfigStore.vpConfig?.locales?.[key]?.titleTemplate"
+                @update:model-value="val => updateLocaleField(key, 'titleTemplate', val)"
                 label="标题后缀"
                 dense
                 class="full-width"
@@ -67,7 +72,8 @@
             </div>
             <div class="col-2">
               <q-input
-                v-model="vpConfig?.locales?.[key]?.description"
+                :model-value="vpConfigStore.vpConfig?.locales?.[key]?.description"
+                @update:model-value="val => updateLocaleField(key, 'description', val)"
                 label="站点描述"
                 dense
                 class="full-width"
@@ -111,14 +117,14 @@ const $q = useQuasar()
 const vpConfigStore = useVpconfigStore()
 
 // 获取 vpConfig
-const vpConfig = computed(() => vpConfigStore.vpConfig)
+// const vpConfig = computed(() => vpConfigStore.vpConfig)
 
 // 获取排序后的语言 key 列表
 const sortedLangKeys = computed(() => {
-  if (!vpConfig.value?.locales) {
+  if (!vpConfigStore.vpConfig?.locales) {
     return []
   }
-  const keys = Object.keys(vpConfig.value.locales)
+  const keys = Object.keys(vpConfigStore.vpConfig.locales)
   // 将 'root' 提到前面，剩余的按字母顺序排序
   const rootIndex = keys.indexOf(StringRootLang)
   if (rootIndex > -1) {
@@ -150,7 +156,7 @@ const handleSaveConfig = async () => {
   const localesToUpdate: { oldKey: string, newKey: string, langConfig: VpConfigLang }[] = [];
   const updatedLocales: Record<string, VpConfigLang> = {};
 
-  for (const [key, lang] of Object.entries(vpConfig.value?.locales || {}) as [string, VpConfigLang][]) {
+  for (const [key, lang] of Object.entries(vpConfigStore.vpConfig?.locales || {}) as [string, VpConfigLang][]) {
     // 检查语言标识 (非根语言)
     if (key !== StringRootLang && !lang.lang) {
         missingFields.push(`${key} 的语言标识`)
@@ -216,6 +222,13 @@ const handleSaveConfig = async () => {
 // 删除语言
 const handleRemoveLang = (key: string) => {
   vpConfigStore.removeLang(key)
+}
+
+// 添加字段更新方法
+const updateLocaleField = (key: string, field: keyof VpConfigLang, value: any) => {
+  if (vpConfigStore.vpConfig?.locales?.[key]) {
+    vpConfigStore.vpConfig.locales[key][field] = value
+  }
 }
 </script>
 
