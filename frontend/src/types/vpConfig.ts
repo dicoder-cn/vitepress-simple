@@ -1,6 +1,5 @@
 
-import { DefaultTheme, defineConfig, HeadConfig, LocaleConfig, MarkdownOptions, UserConfig } from "vitepress";
-defineConfig({})
+
 //vitepress-客户端的自定义配置
 export interface VpSimpleConfig{
     shellBaseDir: string; 
