@@ -91,7 +91,7 @@
       :label="lang('pageProject.settingLang.labels.langSwitchLabel')"></sim-input>
       <!-- 返回顶部标签 -->
     <sim-input
-      :model-value="storeVpconfig.getThemeConfigValue(['langMenuLabel'], 'top')"
+      :model-value="storeVpconfig.getThemeConfigValue(['returnToTopLabel'], 'top')"
       @update:model-value="(val: string) => storeVpconfig.updateThemeConfig(['returnToTopLabel'], val)"
       :tooltip="lang('pageProject.settingLang.tooltips.returnToTop')"
       placeholder=""
@@ -141,12 +141,8 @@
       <!-- 上一页按钮文本 -->
     <sim-bool-input
       class="w-full"
-      :model-value="storeVpconfig.currLangConfig?.themeConfig?.docFooter?.prev"
-      @update:model-value="(val: Record<'text' | 'link', string>) => {
-        if (storeVpconfig.currLangConfig?.themeConfig?.docFooter) {
-          storeVpconfig.currLangConfig.themeConfig.docFooter.prev = val.text;
-        }
-      }"
+      :model-value="storeVpconfig.getThemeConfigValue(['docFooter', 'prev'], '')"
+      @update:model-value="(val: string) => storeVpconfig.updateThemeConfig(['docFooter', 'prev'], val)"
       :input-label="lang('pageProject.settingLang.labels.prevButtonText')"
       :bool-tooltip="lang('pageProject.settingLang.tooltips.prevNextPageInfo')"
       :bool-label="lang('pageProject.settingLang.labels.prevButton')"
@@ -154,12 +150,8 @@
       <!-- 下一页按钮文本 -->
     <sim-bool-input
       class="w-full"
-      :model-value="storeVpconfig.currLangConfig?.themeConfig?.docFooter?.next"
-      @update:model-value="(val: Record<'text' | 'link', string>) => {
-        if (storeVpconfig.currLangConfig?.themeConfig?.docFooter) {
-          storeVpconfig.currLangConfig.themeConfig.docFooter.next = val.text;
-        }
-      }"
+      :model-value="storeVpconfig.getThemeConfigValue(['docFooter', 'next'], '')"
+      @update:model-value="(val: string) => storeVpconfig.updateThemeConfig(['docFooter', 'next'], val)"
       :input-label="lang('pageProject.settingLang.labels.nextButtonText')"
       :bool-tooltip="lang('pageProject.settingLang.tooltips.prevNextPageInfo')"
       :bool-label="lang('pageProject.settingLang.labels.nextButton')"

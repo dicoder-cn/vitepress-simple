@@ -320,14 +320,14 @@ export namespace DefaultTheme {
      *
      * @default 'Previous page'
      */
-    prev?: string | boolean
+    prev?: string;
 
     /**
      * Custom label for next page button. Can be set to `false` to disable.
      *
      * @default 'Next page'
      */
-    next?: string | boolean
+    next?: string;
   }
 
   // social link ---------------------------------------------------------------

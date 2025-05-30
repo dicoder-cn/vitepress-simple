@@ -3,11 +3,11 @@ export class DateUtil {
   static getFormatDate(date: string) {
     const dateObj = new Date(date);
     const year = dateObj.getFullYear();
-    const month = dateObj.getMonth() + 1;
-    const day = dateObj.getDate();
-    const hour = dateObj.getHours();
-    const minute = dateObj.getMinutes();
-    const second = dateObj.getSeconds();
+    const month = String(dateObj.getMonth() + 1).padStart(2, "0");
+    const day = String(dateObj.getDate()).padStart(2, "0");
+    const hour = String(dateObj.getHours()).padStart(2, "0");
+    const minute = String(dateObj.getMinutes()).padStart(2, "0");
+    const second = String(dateObj.getSeconds()).padStart(2, "0");
     return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
   }
 }

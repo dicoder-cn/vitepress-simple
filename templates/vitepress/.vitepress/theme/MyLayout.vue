@@ -22,7 +22,7 @@ aside-outline-before：在侧边栏大纲（目录）之前的位置可注入自
 aside-outline-after：在侧边栏大纲（目录）之后的位置可注入自定义内容。比如添加与目录相关的补充信息。
 aside-ads-before：在侧边栏广告位之前的位置可注入自定义内容。
 aside-ads-after：在侧边栏广告位之后的位置可注入自定义内容。 -->
-    <template #aside-outline-before>
+    <!-- <template #aside-outline-before>
       aside-outline-before
     </template>
     <template #aside-outline-after>
@@ -45,9 +45,38 @@ aside-ads-after：在侧边栏广告位之后的位置可注入自定义内容�
     </template>
     <template #aside-bottom>
       aside-bottom
-    </template>
+    </template> -->
+
+    <!-- 标题上方 -->
     <template #doc-top>
-      doc-top1 {{test}}{{ JSON.stringify(frontmatter.updateTimeD1) }}
+      <template v-if="(frontmatter.tags && Array.isArray(frontmatter.tags) && frontmatter.tags.length) || (frontmatter.createAt) || (frontmatter.updateAt)">
+        <div style="padding: 0 280px 0 12px; margin-top: -22px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <template v-if="frontmatter.tags && Array.isArray(frontmatter.tags) && frontmatter.tags.length">
+              <div style="display: flex; align-items: center; gap: 8px; margin-left: 16px;">
+                <span style="font-weight: bold;">Tags:</span>
+                <template v-for="tag in frontmatter.tags" :key="tag">
+                  <a :href="`/vpsimple/tags/${encodeURIComponent(tag)}`" style="color: #42b983; text-decoration: none; margin-right: 8px; background: #f4f4f5; border-radius: 4px; padding: 2px 10px; font-size: 14px; transition: background 0.2s;">
+                    #{{ tag }}
+                  </a>
+                </template>
+              </div>
+            </template>
+            <div style="color: #888; font-size: 14px;">
+              <template v-if="frontmatter.createAt && frontmatter.updateAt && frontmatter.createAt !== frontmatter.updateAt">
+                创建时间: {{ frontmatter.createAt }}<span style='margin: 0 8px;'>|</span>最后更新: {{ frontmatter.updateAt }}
+              </template>
+              <template v-else-if="frontmatter.createAt">
+                创建时间: {{ frontmatter.createAt }}
+              </template>
+              <template v-else-if="frontmatter.updateAt">
+                最后更新: {{ frontmatter.updateAt }}
+              </template>
+            </div>
+          </div>
+          <hr style="border: none; border-top: 1px solid #eee; margin: 10px 0 24px 0;" />
+        </div>
+      </template>
     </template>
   </Layout>
 </template>
