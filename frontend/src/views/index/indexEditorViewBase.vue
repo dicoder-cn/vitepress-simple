@@ -52,8 +52,8 @@
     <!-- 大纲显示级别 -->
     <div class="px-2 mb-2" v-if="getFrontMatter(['outline'], defaultFrontMatter.outline).length >= 2">
       <a-input
-        :value="String(getFrontMatter(['outline', 1], defaultFrontMatter.outline[1]))"
-        @update:value="(val: string) => setFrontMatter(['outline', 1], val, defaultFrontMatter.outline)"
+        :value="String(getFrontMatter(['outline', '1'], defaultFrontMatter.outline['1']))"
+        @update:value="(val: string) => setFrontMatter(['outline', '1'], val, defaultFrontMatter.outline)"
         class="text-gray-500"
         prefix=""
         :placeholder="lang('pageIndex.inputOutlineLevel')"
