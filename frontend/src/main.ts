@@ -49,7 +49,7 @@ app
 
 app.use(InstallCodemirro);
 
-app.use(ElementPlus);
+app.use(ElementPlus as any);
 
 app.config.globalProperties.$message = message;
 

@@ -77,7 +77,10 @@ const socialAccounts = ref<Array<{icon: string, link: string}>>([]);
 // 加载社交链接数据
 const loadSocialLinks = () => {
   if (storeConfig.currLangConfig?.themeConfig?.socialLinks) {
-    socialAccounts.value = [...storeConfig.currLangConfig.themeConfig.socialLinks];
+    socialAccounts.value = storeConfig.currLangConfig.themeConfig.socialLinks.map(item => ({
+      icon: typeof item.icon === 'string' ? item.icon : '',
+      link: item.link
+    }));
   } else {
     socialAccounts.value = [];
   }
@@ -119,14 +122,7 @@ const saveSocialConfig = () => {
     return;
   }
 
-  if (!storeConfig.currLangConfig?.themeConfig) {
-    storeConfig.currLangConfig = {
-      ...storeConfig.currLangConfig,
-      themeConfig: {}
-    };
-  }
-  
-  storeConfig.currLangConfig.themeConfig.socialLinks = socialAccounts.value;
+  (storeConfig.currLangConfig.themeConfig ??= {}).socialLinks = socialAccounts.value;
   storeConfig.saveConfig();
   ToastSuccess(lang('pageProject.settingSocial.success.save'));
 };

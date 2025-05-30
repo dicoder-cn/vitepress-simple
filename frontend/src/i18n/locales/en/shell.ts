@@ -32,8 +32,8 @@ export const EnShell = {
     //git运行的目录，一般为vitepress项目根目录，但有时vitepres是做其它项目的子项目，所以需要指定
     gitPath: "Git Run Path, Default Value Is Vitepress Project Root Path, But Sometimes Vitepress Is A Sub Project Of Other Projects, So You Need To Specify",
     //文档dev命令，默认值是vitepress项目根目录下的dev命令
-    docsDev: "Docs Dev Command, Default Value Is " + defaultVpSimple.cmdDocsDev,
+    docsDev: "Docs Dev Command, Default Value Is " + defaultVpSimple.srcDir,
     //文档build命令，默认值是vitepress项目根目录下的build命令
-    docsBuild: "Docs Build Command, Default Value Is" + defaultVpSimple.cmdDocsBuild
+    docsBuild: "Docs Build Command, Default Value Is" + defaultVpSimple.srcDir
   }
 };

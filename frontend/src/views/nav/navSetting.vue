@@ -53,7 +53,7 @@ const storeConfig = useVpconfigStore();
 const storeIndex = useIndexStore();
 onMounted(() => {
   const nav = storeConfig.currLangConfig?.themeConfig?.nav;
-  navArray.value = Array.isArray(nav) ? DeepClone(nav) : [];
+  navArray.value = Array.isArray(nav) ? DeepClone(nav) as VpNav[] : [];
 });
 
 //新增顶级导航
@@ -88,9 +88,8 @@ const formatNavData = (data: any[]): VpNav[] => {
       //对于有子导航（items）的父级导航项，link 字段其实可以完全省略，不需要保留 "link": "",空字符也不行
       const formattedItem: VpNav = {
         text: item.text || '',
-        ...(hasChildren
-          ? { items: formatNavData(item.items) }
-          : { link: item.link || '' })
+        link: hasChildren ? '' : (item.link || ''),
+        ...(hasChildren ? { items: formatNavData(item.items) } : {})
       };
       return formattedItem;
     });

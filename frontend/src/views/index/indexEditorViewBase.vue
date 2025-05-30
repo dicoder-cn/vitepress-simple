@@ -111,7 +111,7 @@
   <div class="mt-3" v-if="getFrontMatter(['head'], defaultFrontMatter.head).length > 0">
     <dy-add-head
       :meta="getFrontMatter(['head'], defaultFrontMatter.head)"
-      @update:meta="val => setFrontMatter(['head'], val, defaultFrontMatter)"
+      @update:meta="(val: any) => setFrontMatter(['head'], val, defaultFrontMatter)"
       ref="refDyAddHead"
       :add-btn-text="lang('pageIndex.addMeta')"
       add-btn-class="bg-blue-500 text-white hover:bg-blue-600"
@@ -130,7 +130,7 @@
     <a-tooltip :title="lang('pageIndex.customFormatterTip')">
       <dy-add-head
         :obj="getFrontMatter(['custom'], defaultFrontMatter.custom)"
-        @update:obj="val => setFrontMatter(['custom'], val, defaultFrontMatter)"
+        @update:obj="(val: any) => setFrontMatter(['custom'], val, defaultFrontMatter)"
         ref="refDyAddFontMatter"
         add-btn-class="bg-blue-500 text-white hover:bg-blue-600"
         :add-btn-text="lang('pageIndex.addCustomFormatter')"
