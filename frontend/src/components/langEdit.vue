@@ -23,7 +23,7 @@
           <div class="row q-col-gutter-sm items-center full-width">
             <div class="col-1">
               <q-input
-                v-model="vpConfig.locales[key].lang"
+                v-model="vpConfig?.locales?.[key]?.lang"
                 label="语言标识 *"
                 dense
                 :readonly="key === StringRootLang"
@@ -34,7 +34,7 @@
             </div>
             <div class="col-2">
               <q-input
-                v-model="vpConfig.locales[key].label"
+                v-model="vpConfig?.locales?.[key]?.label"
                 label="语言名称 *"
                 dense
                 required
@@ -43,7 +43,7 @@
             </div>
             <div class="col-1">
               <q-input
-                v-model="vpConfig.locales[key].link"
+                v-model="vpConfig?.locales?.[key]?.link"
                 label="URL前缀"
                 dense
                 class="full-width"
@@ -51,7 +51,7 @@
             </div>
             <div class="col-3">
               <q-input
-                v-model="vpConfig.locales[key].title"
+                v-model="vpConfig?.locales?.[key]?.title"
                 label="站点标题"
                 dense
                 class="full-width"
@@ -59,7 +59,7 @@
             </div>
             <div class="col-2">
               <q-input
-                v-model="vpConfig.locales[key].titleTemplate"
+                v-model="vpConfig?.locales?.[key]?.titleTemplate"
                 label="标题后缀"
                 dense
                 class="full-width"
@@ -67,7 +67,7 @@
             </div>
             <div class="col-2">
               <q-input
-                v-model="vpConfig.locales[key].description"
+                v-model="vpConfig?.locales?.[key]?.description"
                 label="站点描述"
                 dense
                 class="full-width"

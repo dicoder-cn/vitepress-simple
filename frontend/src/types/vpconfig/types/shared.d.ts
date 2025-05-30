@@ -152,13 +152,13 @@ export interface SSGContext extends SSRContext {
 }
 
 export interface LocaleSpecificConfig<ThemeConfig = any> {
-  lang?: string
-  dir?: string
-  title?: string
-  titleTemplate?: string | boolean
-  description?: string
-  head?: HeadConfig[]
-  themeConfig?: ThemeConfig
+  lang?: string;
+  dir?: string;
+  title?: string;
+  titleTemplate?: string;
+  description?: string;
+  head?: HeadConfig[];
+  themeConfig?: ThemeConfig;
 }
 
 export type LocaleConfig<ThemeConfig = any> = Record<
