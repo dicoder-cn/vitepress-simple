@@ -226,13 +226,13 @@ export const VpSimpleConfig = {
     }
   },
   "description": "",
-  "title": "Demo2",
+  "title": "",
   "srcDir": "./docs",
   "lang": "zh",
   "base": "/",
   "outDir": "./build",
   "cleanUrls": true,
   "sitemap": {
-    "hostname": "Dicoder.cn"
+    "hostname": "dicoder.cn"
   }
 };

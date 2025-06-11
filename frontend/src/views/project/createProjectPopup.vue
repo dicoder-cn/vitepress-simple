@@ -127,7 +127,7 @@ const Create = async () => {
     if (res != "") {
       ToastError(res);
     } else {
-      // await storeVpconfig.readVpConfig();
+       await storeVpconfig.readVpConfig();
       // //设置项目信息
       if (storeVpconfig.vpConfig) {
         storeVpconfig.vpConfig.description = formData.value.description;
