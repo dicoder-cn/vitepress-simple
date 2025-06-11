@@ -1,23 +1,60 @@
 export const VpSimpleConfig = {
   "locales": {
     "root": {
-      "lang": "root",
       "themeConfig": {
         "i18nRouting": true,
         "logo": "/images/logo.png",
         "sidebar": {
-          "/sidebars/": [
+          "/sidebar/": [
+            {
+              "text": "demo1",
+              "link": "/sidebar/demo1"
+            },
+            {
+              "text": "demo2",
+              "link": "/sidebar/demo2"
+            },
+            {
+              "text": "demo3",
+              "link": "/sidebar/demo3"
+            },
+            {
+              "text": "demo4",
+              "link": "/sidebar/demo4"
+            },
+            {
+              "text": "demo5",
+              "link": "/sidebar/demo5"
+            },
+            {
+              "text": "demo6",
+              "link": "/sidebar/demo6"
+            },
+            {
+              "text": "tag-demo",
+              "link": "/sidebar/tag-demo"
+            },
+            {
+              "text": "big-image-demo",
+              "link": "/sidebar/big-image-demo"
+            }
+          ],
+          "/sidebar-many/": [
             {
               "text": "sidebar-sub1",
               "collapsed": false,
               "items": [
                 {
-                  "text": "sidebar-sub1-article1",
-                  "link": "/sidebars/sidebar-sub1/sidebar-sub1-article1"
+                  "text": "demo1",
+                  "link": "/sidebar-many/sidebar-sub1/demo1"
                 },
                 {
-                  "text": "sidebar-sub1-article2",
-                  "link": "/sidebars/sidebar-sub1/sidebar-sub1-article2"
+                  "text": "demo2",
+                  "link": "/sidebar-many/sidebar-sub1/demo2"
+                },
+                {
+                  "text": "demo3",
+                  "link": "/sidebar-many/sidebar-sub1/demo3"
                 }
               ]
             },
@@ -26,16 +63,16 @@ export const VpSimpleConfig = {
               "collapsed": false,
               "items": [
                 {
-                  "text": "sidebar-sub2-article3",
-                  "link": "/sidebars/sidebar-sub2/sidebar-sub2-article3"
+                  "text": "demo1",
+                  "link": "/sidebar-many/sidebar-sub2/demo1"
                 },
                 {
-                  "text": "sidebar-sub2-article1",
-                  "link": "/sidebars/sidebar-sub2/sidebar-sub2-article1"
+                  "text": "demo2",
+                  "link": "/sidebar-many/sidebar-sub2/demo2"
                 },
                 {
-                  "text": "sidebar-sub2-article2",
-                  "link": "/sidebars/sidebar-sub2/sidebar-sub2-article2"
+                  "text": "demo3",
+                  "link": "/sidebar-many/sidebar-sub2/demo3"
                 }
               ]
             }
@@ -43,28 +80,23 @@ export const VpSimpleConfig = {
         },
         "nav": [
           {
-            "text": "vpsimple",
-            "link": "https://github.com/dicoder-cn/vitepress-simple"
+            "text": "sidebar",
+            "link": "/sidebar/demo1"
           },
           {
-            "text": "32",
+            "text": "sidebars",
+            "link": "/sidebar-many/sidebar-sub1/demo1"
+          },
+          {
+            "text": "friendship",
             "items": [
               {
-                "text": "323",
-                "link": "/sidebar/1"
+                "text": "vpsimple",
+                "link": "https://github.com/dicoder-cn/vitepress-simple"
               },
               {
-                "text": "212",
-                "link": "/sidebar/1"
-              }
-            ]
-          },
-          {
-            "text": "321",
-            "items": [
-              {
-                "text": "212",
-                "link": "2121"
+                "text": "dicoder",
+                "link": "http://dicoder.cn"
               }
             ]
           }
@@ -171,7 +203,7 @@ export const VpSimpleConfig = {
           "level": 3
         },
         "externalLinkIcon": true,
-        "sidebarMenuLabel": "侧边栏",
+        "sidebarMenuLabel": "Sidebar",
         "editLink": {
           "text": "Edit on github",
           "pattern": "https://github.com/dicoder-cn"
@@ -182,10 +214,11 @@ export const VpSimpleConfig = {
         "lightModeSwitchTitle": "Light color mode",
         "darkModeSwitchTitle": "Dark mode",
         "docFooter": {
-          "prev": "上一篇",
-          "next": "下一篇"
+          "prev": "Previous",
+          "next": "Next"
         }
       },
+      "lang": "root",
       "label": "简体中文",
       "titleTemplate": "",
       "description": "快速搭建自己的知识库",
@@ -193,7 +226,7 @@ export const VpSimpleConfig = {
     }
   },
   "description": "",
-  "title": "Demo1",
+  "title": "Demo2",
   "srcDir": "./docs",
   "lang": "zh",
   "base": "/",

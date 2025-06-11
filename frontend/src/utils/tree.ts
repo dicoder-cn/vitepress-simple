@@ -2,7 +2,7 @@
 import { DataNode } from "ant-design-vue/es/tree";
 
 export interface VpNav {
-  link: string;
+  link?: string;
   text: string;
   items?: VpNav[];
 }

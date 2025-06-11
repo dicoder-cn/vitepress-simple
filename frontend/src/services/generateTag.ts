@@ -3,6 +3,7 @@ import { WriteContentToFile } from "wailsjs/go/system/SystemService";
 // @ts-ignore
 import yaml from "js-yaml";
 import { ParseDocsFontMatter } from "wailsjs/go/docparse/ParseService";
+import { getFileNameFromPath } from "@/utils/utils";
 
 interface ArticleItem {
   link: string;
@@ -15,13 +16,17 @@ interface ArticleItem {
  * 转义 HTML 字符，防止 XSS 注入
  */
 function escapeHtml(str: string): string {
-  return str.replace(/[&<>"']/g, (match) => ({
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;'
-  }[match]!));
+  return str.replace(
+    /[&<>"']/g,
+    (match) =>
+      ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[match]!
+  );
 }
 
 /**
@@ -30,18 +35,23 @@ function escapeHtml(str: string): string {
 function formatDateString(dateStr?: string): string {
   if (!dateStr) return "未设置日期";
   const date = new Date(dateStr);
-  return isNaN(date.getTime()) ? "格式错误" : date.toISOString().split('T')[0];
+  return isNaN(date.getTime()) ? "格式错误" : date.toISOString().split("T")[0];
 }
 
 /**
  * 构建标签页面的 HTML 内容
  */
 function generateTagPageContent(tagName: string, articles: ArticleItem[]): string {
-  const itemsHtml = articles.map(item => `
-  <li class="article-item">
-    <div class="article-title">${escapeHtml(item.title)}</div>
+  const itemsHtml = articles
+    .map(
+      (item) => `<li class="article-item"><a href="${item.link}">
+  <div class="article-row">
     <div class="article-meta">${formatDateString(item.updateAt)}</div>
-  </li>`).join('');
+    <div class="article-title">${escapeHtml(item.title)}</div>
+  </div>
+</a></li>`
+    )
+    .join("");
 
   return `
 <ClientOnly>
@@ -63,15 +73,17 @@ export const generateTagService = {
   genTagPage: async () => {
     const storeVpConfig = useVpconfigStore();
     // 假设 ParseDocsFontMatter 是 Wails 提供的方法
-    const mapData: Record<string, any> =await ParseDocsFontMatter(storeVpConfig.fullSrcDir);
+    const mapData: Record<string, any> = await ParseDocsFontMatter(storeVpConfig.fullSrcDir);
     const tagData: Record<string, ArticleItem[]> = {};
-    
-  
+    console.log(mapData, "mapData -- console.log");
+
     for (const path in mapData) {
-     
       const frontMatter = mapData[path];
-      const title = frontMatter.title ?? "未设置标题";
-      const link = path.replace(storeVpConfig.fullSrcDir, '');
+      let title = frontMatter.title ?? "未设置标题";
+      if (title === "") {
+        title = getFileNameFromPath(path);
+      }
+      const link = path.replace(storeVpConfig.fullSrcDir, "").replace(".md", "");
       const createAt = frontMatter.createAt ?? "未设置日期";
       const updateAt = frontMatter.updateAt ?? "未设置日期";
 
@@ -82,7 +94,6 @@ export const generateTagService = {
         updateAt
       };
 
-      
       const tags = frontMatter.tags;
 
       if (tags && Array.isArray(tags)) {
@@ -95,7 +106,6 @@ export const generateTagService = {
         });
       }
     }
-    console.log("tagData",tagData);
 
     for (const tag in tagData) {
       try {
@@ -106,8 +116,8 @@ export const generateTagService = {
         };
         const finalContent = `---\n${yaml.dump(fontMatter)}\n---\n${content}`;
         const filePath = `${storeVpConfig.fullSrcDir}/vpsimple/tags/${tag}.md`;
-        console.log("filePath",filePath);
-        console.log("finalContent",finalContent);
+        console.log("filePath", filePath);
+        console.log("finalContent", finalContent);
         WriteContentToFile(filePath, finalContent);
       } catch (err) {
         console.error(`Failed to generate tag page for "${tag}":`, err);

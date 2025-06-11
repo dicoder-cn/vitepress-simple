@@ -80,25 +80,33 @@ const cuttingNav = () => {
   copyNavLang.value = "";
 };
 
-const formatNavData = (data: any[]): VpNav[] => {
+const navArray = ref<VpNav[]>([]);
+
+// 格式化导航数据，对于有子导航的项目完全不包含link属性
+const formatNavData = (data: any[]): any[] => {
   return data
     .filter(item => item.text && (item.link || item.items))
     .map((item) => {
       const hasChildren = Array.isArray(item.items) && item.items.length > 0;
-      //对于有子导航（items）的父级导航项，link 字段其实可以完全省略，不需要保留 "link": "",空字符也不行
-      const formattedItem: VpNav = {
-        text: item.text || '',
-        link: hasChildren ? '' : (item.link || ''),
-        ...(hasChildren ? { items: formatNavData(item.items) } : {})
-      };
-      return formattedItem;
+      
+      if (hasChildren) {
+        // 如果有子导航，只返回text和items属性
+        return {
+          text: item.text || '',
+          items: formatNavData(item.items)
+        };
+      } else {
+        // 如果没有子导航，返回text和link属性
+        return {
+          text: item.text || '',
+          link: item.link || ''
+        };
+      }
     });
 };
 
-const navArray = ref<VpNav[]>([]);
-
 const saveNav = () => {
-  const formatData: VpNav[] = formatNavData(navArray.value);
+  const formatData = formatNavData(navArray.value);
   console.log("nav Data",formatData)
   if (storeConfig.currLangConfig?.themeConfig) {
     storeConfig.currLangConfig.themeConfig.nav = formatData;

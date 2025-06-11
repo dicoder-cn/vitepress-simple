@@ -38,12 +38,13 @@
           {{ tag }}
         </q-chip>
       </div>
-      <!-- 标签权重配置 -->
+      <!-- 权重配置 -->
       <div class="mt-2">
         <a-input
-          v-model:value="weight"
-          :placeholder="lang('pageIndex.inputTagWeight')"
-          :suffix="lang('pageIndex.tagWeight')"
+          :value="getFrontMatter(['weight'], defaultFrontMatter.weight)"
+          @update:value="(val: string) => setFrontMatter(['weight'], val, defaultFrontMatter)"
+          :placeholder="lang('pageIndex.inputWeight')"
+          :suffix="lang('pageIndex.weight')"
           class="w-full"
         />
       </div>

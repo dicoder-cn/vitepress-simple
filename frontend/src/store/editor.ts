@@ -284,6 +284,7 @@ export const useEditorStore = defineStore("editor", {
       }
       const articleItem = this.articleLists[articleIndex];
 
+      console.log(articleItem.frontMatter, "articleItem.frontMatter -- console.log");
       //更新时间
       articleItem.frontMatter.updateAt = DateUtil.getFormatDate(new Date().toISOString());
 
