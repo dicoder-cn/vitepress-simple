@@ -96,6 +96,9 @@ import { CreateDir } from "../../../wailsjs/go/services/ArticleTreeData";
 import { useIndexStore } from "@/store";
 import { lang } from "@/utils/language";
 import { useVpconfigStore } from "@/store/vpconfig";
+import { AppConfig } from "@/store/appconfig";
+import { ConfigKeyProjectDir } from "@/configs/appConfigKey";
+import { useEditorStore } from "@/store/editor";
 
 const formData = ref<ProjectCreate>({
   title: "VPSimpleProject",
@@ -123,6 +126,8 @@ const Create = async () => {
       "{vp_version}": formData.value.version ?? "1.6.3"
     }
   };
+  await AppConfig.set(ConfigKeyProjectDir,formData.value.dir)
+  await storeVpconfig.formatPath();
   CreateProject(formData.value.dir,repleceData).then(async (res) => {
     if (res != "") {
       ToastError(res);
@@ -134,9 +139,11 @@ const Create = async () => {
         storeVpconfig.vpConfig.title = formData.value.title;
       }
       await storeVpconfig.saveConfig();
-      modalVisible.value = false;
-      useHistoryStore().add(formData.value.dir); //添加到历史记录
-      useIndexStore().changeProject(formData.value.dir);
+     
+      // useHistoryStore().add(formData.value.dir); //添加到历史记录
+     await useIndexStore().changeProject(formData.value.dir);
+     await useEditorStore().clearArticleLists(); //清空文章列表
+     modalVisible.value = false;
     }
   });
 };

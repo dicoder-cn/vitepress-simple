@@ -114,6 +114,12 @@ export const useEditorStore = defineStore("editor", {
         }
       }
     },
+    //清空文章列表
+    clearArticleLists() {
+      //先判断是否存在文章没有保存
+
+      this.articleLists = [];
+    },
 
     //切换当前打开的文章
     changeCurrArticleIndex(index: number) {

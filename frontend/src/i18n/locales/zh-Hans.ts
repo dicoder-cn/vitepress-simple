@@ -70,7 +70,8 @@ export const zhHans = {
     //输入标签
     inputTags: "输入标签，按回车添加",
     //标签权重
-    tagWeight: "标签权重",
+    tagWeight: "权重",
+    weight: "权重",
     //输入标签权重
     inputTagWeight: "请输入标签权重(1-10)",
     //新建目录
