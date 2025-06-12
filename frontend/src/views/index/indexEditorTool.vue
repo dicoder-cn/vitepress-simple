@@ -33,7 +33,7 @@
 
       
       <!--    终端-->
-      <index-editor-tool-shell></index-editor-tool-shell>
+      <!-- <index-editor-tool-shell></index-editor-tool-shell> -->
 
 
       <!-- 侧边栏设置 -->

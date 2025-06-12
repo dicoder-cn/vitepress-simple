@@ -82,11 +82,12 @@ const generateList = ref<GenerateItem[]>([
   {
     menuLabel: '生成tag标签页',
     type: 'tag'
-  },
-  {
-    menuLabel: '快速生成SEO',
-    type: 'seo'
   }
+  // ,
+  // {
+  //   menuLabel: '快速生成SEO',
+  //   type: 'seo'
+  // }
 ]);
 
 const handleGenerate = (index: number) => {

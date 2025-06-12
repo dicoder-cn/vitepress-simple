@@ -12,14 +12,18 @@
     </div>
 
     <!-- 描述 -->
-    <div class="px-1 my-2">
+    <div class="px-1 my-2 flex items-center gap-2">
       <a-textarea
-        class="text-gray-500"
+        class="text-gray-500 flex-1"
         :value="getFrontMatter(['description'], defaultFrontMatter.description)"
         @update:value="(val: string) => setFrontMatter(['description'], val, defaultFrontMatter)"
-        :auto-size="{ minRows: 1 }"
+        :auto-size="{ minRows: 1,maxRows: 3 }"
         :placeholder="lang('pageIndex.inputPageSeoDescription')"
       />
+      <a-button class="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white border-none" @click="generateSeoDescription">
+        <template #icon><i class="i-carbon-ai-status"></i></template>
+        AI
+      </a-button>
     </div>
 
     <!-- 标签输入框 -->
@@ -148,6 +152,8 @@ import { useIndexStore } from "@/store";
 import { lang } from "@/utils/language";
 import { useEditorStore } from "@/store/editor";
 import { defaultFrontMatter } from "@/configs/defaultFrontMatter";
+import { aiService } from '@/services/aiService';
+import { ToastCheck, ToastClose, ToastLoading } from "@/utils/Toast";
 
 const storeEditor = useEditorStore();
 const labelCol = { style: { width: "150px" } };
@@ -213,6 +219,24 @@ const removeTag = (index: number) => {
 
 const refDyAddHead = ref();
 const refDyAddFontMatter = ref();
+
+const generateSeoDescription = async () => {
+  const service = aiService();
+  if (!service) return;
+  
+  ToastLoading("正在生成SEO描述...");
+  const prompt = `请为文章生成一个简洁的SEO描述，长度不超过150字，突出文章的主要内容和价值。 下面是文章内容："${storeEditor.currArticle.mdContent}" `;
+  
+  try {
+    const description = await service.chat(prompt);
+    setFrontMatter(['description'], description, defaultFrontMatter);
+    ToastClose();
+  } catch (error) {
+    console.error('生成SEO描述失败:', error);
+    ToastClose();
+  }
+};
+
 onMounted(() => {});
 </script>
 <style scoped></style>

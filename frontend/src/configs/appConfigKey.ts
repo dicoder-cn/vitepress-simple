@@ -53,6 +53,9 @@ export const ConfigKeyCmdGitPull = "cmd.git_pull";
 export const ConfigKeyCmdGitAdd = "cmd.git_add";
 export const ConfigKeyCmdGitCommit = "cmd.git_commit";
 export const ConfigKeyCmdGitPush = "cmd.git_push";
+export const ConfigKeyOpenAIKey = "openai.key";
+export const ConfigKeyOpenAIApiBase = "openai.api_base";
+export const ConfigKeyOpenAIModel = "openai.model";
 
 export const ConfigArray = [
   "project_dir",
@@ -78,5 +81,8 @@ export const ConfigArray = [
   "cmd.git_pull",
   "cmd.git_add",
   "cmd.git_commit",
-  "cmd.git_push"
+  "cmd.git_push",
+  "openai.key",
+  "openai.api_base",
+  "openai.model"
 ];

@@ -471,6 +471,21 @@ export const zhHans = {
       title: "编辑器配置",
       editorType: "编辑器类型",
       editorTypeTooltip: "选择您偏好的 Markdown 编辑器"
+    },
+    settingAi: {
+      title: "AI设置",
+      key: {
+        label: "OpenAI Key",
+        tooltip: "OpenAI Key"
+      },
+      apiBase: {
+        label: "OpenAI API Base",
+        tooltip: "OpenAI API Base"
+      },
+      model: {
+        label: "OpenAI Model",
+        tooltip: "OpenAI Model"
+      }
     }
   },
   pageAbout: {

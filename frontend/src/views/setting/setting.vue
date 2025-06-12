@@ -12,6 +12,9 @@
       >
         <setting-editor></setting-editor>
       </a-tab-pane> -->
+      <a-tab-pane key="2" :tab="lang('pageSetting.settingAi.title')" :style="StyleNoDrag">
+        <setting-ai></setting-ai>
+      </a-tab-pane>
     </a-tabs>
   </div>
 </template>
@@ -20,8 +23,9 @@ import { ref } from "vue";
 import SettingBase from "@/views/setting/settingBase.vue";
 import { lang } from "@/utils/language";
 import { StyleNoDrag } from "@/configs/cnts";
-
-const activeKey = ref("1");
+import SettingAi from "@/views/setting/settingAi.vue";
+  
+const activeKey = ref("2");
 </script>
 
 <style scoped></style>

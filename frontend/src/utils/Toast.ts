@@ -15,6 +15,15 @@ export function ToastSuccess(msg: string) {
   message.success(msg);
 }
 
+  export function ToastLoading(msg: string) {
+  message.loading(msg);
+}
+
+export function ToastClose() {
+  message.destroy();
+}
+
+
 //根据message是否为空字符串判断是否成功
 export const ToastCheck = (message: string, successText: string = "操作成功") => {
   if (message == "" && successText != "") {

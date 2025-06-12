@@ -20,7 +20,10 @@ import {
   ConfigKeyCmdGitPull,
   ConfigKeyCmdGitAdd,
   ConfigKeyCmdGitCommit,
-  ConfigKeyCmdGitPush
+  ConfigKeyCmdGitPush,
+  ConfigKeyOpenAIKey,
+  ConfigKeyOpenAIApiBase,
+  ConfigKeyOpenAIModel
 } from "@/configs/appConfigKey";
 
 export class editorType {
@@ -51,5 +54,8 @@ export const appConfigDefault: Record<string, any> = {
   [ConfigKeyCmdGitPull]: "git pull", //git pull
   [ConfigKeyCmdGitAdd]: "git add .", //git add .
   [ConfigKeyCmdGitCommit]: "git commit -m 'autoupdate'", //git commit
-  [ConfigKeyCmdGitPush]: "git push" //git push
+  [ConfigKeyCmdGitPush]: "git push", //git push
+  [ConfigKeyOpenAIKey]: "", //openai key
+  [ConfigKeyOpenAIApiBase]: "https://api.openai.com/v1", //openai api base
+  [ConfigKeyOpenAIModel]: "gpt-3.5-turbo" //openai model
 };

@@ -25,6 +25,7 @@
     "jsx": "^0.9.89",
     "lodash-es": "^4.17.21",
     "md-editor-v3": "^5.6.0",
+    "openai": "^5.3.0",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
     "quasar": "^2.14.1",

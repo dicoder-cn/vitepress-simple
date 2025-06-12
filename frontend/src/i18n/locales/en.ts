@@ -343,6 +343,21 @@ export const en = {
       title: "Editor Settings",
       editorType: "Editor Type",
       editorTypeTooltip: "Choose your preferred Markdown editor"
+    },
+    settingAi: {
+      title: "AI Settings",
+      key: {
+        label: "OpenAI Key",
+        tooltip: "OpenAI Key"
+      },
+      apiBase: {
+        label: "OpenAI API Base",
+        tooltip: "OpenAI API Base"
+      },
+      model: {
+        label: "OpenAI Model",
+        tooltip: "OpenAI Model"
+      }
     }
   },
 
