@@ -29,4 +29,4 @@ git commit -m "$commit_msg"
 echo "Pushing to the remote repository..."
 git push
 
-echo "🎉 完成：构建、提交并推送成功！"
+echo "🎉 Completed: Build, commit, and push successfully！"
