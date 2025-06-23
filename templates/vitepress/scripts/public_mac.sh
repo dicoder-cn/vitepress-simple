@@ -1,32 +1,32 @@
 #!/bin/bash
 
 # 构建命令，你可以根据需要修改为 yarn build / npm run custom:build 等
-echo "正在执行构建..."
+echo "Building is in progress..."
 npm run docs:build
 
 # 检查上一步是否成功
 if [ $? -ne 0 ]; then
-  echo "❌ 构建失败，停止执行。"
+  echo "❌ Build failed, stop execution"
   exit 1
 fi
 
-echo "✅ 构建成功！"
+echo "✅ Build succeeded！"
 
 # 获取提交信息，如果为空则使用默认值
-read -p "请输入提交信息（或直接回车使用默认值 'chore: update build files'）：" commit_msg
+read -p "Please enter the commit message (or press Enter to use the default value 'chore: update build files'）：" commit_msg
 
 if [ -z "$commit_msg" ]; then
   commit_msg="chore: update build files"
 fi
 
 # Git 操作
-echo "正在添加文件到 git..."
+echo "Adding files to git..."
 git add .
 
-echo "正在提交更改..."
+echo "Committing changes..."
 git commit -m "$commit_msg"
 
-echo "正在推送到远程仓库..."
+echo "Pushing to the remote repository..."
 git push
 
 echo "🎉 完成：构建、提交并推送成功！"
