@@ -233,6 +233,6 @@ export const VpSimpleConfig = {
   "outDir": "./build",
   "cleanUrls": true,
   "sitemap": {
-    "hostname": "dicoder.cn"
+    "hostname": "http://dicoder.cn"
   }
 };
