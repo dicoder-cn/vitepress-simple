@@ -1,6 +1,10 @@
 import mdItCustomAttrs from "markdown-it-custom-attrs";
+import llmstxt from 'vitepress-plugin-llms'
 
 export const PluginsConfig = {
+  vite: {
+    plugins: [llmstxt()]
+  },
   head: [
     [
       "link",
