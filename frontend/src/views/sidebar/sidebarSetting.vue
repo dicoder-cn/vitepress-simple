@@ -186,8 +186,17 @@ const recognitionSidebar = async () => {
     ToastError(`${lang("pageSidebar.recognitionWarning2")}${baseDir}${lang("pageSidebar.existFile")}`);
   } else {
     //开始转换数据,将属性转换成侧栏结构
-    let existingLinks: string[] = sidebarTree.value.flatMap((nav) => (nav.items ? [nav.link, ...nav.items.map((item) => item.link)] : [nav.link]));
-    existingLinks = existingLinks.filter((link) => link !== undefined && link.endsWith(".md"));
+    let existingLinks: string[] = sidebarTree.value.flatMap((nav) => {
+      const links: string[] = [];
+      if (nav.link) links.push(nav.link);
+      if (nav.items) {
+        nav.items.forEach(item => {
+          if (item.link) links.push(item.link);
+        });
+      }
+      return links;
+    });
+    existingLinks = existingLinks.filter(link => link.endsWith(".md"));
 
     let list = convertTreeNodesToVpNavList(treeData, existingLinks);
     sidebarTree.value = list;
@@ -259,7 +268,7 @@ const convertTreeNodesToVpNavList = (treeNodes: TreeNode[], existingLinks: strin
       text: text
     };
 
-    if (!existingLinks.includes(vpNavItem.link)) {
+    if (vpNavItem.link && !existingLinks.includes(vpNavItem.link)) {
       existingLinks.push(vpNavItem.link);
       vpNavList.push(vpNavItem);
       if (treeNode.children) {
@@ -278,7 +287,7 @@ const parseLink = (pathKey: string): string => {
 //解析Text
 const parseText = (pathKey: string): string => {
   let items = pathKey.replaceAll("\\", "/").split("/");
-  let text = items[items.length - 1] ?? "";
+  let text = items[items.length - 1] || "";
   return text.replaceAll(".md", "");
 };
 

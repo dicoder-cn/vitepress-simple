@@ -78,5 +78,10 @@ aside-ads-after：在侧边栏广告位之后的位置可注入自定义内容�
         </div>
       </template>
     </template>
+
+    <!-- 添加最近文章组件到侧边栏底部 -->
+    <!-- <template #aside-bottom>
+      <MyGlobalComponent />
+    </template> -->
   </Layout>
 </template>
