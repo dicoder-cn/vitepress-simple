@@ -225,7 +225,7 @@ const generateSeoDescription = async () => {
   if (!service) return;
   
   ToastLoading("正在生成SEO描述...");
-  const prompt = `请为文章生成一个简洁的SEO描述，长度不超过150字，突出文章的主要内容和价值。 下面是文章内容："${storeEditor.currArticle.mdContent}" `;
+  const prompt = `请为文章生成一个简洁的SEO描述，长度不超过150字，突出文章的主要内容和价值,生成的描述使用的语言与文章内容保持一致。 下面是文章内容："${storeEditor.currArticle.mdContent}" `;
   
   try {
     const description = await service.chat(prompt);

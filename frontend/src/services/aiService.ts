@@ -34,7 +34,7 @@ class AiService {
 
       return response.choices[0]?.message?.content || '';
     } catch (error: any) {
-      ToastError('AI 服务调用失败:'+error.message);
+      ToastError('AI service call failed:'+error.message);
       return "";
     }
   }
@@ -51,7 +51,7 @@ class AiService {
 export const aiService = () => {
   const key = AppConfig.getString(ConfigKeyOpenAIKey);
   if (key === "") {
-    ToastError("请先配置openai key");
+    ToastError("Please configure AI first key");
     return null;
   }
 
